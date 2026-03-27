@@ -1,0 +1,16 @@
+---
+import MainLayout from "../layouts/main.astro";
+import { homepageQuery, urlFor } from "../queries";
+import Hero from "../components/hero.astro";
+
+const { heading, subheading, poster } = await homepageQuery();
+---
+
+<MainLayout>
+  <Hero
+    heading={heading}
+    subheading={subheading}
+    imgSrc={urlFor(poster).width(1200).format("webp").url()}
+    imgAlt={poster.alt}
+  />
+</MainLayout>
