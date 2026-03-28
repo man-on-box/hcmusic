@@ -54,6 +54,48 @@ export const homepageType = defineType({
           type: 'string',
           description: 'Call to action, used in the button under the blurb.',
         }),
+        defineField({
+          name: 'linkToPage',
+          title: 'Link to page',
+          type: 'reference',
+          to: [{type: 'homepage'}],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'features',
+      title: 'Features section',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'heading',
+          title: 'Heading',
+          type: 'string',
+        }),
+        defineField({
+          name: 'cards',
+          title: 'Feature cards',
+          type: 'array',
+          description: 'Cards highlighting your main features.',
+          validation: (rule) => rule.required().length(3),
+          of: [
+            defineArrayMember({
+              name: 'card',
+              title: 'Feature card',
+              type: 'object',
+              fields: [
+                defineField({name: 'title', title: 'Title', type: 'string'}),
+                defineField({name: 'description', title: 'Description', type: 'string'}),
+                defineField({
+                  name: 'linkToPage',
+                  title: 'Link to page',
+                  type: 'reference',
+                  to: [{type: 'homepage'}],
+                }),
+              ],
+            }),
+          ],
+        }),
       ],
     }),
   ],

@@ -8,7 +8,7 @@ import Hero from "../components/hero.astro";
 import Prose from "../components/prose.astro";
 import LinkButton from "../components/link-button.astro";
 
-const { heading, subheading, poster, about } = await homepageQuery();
+const { heading, subheading, poster, about, features } = await homepageQuery();
 ---
 
 <MainLayout>
@@ -26,6 +26,22 @@ const { heading, subheading, poster, about } = await homepageQuery();
     <LinkButton href={linkMap.bio}>{about.cta}</LinkButton>
   </section>
   <section class="bg-gray-800 py-16">
-    <h2>hey there...</h2>
+    <div class="mx-auto max-w-7xl">
+      <Prose class="prose-invert mx-auto text-center">
+        <h2>{features.heading}</h2>
+      </Prose>
+      <div class="grid gap-8 md:grid-cols-3 lg:gap-10">
+        {
+          features.cards.map((card) => {
+            return (
+              <div>
+                <p>{card.title}</p>
+                <p>{card.description}</p>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
   </section>
 </MainLayout>

@@ -17,6 +17,7 @@ heading,
 subheading,
 poster,
 about,
+features,
 }`);
 
   return await sanityClient.fetch<SanityDocument>(query);
