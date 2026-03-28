@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import {defineField, defineType, defineArrayMember} from 'sanity'
 
 export const homepageType = defineType({
   name: 'homepage',
@@ -46,7 +46,7 @@ export const homepageType = defineType({
           title: 'Blurb',
           type: 'array',
           description: 'Short blurb intro to yourself.',
-          of: [{type: 'block', styles: []}],
+          of: [defineArrayMember({type: 'block', styles: []})],
         }),
         defineField({
           name: 'cta',

@@ -1,9 +1,12 @@
 ---
-import MainLayout from "../layouts/main.astro";
-import { homepageQuery, urlFor } from "../queries";
-import Hero from "../components/hero.astro";
+import { PortableText } from "astro-portabletext";
 
-const { heading, subheading, poster } = await homepageQuery();
+import { homepageQuery, urlFor } from "../queries";
+import MainLayout from "../layouts/main.astro";
+import Hero from "../components/hero.astro";
+import Prose from "../components/prose.astro";
+
+const { heading, subheading, poster, about } = await homepageQuery();
 ---
 
 <MainLayout>
@@ -13,4 +16,12 @@ const { heading, subheading, poster } = await homepageQuery();
     imgSrc={urlFor(poster).width(1200).format("webp").url()}
     imgAlt={poster.alt}
   />
+  <section class="flex justify-center py-18">
+    <Prose>
+      <div class="text-center">
+        <h2>{about.heading}</h2>
+        <PortableText value={about.blurb} />
+      </div>
+    </Prose>
+  </section>
 </MainLayout>

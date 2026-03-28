@@ -16,6 +16,7 @@ export const homepageQuery = async () => {
 heading,
 subheading,
 poster,
+about,
 }`);
 
   return await sanityClient.fetch<SanityDocument>(query);
