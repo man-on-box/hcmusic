@@ -10,7 +10,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-
+  image: {
+    domains: ["cdn.sanity.io"],
+  },
   integrations: [
     sanity({
       projectId: "x6ftvyem",
