@@ -46,7 +46,7 @@ export const homepageType = defineType({
           title: 'Blurb',
           type: 'array',
           description: 'Short blurb intro to yourself.',
-          of: [defineArrayMember({type: 'block', styles: []})],
+          of: [defineArrayMember({type: 'block', styles: [], lists: []})],
         }),
         defineField({
           name: 'cta',

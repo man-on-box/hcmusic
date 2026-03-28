@@ -1,10 +1,12 @@
 ---
 import { PortableText } from "astro-portabletext";
+import { linkMap } from "../config/links";
 
 import { homepageQuery, urlFor } from "../queries";
 import MainLayout from "../layouts/main.astro";
 import Hero from "../components/hero.astro";
 import Prose from "../components/prose.astro";
+import LinkButton from "../components/link-button.astro";
 
 const { heading, subheading, poster, about } = await homepageQuery();
 ---
@@ -16,12 +18,14 @@ const { heading, subheading, poster, about } = await homepageQuery();
     imgSrc={urlFor(poster).width(1200).format("webp").url()}
     imgAlt={poster.alt}
   />
-  <section class="flex justify-center py-18">
-    <Prose>
-      <div class="text-center">
-        <h2>{about.heading}</h2>
-        <PortableText value={about.blurb} />
-      </div>
+  <section class="flex flex-col items-center py-16">
+    <Prose class="mb-12 text-center">
+      <h2 class="mt-0">{about.heading}</h2>
+      <PortableText value={about.blurb} />
     </Prose>
+    <LinkButton href={linkMap.bio}>{about.cta}</LinkButton>
+  </section>
+  <section class="bg-gray-800 py-16">
+    <h2>hey there...</h2>
   </section>
 </MainLayout>

@@ -1,9 +1,18 @@
 ---
+import { cn } from "../utils";
 
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
 ---
 
 <div
-  class="prose dark:prose-invert prose-h1:font-bold prose-h1:text-xl prose-h2:text-4xl prose-a:text-blue-600 prose-p:text-justify prose-img:rounded-xs"
+  class={cn(
+    "prose dark:prose-invert prose-h1:font-bold prose-h1:text-xl prose-h2:text-4xl prose-a:text-blue-600 prose-p:text-justify prose-img:rounded-xs",
+    className,
+  )}
 >
   <slot />
 </div>
