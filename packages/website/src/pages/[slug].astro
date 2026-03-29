@@ -1,0 +1,35 @@
+---
+import { PortableText } from "astro-portabletext";
+
+import { pageQuery, urlFor } from "../queries";
+import MainLayout from "../layouts/main.astro";
+import Hero from "../components/hero.astro";
+import Prose from "../components/prose.astro";
+
+export async function getStaticPaths() {
+  const pages = await pageQuery();
+
+  return pages.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+---
+
+<MainLayout>
+  <Hero
+    heading={page.heading ?? "Default heading"}
+    subheading={page.subheading}
+    imgSrc={page.poster
+      ? urlFor(page.poster).width(1200).height(500).format("webp").url()
+      : ""}
+    imgAlt={page.poster?.alt || ""}
+  />
+  <section class="flex flex-col items-center py-16">
+    <Prose class="w-full">
+      {page?.content && <PortableText value={page.content} />}
+    </Prose>
+  </section>
+</MainLayout>

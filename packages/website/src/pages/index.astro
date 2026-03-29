@@ -17,6 +17,7 @@ const { heading, subheading, poster, about, features } = await homepageQuery();
     subheading={subheading ?? "Default subheading"}
     imgSrc={poster ? urlFor(poster).width(1200).format("webp").url() : ""}
     imgAlt={poster?.alt || ""}
+    variant="large"
   />
   <section class="flex flex-col items-center py-16">
     <Prose class="mb-12 text-center">

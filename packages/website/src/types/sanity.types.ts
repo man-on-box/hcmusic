@@ -22,11 +22,11 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
-export type HomepageReference = {
+export type PageReference = {
   _ref: string;
   _type: "reference";
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "homepage";
+  [internalGroqTypeReferenceTo]?: "page";
 };
 
 export type Homepage = {
@@ -66,18 +66,55 @@ export type Homepage = {
       _key: string;
     }>;
     cta?: string;
-    linkToPage?: HomepageReference;
+    linkToPage?: PageReference;
   };
   features?: {
     heading?: string;
     cards?: Array<{
       title?: string;
       description?: string;
-      linkToPage?: HomepageReference;
+      linkToPage?: PageReference;
       _type: "card";
       _key: string;
     }>;
   };
+};
+
+export type Page = {
+  _id: string;
+  _type: "page";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heading?: string;
+  subheading?: string;
+  slug?: Slug;
+  poster?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  content?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal";
+    listItem?: never;
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
 };
 
 export type SanityImageCrop = {
@@ -94,6 +131,12 @@ export type SanityImageHotspot = {
   y?: number;
   height?: number;
   width?: number;
+};
+
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -193,21 +236,28 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
-};
-
-export type AllSanitySchemaTypes = SanityImageAssetReference | HomepageReference | Homepage | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = SanityImageAssetReference | PageReference | Homepage | Page | SanityImageCrop | SanityImageHotspot | Slug | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/queries/index.ts
 // Variable: HOMEPAGE_QUERY
-// Query: *[_id == "home"][0]{heading,subheading,poster,about,features,}
+// Query: *[_id == "home"][0]{  heading,  subheading,  poster,  about,  features,}
 export type HOMEPAGE_QUERY_RESULT = {
   heading: null;
   subheading: null;
   poster: null;
+  about: null;
+  features: null;
+} | {
+  heading: string | null;
+  subheading: string | null;
+  poster: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
   about: null;
   features: null;
 } | {
@@ -242,17 +292,52 @@ export type HOMEPAGE_QUERY_RESULT = {
       _key: string;
     }>;
     cta?: string;
-    linkToPage?: HomepageReference;
+    linkToPage?: PageReference;
   } | null;
   features: {
     heading?: string;
     cards?: Array<{
       title?: string;
       description?: string;
-      linkToPage?: HomepageReference;
+      linkToPage?: PageReference;
       _type: "card";
       _key: string;
     }>;
   } | null;
 } | null;
+
+// Source: ../website/src/queries/index.ts
+// Variable: PAGE_QUERY
+// Query: *[_type == "page"] {  heading,  subheading,  "slug": slug.current,  poster,  content,}
+export type PAGE_QUERY_RESULT = Array<{
+  heading: string | null;
+  subheading: string | null;
+  slug: string | null;
+  poster: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  content: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal";
+    listItem?: never;
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+}>;
 
