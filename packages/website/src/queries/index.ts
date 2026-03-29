@@ -1,4 +1,4 @@
-import type { SanityDocument } from "@sanity/client";
+import type { HOMEPAGE_QUERY_RESULT } from "../types/sanity.types.ts";
 import { sanityClient } from "sanity:client";
 import {
   createImageUrlBuilder,
@@ -11,8 +11,7 @@ export function urlFor(source: SanityImageSource) {
   return builder.image(source);
 }
 
-export const homepageQuery = async () => {
-  const query = defineQuery(`*[_id == "home"][0]{
+const HOMEPAGE_QUERY = defineQuery(`*[_id == "home"][0]{
 heading,
 subheading,
 poster,
@@ -20,5 +19,11 @@ about,
 features,
 }`);
 
-  return await sanityClient.fetch<SanityDocument>(query);
+export const homepageQuery = async () => {
+  const result =
+    await sanityClient.fetch<HOMEPAGE_QUERY_RESULT>(HOMEPAGE_QUERY);
+  if (!result) {
+    throw new Error("Could not fetch homepage data");
+  }
+  return result;
 };

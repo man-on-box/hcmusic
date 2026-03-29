@@ -5,6 +5,14 @@ export default defineCliConfig({
     projectId: 'x6ftvyem',
     dataset: 'production',
   },
+  schemaExtraction: {
+    enabled: true,
+  },
+  typegen: {
+    enabled: true,
+    path: '../website/src/**/*.{ts,tsx,astro}',
+    generates: '../website/src/types/sanity.types.ts',
+  },
   deployment: {
     /**
      * Enable auto-updates for studios.

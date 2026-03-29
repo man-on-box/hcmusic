@@ -13,26 +13,26 @@ const { heading, subheading, poster, about, features } = await homepageQuery();
 
 <MainLayout>
   <Hero
-    heading={heading}
-    subheading={subheading}
-    imgSrc={urlFor(poster).width(1200).format("webp").url()}
-    imgAlt={poster.alt}
+    heading={heading ?? "Default heading"}
+    subheading={subheading ?? "Default subheading"}
+    imgSrc={poster ? urlFor(poster).width(1200).format("webp").url() : ""}
+    imgAlt={poster?.alt || ""}
   />
   <section class="flex flex-col items-center py-16">
     <Prose class="mb-12 text-center">
-      <h2 class="mt-0">{about.heading}</h2>
-      <PortableText value={about.blurb} />
+      <h2 class="mt-0">{about?.heading}</h2>
+      {about?.blurb && <PortableText value={about?.blurb} />}
     </Prose>
-    <LinkButton href={linkMap.bio}>{about.cta}</LinkButton>
+    <LinkButton href={linkMap.bio}>{about?.cta}</LinkButton>
   </section>
   <section class="bg-gray-800 py-16">
     <div class="mx-auto max-w-7xl">
       <Prose class="prose-invert mx-auto text-center">
-        <h2>{features.heading}</h2>
+        <h2>{features?.heading}</h2>
       </Prose>
       <div class="grid gap-8 md:grid-cols-3 lg:gap-10">
         {
-          features.cards.map((card) => {
+          features?.cards?.map((card) => {
             return (
               <div>
                 <p>{card.title}</p>
