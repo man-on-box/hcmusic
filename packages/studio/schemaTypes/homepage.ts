@@ -18,7 +18,7 @@ export const homepageType = defineType({
       description: 'Subheading in the hero image.',
     }),
     defineField({
-      name: 'poster',
+      name: 'image',
       type: 'image',
       options: {
         hotspot: true,

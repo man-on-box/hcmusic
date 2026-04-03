@@ -1,9 +1,11 @@
 import {defineField, defineType, defineArrayMember} from 'sanity'
+import {DocumentIcon} from '@sanity/icons'
 
 export const pageType = defineType({
   name: 'page',
   title: 'Page',
   type: 'document',
+  icon: DocumentIcon,
   fields: [
     defineField({
       name: 'heading',
@@ -18,18 +20,23 @@ export const pageType = defineType({
       description: 'Optional subheading in the hero image.',
     }),
     defineField({
+      name: 'title',
+      title: 'Page title',
+      type: 'string',
+    }),
+    defineField({
       title: 'Slug',
       name: 'slug',
       type: 'slug',
       description: 'Slug of the page (the path where the page exists)',
       options: {
-        source: 'heading',
+        source: 'title',
         slugify: (input) => input.toLowerCase().replace(/\s+/g, '-').slice(0, 100),
       },
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'poster',
+      name: 'image',
       type: 'image',
       options: {
         hotspot: true,
@@ -39,7 +46,6 @@ export const pageType = defineType({
           name: 'alt',
           title: 'Alt text',
           type: 'string',
-          description: 'Visual description of the image',
         }),
       ],
     }),
@@ -49,6 +55,11 @@ export const pageType = defineType({
       type: 'array',
       description: 'Content of the page',
       of: [defineArrayMember({type: 'block', styles: [], lists: []})],
+    }),
+    defineField({
+      name: 'pageBuilder',
+      title: 'Page Builder',
+      type: 'pageBuilder',
     }),
   ],
 })

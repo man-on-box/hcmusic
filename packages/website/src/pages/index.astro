@@ -8,15 +8,15 @@ import Hero from "../components/hero.astro";
 import Prose from "../components/prose.astro";
 import LinkButton from "../components/link-button.astro";
 
-const { heading, subheading, poster, about, features } = await homepageQuery();
+const { heading, subheading, image, about, features } = await homepageQuery();
 ---
 
 <MainLayout>
   <Hero
     heading={heading ?? "Default heading"}
     subheading={subheading ?? "Default subheading"}
-    imgSrc={poster ? urlFor(poster).width(1200).format("webp").url() : ""}
-    imgAlt={poster?.alt || ""}
+    imgSrc={image ? urlFor(image).width(1200).format("webp").url() : ""}
+    imgAlt={image?.alt || ""}
     variant="large"
   />
   <section class="flex flex-col items-center py-16">

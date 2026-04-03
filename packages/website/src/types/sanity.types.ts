@@ -37,7 +37,7 @@ export type Homepage = {
   _rev: string;
   heading?: string;
   subheading?: string;
-  poster?: {
+  image?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
@@ -89,7 +89,7 @@ export type Page = {
   heading?: string;
   subheading?: string;
   slug?: Slug;
-  poster?: {
+  image?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
@@ -240,37 +240,34 @@ export type AllSanitySchemaTypes = SanityImageAssetReference | PageReference | H
 
 // Source: ../website/src/queries/index.ts
 // Variable: HOMEPAGE_QUERY
-// Query: *[_id == "home"][0]{  heading,  subheading,  poster,  about,  features,}
+// Query: *[_id == "home"][0]{  heading,  subheading,  poster,  about,  features,    image{    ...,    "blurData": asset->metadata.lqip,    "dominantColor": asset->metadata.palette.dominant.background,  }}
 export type HOMEPAGE_QUERY_RESULT = {
   heading: null;
   subheading: null;
   poster: null;
   about: null;
   features: null;
+  image: null;
 } | {
   heading: string | null;
   subheading: string | null;
-  poster: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  } | null;
+  poster: null;
   about: null;
   features: null;
-} | {
-  heading: string | null;
-  subheading: string | null;
-  poster: {
+  image: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
+    blurData: string | null;
+    dominantColor: string | null;
   } | null;
+} | {
+  heading: string | null;
+  subheading: string | null;
+  poster: null;
   about: {
     heading?: string;
     blurb?: Array<{
@@ -304,22 +301,34 @@ export type HOMEPAGE_QUERY_RESULT = {
       _key: string;
     }>;
   } | null;
-} | null;
-
-// Source: ../website/src/queries/index.ts
-// Variable: PAGE_QUERY
-// Query: *[_type == "page"] {  heading,  subheading,  "slug": slug.current,  poster,  content,}
-export type PAGE_QUERY_RESULT = Array<{
-  heading: string | null;
-  subheading: string | null;
-  slug: string | null;
-  poster: {
+  image: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
+    blurData: string | null;
+    dominantColor: string | null;
+  } | null;
+} | null;
+
+// Source: ../website/src/queries/index.ts
+// Variable: PAGE_QUERY
+// Query: *[_type == "page"] {  heading,  subheading,  "slug": slug.current,    image{    ...,    "blurData": asset->metadata.lqip,    "dominantColor": asset->metadata.palette.dominant.background,  },  content}
+export type PAGE_QUERY_RESULT = Array<{
+  heading: string | null;
+  subheading: string | null;
+  slug: string | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    blurData: string | null;
+    dominantColor: string | null;
   } | null;
   content: Array<{
     children?: Array<{
