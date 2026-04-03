@@ -29,7 +29,8 @@ export const heroSectionType = defineType({
       group: CONTENT_GROUP,
     }),
     defineField({
-      name: 'image',
+      name: 'backgroundImage',
+      title: 'Background image',
       type: 'image',
       group: MEDIA_GROUP,
       options: {

@@ -11,7 +11,7 @@ export default defineCliConfig({
   typegen: {
     enabled: true,
     path: '../website/src/**/*.{ts,tsx,astro}',
-    generates: '../website/src/types/sanity.types.ts',
+    generates: '../website/src/sanity/sanity.types.ts',
   },
   deployment: {
     /**

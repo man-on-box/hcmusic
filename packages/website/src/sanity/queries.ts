@@ -3,32 +3,39 @@ import type {
   PAGE_QUERY_RESULT,
 } from "../types/sanity.types.ts";
 import { sanityClient } from "sanity:client";
-import {
-  createImageUrlBuilder,
-  type SanityImageSource,
-} from "@sanity/image-url";
 import { defineQuery } from "groq";
 
-const builder = createImageUrlBuilder(sanityClient);
-export function urlFor(source: SanityImageSource) {
-  return builder.image(source);
-}
-
 const imageFragment = /* groq */ `
-  image{
-    ...,
-    "blurData": asset->metadata.lqip,
-    "dominantColor": asset->metadata.palette.dominant.background,
+  asset->{
+    _id,
+    url,
+    metadata { lqip, dimensions { width, height } }
+  },
+  alt,
+  "dominantColor": asset->metadata.palette.dominant.background
+`;
+
+const heroFragment = /* groq */ `
+  _type == "heroSection" => {
+    heading,
+    subtitle,
+    backgroundImage { ${imageFragment} },
+  }
+`;
+
+const pageBuilderFragment = /* groq */ `
+  pageBuilder[] {
+    _key, _type,
+    ${heroFragment},
   }
 `;
 
 const HOMEPAGE_QUERY = defineQuery(`*[_id == "home"][0]{
   heading,
   subheading,
-  poster,
   about,
   features,
-  ${imageFragment}
+  image { ${imageFragment} },
 }`);
 
 export const homepageQuery = async () => {
@@ -44,8 +51,10 @@ export const homepageQuery = async () => {
 const PAGE_QUERY = defineQuery(`*[_type == "page"] {
   heading,
   subheading,
+  title,
   "slug": slug.current,
-  ${imageFragment},
+  ${pageBuilderFragment},
+  image { ${imageFragment} },
   content
 }`);
 

@@ -3,6 +3,7 @@ import {BlockContentIcon} from '@sanity/icons'
 
 const CONTENT_GROUP = 'content'
 const LAYOUT_GROUP = 'layout'
+const CTA_LAYOUT = 'cta'
 
 export const textSectionType = defineType({
   name: 'textSection',
@@ -12,6 +13,7 @@ export const textSectionType = defineType({
   groups: [
     {name: CONTENT_GROUP, title: 'Content', default: true},
     {name: LAYOUT_GROUP, title: 'Layout'},
+    {name: CTA_LAYOUT, title: 'CTA'},
   ],
   fields: [
     defineField({
@@ -45,6 +47,20 @@ export const textSectionType = defineType({
         ],
         layout: 'radio',
       },
+    }),
+    defineField({
+      name: 'cta',
+      title: 'CTA',
+      type: 'string',
+      group: CTA_LAYOUT,
+      description: 'Optional call to action, a button to show under the text',
+    }),
+    defineField({
+      name: 'linkToPage',
+      title: 'Link to page',
+      type: 'reference',
+      group: CTA_LAYOUT,
+      to: [{type: 'page'}],
     }),
   ],
 })
