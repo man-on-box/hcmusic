@@ -19,6 +19,7 @@ const heroBlockFragment = /* groq */ `
   _type == "heroBlock" => {
     heading,
     subtitle,
+    size,
     backgroundImage { ${imageFragment} },
   }
 `;
@@ -39,6 +40,7 @@ const pageBuilderFragment = /* groq */ `
 `;
 
 const HOMEPAGE_QUERY = defineQuery(`*[_id == "home"][0]{
+  ${pageBuilderFragment},
   heading,
   subheading,
   about,
@@ -57,13 +59,9 @@ export const homepageQuery = async () => {
 };
 
 const PAGE_QUERY = defineQuery(`*[_type == "page"] {
-  heading,
-  subheading,
   title,
   "slug": slug.current,
   ${pageBuilderFragment},
-  image { ${imageFragment} },
-  content
 }`);
 
 export const pageQuery = async () => {

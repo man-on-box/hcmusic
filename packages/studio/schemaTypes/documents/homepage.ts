@@ -1,66 +1,21 @@
 import {defineField, defineType, defineArrayMember} from 'sanity'
+import {HomeIcon} from '@sanity/icons'
 
 export const homepageType = defineType({
   name: 'homepage',
   title: 'Homepage',
   type: 'document',
+  icon: HomeIcon,
   fields: [
     defineField({
-      name: 'heading',
-      title: 'Heading',
+      name: 'title',
+      title: 'Page title',
       type: 'string',
-      description: 'Main heading in the hero image.',
     }),
     defineField({
-      name: 'subheading',
-      title: 'Subheading',
-      type: 'string',
-      description: 'Subheading in the hero image.',
-    }),
-    defineField({
-      name: 'image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-        }),
-      ],
-    }),
-    defineField({
-      name: 'about',
-      title: 'About section',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'heading',
-          title: 'Heading',
-          type: 'string',
-        }),
-        defineField({
-          name: 'blurb',
-          title: 'Blurb',
-          type: 'array',
-          description: 'Short blurb intro to yourself.',
-          of: [defineArrayMember({type: 'block', styles: [], lists: []})],
-        }),
-        defineField({
-          name: 'cta',
-          title: 'CTA',
-          type: 'string',
-          description: 'Call to action, used in the button under the blurb.',
-        }),
-        defineField({
-          name: 'linkToPage',
-          title: 'Link to page',
-          type: 'reference',
-          to: [{type: 'page'}],
-        }),
-      ],
+      name: 'pageBuilder',
+      title: 'Page Builder',
+      type: 'pageBuilder',
     }),
     defineField({
       name: 'features',
