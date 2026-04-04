@@ -1,6 +1,8 @@
 ---
-import HeroBlock from "./hero-block.astro";
 import type { PAGE_QUERY_RESULT } from "../sanity/sanity.types";
+
+import HeroBlock from "./hero-block.astro";
+import TextBlock from "./text-block.astro";
 
 type Blocks = NonNullable<PAGE_QUERY_RESULT[number]["pageBuilder"]>;
 
@@ -12,7 +14,7 @@ interface Props {
 
 const componentMap: Record<BlockTypeNames, any> = {
   heroBlock: HeroBlock,
-  textBlock: HeroBlock,
+  textBlock: TextBlock,
 };
 
 const { blocks } = Astro.props;
@@ -22,9 +24,6 @@ const { blocks } = Astro.props;
   {
     blocks.map((block) => {
       const Section = componentMap[block._type];
-
-      console.log("Block renderer...");
-      console.log(block);
 
       if (!Section) {
         return <p>Missing block for type: {block._type}</p>;

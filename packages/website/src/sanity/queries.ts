@@ -15,7 +15,7 @@ const imageFragment = /* groq */ `
   "dominantColor": asset->metadata.palette.dominant.background
 `;
 
-const heroFragment = /* groq */ `
+const heroBlockFragment = /* groq */ `
   _type == "heroBlock" => {
     heading,
     subtitle,
@@ -23,10 +23,17 @@ const heroFragment = /* groq */ `
   }
 `;
 
+const textBlockFragment = /* groq */ `
+  _type == "textBlock" => {
+    content,
+  }
+`;
+
 const pageBuilderFragment = /* groq */ `
   pageBuilder[] {
     _key, _type,
-    ${heroFragment},
+    ${heroBlockFragment},
+    ${textBlockFragment}
   }
 `;
 
