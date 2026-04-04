@@ -5,6 +5,7 @@ import { pageQuery } from "../sanity/queries";
 import { urlFor } from "../sanity/image";
 import MainLayout from "../layouts/main.astro";
 import Hero from "../components/hero.astro";
+import BlockRenderer from "../blocks/block-renderer.astro";
 import Prose from "../components/prose.astro";
 
 export async function getStaticPaths() {
@@ -33,4 +34,5 @@ const { page } = Astro.props;
       {page?.content && <PortableText value={page.content} />}
     </Prose>
   </section>
+  {page.pageBuilder && <BlockRenderer blocks={page.pageBuilder} />}
 </MainLayout>

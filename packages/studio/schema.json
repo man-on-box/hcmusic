@@ -30,7 +30,7 @@
     }
   },
   {
-    "name": "textSection",
+    "name": "textBlock",
     "type": "type",
     "value": {
       "type": "object",
@@ -39,7 +39,7 @@
           "type": "objectAttribute",
           "value": {
             "type": "string",
-            "value": "textSection"
+            "value": "textBlock"
           }
         },
         "content": {
@@ -251,7 +251,7 @@
             },
             "rest": {
               "type": "inline",
-              "name": "heroSection"
+              "name": "heroBlock"
             }
           },
           {
@@ -266,7 +266,7 @@
             },
             "rest": {
               "type": "inline",
-              "name": "textSection"
+              "name": "textBlock"
             }
           }
         ]
@@ -304,7 +304,7 @@
     }
   },
   {
-    "name": "heroSection",
+    "name": "heroBlock",
     "type": "type",
     "value": {
       "type": "object",
@@ -313,7 +313,7 @@
           "type": "objectAttribute",
           "value": {
             "type": "string",
-            "value": "heroSection"
+            "value": "heroBlock"
           }
         },
         "heading": {

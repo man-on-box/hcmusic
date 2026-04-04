@@ -1,7 +1,7 @@
 import type {
   HOMEPAGE_QUERY_RESULT,
   PAGE_QUERY_RESULT,
-} from "../types/sanity.types.ts";
+} from "./sanity.types.ts";
 import { sanityClient } from "sanity:client";
 import { defineQuery } from "groq";
 
@@ -16,7 +16,7 @@ const imageFragment = /* groq */ `
 `;
 
 const heroFragment = /* groq */ `
-  _type == "heroSection" => {
+  _type == "heroBlock" => {
     heading,
     subtitle,
     backgroundImage { ${imageFragment} },
@@ -44,7 +44,7 @@ export const homepageQuery = async () => {
   if (!result) {
     throw new Error("Could not fetch homepage data");
   }
-  console.log({ result });
+
   return result;
 };
 
@@ -63,6 +63,6 @@ export const pageQuery = async () => {
   if (!result) {
     throw new Error("Could not fetch page data");
   }
-  console.log({ result });
+
   return result;
 };

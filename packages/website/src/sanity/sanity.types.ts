@@ -22,8 +22,8 @@ export type PageReference = {
   [internalGroqTypeReferenceTo]?: "page";
 };
 
-export type TextSection = {
-  _type: "textSection";
+export type TextBlock = {
+  _type: "textBlock";
   content?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -49,9 +49,9 @@ export type TextSection = {
 
 export type PageBuilder = Array<{
   _key: string;
-} & HeroSection | {
+} & HeroBlock | {
   _key: string;
-} & TextSection>;
+} & TextBlock>;
 
 export type SanityImageAssetReference = {
   _ref: string;
@@ -60,8 +60,8 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
-export type HeroSection = {
-  _type: "heroSection";
+export type HeroBlock = {
+  _type: "heroBlock";
   heading?: string;
   subtitle?: string;
   backgroundImage?: {
@@ -284,7 +284,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = PageReference | TextSection | PageBuilder | SanityImageAssetReference | HeroSection | Homepage | Page | SanityImageCrop | SanityImageHotspot | Slug | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = PageReference | TextBlock | PageBuilder | SanityImageAssetReference | HeroBlock | Homepage | Page | SanityImageCrop | SanityImageHotspot | Slug | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: HOMEPAGE_QUERY
@@ -378,27 +378,10 @@ export type PAGE_QUERY_RESULT = Array<{
   slug: string | null;
   pageBuilder: Array<{
     _key: string;
-    _type: "heroSection";
-    heading: string | null;
-    subtitle: string | null;
-    backgroundImage: {
-      asset: {
-        _id: string;
-        url: string | null;
-        metadata: {
-          lqip: string | null;
-          dimensions: {
-            width: number | null;
-            height: number | null;
-          } | null;
-        } | null;
-      } | null;
-      alt: string | null;
-      dominantColor: string | null;
-    } | null;
+    _type: "heroBlock";
   } | {
     _key: string;
-    _type: "textSection";
+    _type: "textBlock";
   }> | null;
   image: {
     asset: {

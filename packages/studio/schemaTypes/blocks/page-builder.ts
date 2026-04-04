@@ -4,5 +4,5 @@ export const pageBuilderType = defineType({
   name: 'pageBuilder',
   title: 'Page Builder',
   type: 'array',
-  of: [defineArrayMember({type: 'heroSection'}), defineArrayMember({type: 'textSection'})],
+  of: [defineArrayMember({type: 'heroBlock'}), defineArrayMember({type: 'textBlock'})],
 })

@@ -1,5 +1,6 @@
-import {heroSectionType} from './hero-section'
-import {pageBuilderType} from './page-builder'
-import {textSectionType} from './text-section'
+import {heroBlockType} from './hero-block'
+import {textBlockType} from './text-block'
 
-export const blockTypes = [heroSectionType, pageBuilderType, textSectionType]
+import {pageBuilderType} from './page-builder'
+
+export const blockTypes = [heroBlockType, pageBuilderType, textBlockType]
