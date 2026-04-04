@@ -1,0 +1,26 @@
+---
+import { urlFor } from "../sanity/image";
+import Hero from "../components/hero.astro";
+import type { HeroBlock as HeroBlockProps } from "../sanity/sanity.types";
+
+interface Props {
+  blockData: HeroBlockProps;
+}
+
+const { blockData } = Astro.props;
+console.log("Hello hero block here");
+console.log(blockData);
+---
+
+<Hero
+  heading={blockData.heading ?? "Default heading"}
+  subheading={blockData.subtitle}
+  imgSrc={blockData.backgroundImage
+    ? urlFor(blockData.backgroundImage)
+        .width(1200)
+        .height(300)
+        .format("webp")
+        .url()
+    : ""}
+  imgAlt={blockData.backgroundImage?.alt || ""}
+/>
