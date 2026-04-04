@@ -20,7 +20,7 @@ const componentMap: Record<BlockTypeNames, any> = {
 const { blocks } = Astro.props;
 ---
 
-<div>
+<>
   {
     blocks.map((block) => {
       const Section = componentMap[block._type];
@@ -32,4 +32,4 @@ const { blocks } = Astro.props;
       return <Section blockData={block} />;
     })
   }
-</div>
+</>
