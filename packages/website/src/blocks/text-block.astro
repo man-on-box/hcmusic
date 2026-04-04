@@ -2,16 +2,22 @@
 import { PortableText } from "astro-portabletext";
 import { cn } from "../utils";
 
+import LinkButton from "../components/link-button.astro";
 import Prose from "../components/prose.astro";
-import type { TextBlock } from "../sanity/sanity.types";
+import type { TextBlockData } from "../types/sanity";
 
 interface Props {
-  blockData: TextBlock;
+  blockData: TextBlockData;
 }
 
 const { blockData } = Astro.props;
 
-const textAlignClassMap: Record<NonNullable<TextBlock["textAlign"]>, string> = {
+console.log({ blockData });
+
+const textAlignClassMap: Record<
+  NonNullable<TextBlockData["textAlign"]>,
+  string
+> = {
   left: "prose-p:text-left prose-h2:text-left prose-h3:text-left",
   center: "prose-p:text-center prose-h2:text-center prose-h3:text-center",
   justify: "prose-p:text-justify prose-h2:text-center prose-h3:text-center",
@@ -22,6 +28,11 @@ const textAlign = textAlignClassMap[blockData.textAlign || "left"];
 
 <section class="flex flex-col items-center py-16">
   <Prose class={cn("w-full", textAlign)}>
-    {blockData?.content && <PortableText value={blockData.content} />}
+    {blockData.content && <PortableText value={blockData.content} />}
   </Prose>
+  {
+    blockData.cta && blockData.ctaPath && (
+      <LinkButton href={blockData.ctaPath}>{blockData.cta}</LinkButton>
+    )
+  }
 </section>

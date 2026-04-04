@@ -27,6 +27,8 @@ const heroBlockFragment = /* groq */ `
 const textBlockFragment = /* groq */ `
   _type == "textBlock" => {
     content,
+    cta,
+    "ctaPath": "/" + linkToPage->slug.current,
     textAlign
   }
 `;
@@ -41,11 +43,7 @@ const pageBuilderFragment = /* groq */ `
 
 const HOMEPAGE_QUERY = defineQuery(`*[_id == "home"][0]{
   ${pageBuilderFragment},
-  heading,
-  subheading,
-  about,
   features,
-  image { ${imageFragment} },
 }`);
 
 export const homepageQuery = async () => {

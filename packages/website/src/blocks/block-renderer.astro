@@ -1,11 +1,9 @@
 ---
-import type { PAGE_QUERY_RESULT } from "../sanity/sanity.types";
-
 import HeroBlock from "./hero-block.astro";
 import TextBlock from "./text-block.astro";
 
-type Blocks = NonNullable<PAGE_QUERY_RESULT[number]["pageBuilder"]>;
-
+import type { PageData } from "../types/sanity";
+type Blocks = NonNullable<PageData["pageBuilder"]>;
 type BlockTypeNames = Blocks[number]["_type"];
 
 interface Props {
