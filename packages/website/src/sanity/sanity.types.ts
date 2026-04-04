@@ -132,36 +132,8 @@ export type Page = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  heading?: string;
-  subheading?: string;
   title?: string;
   slug?: Slug;
-  image?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal";
-    listItem?: never;
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
   pageBuilder?: PageBuilder;
 };
 
@@ -298,26 +270,6 @@ export type HOMEPAGE_QUERY_RESULT = {
 } | {
   heading: string | null;
   subheading: string | null;
-  about: null;
-  features: null;
-  image: {
-    asset: {
-      _id: string;
-      url: string | null;
-      metadata: {
-        lqip: string | null;
-        dimensions: {
-          width: number | null;
-          height: number | null;
-        } | null;
-      } | null;
-    } | null;
-    alt: string | null;
-    dominantColor: string | null;
-  } | null;
-} | {
-  heading: string | null;
-  subheading: string | null;
   about: {
     heading?: string;
     blurb?: Array<{
@@ -370,51 +322,55 @@ export type HOMEPAGE_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page"] {  heading,  subheading,  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroSection" => {    heading,    subtitle,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },  },  image {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  content}
+// Query: *[_type == "page"] {  heading,  subheading,  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,  }  },  image {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  content}
 export type PAGE_QUERY_RESULT = Array<{
-  heading: string | null;
-  subheading: string | null;
+  heading: null;
+  subheading: null;
   title: string | null;
   slug: string | null;
   pageBuilder: Array<{
     _key: string;
     _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
   } | {
     _key: string;
     _type: "textBlock";
-  }> | null;
-  image: {
-    asset: {
-      _id: string;
-      url: string | null;
-      metadata: {
-        lqip: string | null;
-        dimensions: {
-          width: number | null;
-          height: number | null;
-        } | null;
-      } | null;
-    } | null;
-    alt: string | null;
-    dominantColor: string | null;
-  } | null;
-  content: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: never;
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
       _key: string;
-    }>;
-    style?: "normal";
-    listItem?: never;
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
+    }> | null;
   }> | null;
+  image: null;
+  content: null;
 }>;
 

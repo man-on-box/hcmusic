@@ -26,6 +26,7 @@ const heroBlockFragment = /* groq */ `
 const textBlockFragment = /* groq */ `
   _type == "textBlock" => {
     content,
+    textAlign
   }
 `;
 
