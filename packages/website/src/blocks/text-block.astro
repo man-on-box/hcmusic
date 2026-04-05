@@ -12,8 +12,6 @@ interface Props {
 
 const { blockData } = Astro.props;
 
-console.log({ blockData });
-
 const textAlignClassMap: Record<
   NonNullable<TextBlockData["textAlign"]>,
   string
@@ -32,7 +30,9 @@ const textAlign = textAlignClassMap[blockData.textAlign || "left"];
   </Prose>
   {
     blockData.cta && blockData.ctaPath && (
-      <LinkButton href={blockData.ctaPath}>{blockData.cta}</LinkButton>
+      <LinkButton class="mt-12" href={blockData.ctaPath}>
+        {blockData.cta}
+      </LinkButton>
     )
   }
 </section>

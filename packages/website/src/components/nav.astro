@@ -1,0 +1,123 @@
+---
+const navItems = [
+  { href: "/", label: "Tuition" },
+  { href: "/", label: "Projects" },
+  { href: "/", label: "Events" },
+  { href: "/", label: "Blog" },
+  { href: "/", label: "Contact" },
+];
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-dashed border-gray-200 bg-white/95 backdrop-blur-sm"
+>
+  <nav
+    class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8"
+  >
+    <a class="flex items-center gap-2" href="/"
+      ><span
+        class="text-foreground font-[family-name:var(--font-display)] text-2xl tracking-wide uppercase"
+        >Helen Curtis</span
+      ></a
+    >
+    <div class="hidden md:flex md:gap-x-8">
+      {
+        navItems.map(({ href, label }) => (
+          <a
+            class="text-sm font-light tracking-wide text-gray-700 transition-colors hover:text-black"
+            href={href}
+          >
+            {label}
+          </a>
+        ))
+      }
+    </div>
+    <button
+      id="nav-toggle"
+      type="button"
+      class="-m-2 p-2 md:hidden"
+      aria-label="Open menu"
+      ><svg
+        id="menu-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="size-5"
+        aria-hidden="true"
+        ><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"
+        ></path></svg
+      >
+      <svg
+        id="close-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="hidden size-5"
+        aria-hidden="true"
+        ><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg
+      >
+    </button>
+  </nav>
+  <div
+    id="mobile-menu"
+    class="hidden border-t border-dashed border-gray-200 bg-white md:hidden"
+  >
+    <div class="flex flex-col gap-4 px-6 py-4">
+      {
+        navItems.map(({ href, label }) => (
+          <a
+            class="text-sm font-light tracking-wide text-gray-700 transition-colors hover:text-black"
+            href={href}
+          >
+            {label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</header>
+
+<script>
+  const navToggle = document.getElementById("nav-toggle")!;
+  const menuIcon = document.getElementById("menu-icon")!;
+  const closeIcon = document.getElementById("close-icon")!;
+  const mobileMenu = document.getElementById("mobile-menu")!;
+
+  let state: "open" | "closed" = "closed";
+
+  const openMenu = () => {
+    menuIcon.classList.add("hidden");
+    closeIcon.classList.remove("hidden");
+    mobileMenu.classList.remove("hidden");
+    navToggle.ariaLabel = "Close menu";
+    state = "open";
+  };
+
+  const closeMenu = () => {
+    menuIcon.classList.remove("hidden");
+    closeIcon.classList.add("hidden");
+    mobileMenu.classList.add("hidden");
+    navToggle.ariaLabel = "Open menu";
+    state = "closed";
+  };
+
+  navToggle.addEventListener("click", () => {
+    if (state === "closed") {
+      openMenu();
+      return;
+    }
+    closeMenu();
+  });
+</script>

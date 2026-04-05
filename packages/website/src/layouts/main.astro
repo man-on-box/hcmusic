@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+
+import Nav from "../components/nav.astro";
 ---
 
 <html lang="en">
@@ -8,13 +10,9 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Helen Curtis Music</title>
   </head>
-  <body class="bg-gray-50">
-    <nav>
-      <a href="/">Home</a>
-      <a href="#">Posts</a>
-      <a href="#">Contact</a>
-    </nav>
-    <main>
+  <body>
+    <Nav />
+    <main class="min-h-screen">
       <slot />
     </main>
   </body>
