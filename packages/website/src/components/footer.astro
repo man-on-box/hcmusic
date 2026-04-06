@@ -1,0 +1,37 @@
+---
+interface Props {
+  siteName: string;
+  siteTagline: string;
+  navItems: Array<{ label: string; href: string }>;
+}
+
+const { siteName, siteTagline, navItems = [] } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+
+<footer
+  class="border-t border-dashed border-gray-500 bg-white px-6 py-12 lg:px-8"
+>
+  <div
+    class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row"
+  >
+    <div class="text-center md:text-left">
+      <span class="text-foreground font-serif text-lg tracking-wide"
+        >{siteName}</span
+      ><p class="mt-2 text-xs text-gray-500">
+        {siteTagline}
+      </p>
+    </div><nav class="flex flex-wrap justify-center gap-6">
+      {
+        navItems.map(({ label, href }) => (
+          <a
+            class="text-xs tracking-wide text-gray-500 transition-colors hover:text-black"
+            href={href}
+          >
+            {label}
+          </a>
+        ))
+      }
+    </nav><p class="text-xs text-gray-500">© {currentYear}</p>
+  </div>
+</footer>

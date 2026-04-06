@@ -446,6 +446,13 @@
         },
         "optional": true
       },
+      "siteTagline": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "mainNav": {
         "type": "objectAttribute",
         "value": {

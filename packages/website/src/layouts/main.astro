@@ -4,8 +4,9 @@ import "../styles/global.css";
 import { siteSettingsQuery } from "../sanity/queries";
 
 import Nav from "../components/nav.astro";
+import Footer from "../components/footer.astro";
 
-const { siteName, mainNav } = await siteSettingsQuery();
+const { siteName, siteTagline, mainNav } = await siteSettingsQuery();
 ---
 
 <html lang="en">
@@ -19,5 +20,10 @@ const { siteName, mainNav } = await siteSettingsQuery();
     <main class="min-h-screen">
       <slot />
     </main>
+    <Footer
+      siteName={siteName}
+      siteTagline={siteTagline || ""}
+      navItems={mainNav}
+    />
   </body>
 </html>

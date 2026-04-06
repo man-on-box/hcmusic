@@ -45,6 +45,7 @@ const pageBuilderFragment = /* groq */ `
 const SITE_SETTINGS_QUERY =
   defineQuery(`*[_id == "siteSettings" && defined(siteName)][0]{
   siteName,
+  siteTagline,
   "mainNav": coalesce(mainNav[defined(label) && defined(href->slug.current)] {
     "label": coalesce(label, ""),
     "href": coalesce(("/" + href->slug.current), "")

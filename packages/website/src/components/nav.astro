@@ -7,14 +7,13 @@ const { navItems = [] } = Astro.props;
 ---
 
 <header
-  class="sticky top-0 z-50 border-b border-dashed border-gray-200 bg-white/95 backdrop-blur-sm"
+  class="sticky top-0 z-50 border-b border-dashed border-gray-500 bg-white/95 backdrop-blur-sm"
 >
   <nav
     class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8"
   >
     <a class="flex items-center gap-2" href="/"
-      ><span
-        class="text-foreground font-[family-name:var(--font-display)] text-2xl tracking-wide uppercase"
+      ><span class="text-foreground font-serif text-2xl tracking-wide uppercase"
         >Helen Curtis</span
       ></a
     >
@@ -22,7 +21,7 @@ const { navItems = [] } = Astro.props;
       {
         navItems.map(({ href, label }) => (
           <a
-            class="text-sm font-light tracking-wide text-gray-700 transition-colors hover:text-black"
+            class="text-sm tracking-wide text-gray-500 transition-colors hover:text-black"
             href={href}
           >
             {label}
@@ -70,7 +69,7 @@ const { navItems = [] } = Astro.props;
   </nav>
   <div
     id="mobile-menu"
-    class="hidden border-t border-dashed border-gray-200 bg-white md:hidden"
+    class="hidden border-t border-dashed border-gray-500 bg-white md:hidden"
   >
     <div class="flex flex-col gap-4 px-6 py-4">
       {

@@ -20,6 +20,13 @@ export const siteSettingsType = defineType({
       group: BRANDING_GROUP,
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'siteTagline',
+      title: 'Site tagline',
+      type: 'string',
+      group: BRANDING_GROUP,
+      validation: (rule) => rule.required(),
+    }),
 
     defineField({
       name: 'mainNav',

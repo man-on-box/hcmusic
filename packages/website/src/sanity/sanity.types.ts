@@ -82,6 +82,7 @@ export type SiteSettings = {
   _updatedAt: string;
   _rev: string;
   siteName?: string;
+  siteTagline?: string;
   mainNav?: Array<{
     label?: string;
     href?: PageReference;
@@ -244,9 +245,10 @@ export type AllSanitySchemaTypes = PageReference | TextBlock | PageBuilder | San
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_id == "siteSettings" && defined(siteName)][0]{  siteName,  "mainNav": coalesce(mainNav[defined(label) && defined(href->slug.current)] {    "label": coalesce(label, ""),    "href": coalesce(("/" + href->slug.current), "")  }, [])}
+// Query: *[_id == "siteSettings" && defined(siteName)][0]{  siteName,  siteTagline,  "mainNav": coalesce(mainNav[defined(label) && defined(href->slug.current)] {    "label": coalesce(label, ""),    "href": coalesce(("/" + href->slug.current), "")  }, [])}
 export type SITE_SETTINGS_QUERY_RESULT = {
   siteName: string;
+  siteTagline: string | null;
   mainNav: Array<{
     label: string | "";
     href: string | "";
