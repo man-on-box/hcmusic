@@ -1,11 +1,9 @@
 ---
-const navItems = [
-  { href: "/", label: "Tuition" },
-  { href: "/", label: "Projects" },
-  { href: "/", label: "Events" },
-  { href: "/", label: "Blog" },
-  { href: "/", label: "Contact" },
-];
+interface Props {
+  navItems: Array<{ label: string; href: string }>;
+}
+
+const { navItems = [] } = Astro.props;
 ---
 
 <header

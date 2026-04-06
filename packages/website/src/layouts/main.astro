@@ -1,17 +1,21 @@
 ---
 import "../styles/global.css";
 
+import { siteSettingsQuery } from "../sanity/queries";
+
 import Nav from "../components/nav.astro";
+
+const { siteName, mainNav } = await siteSettingsQuery();
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Helen Curtis Music</title>
+    <title>{siteName}</title>
   </head>
   <body>
-    <Nav />
+    <Nav navItems={mainNav} />
     <main class="min-h-screen">
       <slot />
     </main>
