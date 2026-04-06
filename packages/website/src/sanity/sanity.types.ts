@@ -75,6 +75,21 @@ export type HeroBlock = {
   size?: "small" | "large";
 };
 
+export type SiteSettings = {
+  _id: string;
+  _type: "siteSettings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  siteName?: string;
+  mainNav?: Array<{
+    label?: string;
+    href?: PageReference;
+    _type: "navLink";
+    _key: string;
+  }>;
+};
+
 export type Homepage = {
   _id: string;
   _type: "homepage";
@@ -225,11 +240,11 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = PageReference | TextBlock | PageBuilder | SanityImageAssetReference | HeroBlock | Homepage | Page | Slug | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = PageReference | TextBlock | PageBuilder | SanityImageAssetReference | HeroBlock | SiteSettings | Homepage | Page | Slug | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: HOMEPAGE_QUERY
-// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": linkToPage -> slug.current,    textAlign  }  },  features,}
+// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": "/" + linkToPage->slug.current,    textAlign  }  },  features,}
 export type HOMEPAGE_QUERY_RESULT = {
   pageBuilder: null;
   features: null;
@@ -342,7 +357,7 @@ export type HOMEPAGE_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page"] {  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": linkToPage -> slug.current,    textAlign  }  },}
+// Query: *[_type == "page"] {  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": "/" + linkToPage->slug.current,    textAlign  }  },}
 export type PAGE_QUERY_RESULT = Array<{
   title: string | null;
   slug: string | null;
