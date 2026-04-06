@@ -24,7 +24,7 @@ const textAlignClassMap: Record<
 const textAlign = textAlignClassMap[blockData.textAlign || "left"];
 ---
 
-<section class="flex flex-col items-center py-16">
+<section class="flex flex-col items-center py-25">
   <Prose class={cn("w-full", textAlign)}>
     {blockData.content && <PortableText value={blockData.content} />}
   </Prose>
