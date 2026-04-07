@@ -22,11 +22,34 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
+export type CardImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown // Unable to locate the referenced type "cardImage.media" in schema
+;
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  _type: "image";
+};
+
 export type PageReference = {
   _ref: string;
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "page";
+};
+
+export type FeatureCardsBlock = {
+  _type: "featureCardsBlock";
+  heading?: string;
+  cards?: Array<{
+    title?: string;
+    description?: string;
+    cardImage?: CardImage;
+    linkToPage?: PageReference;
+    _type: "card";
+    _key: string;
+  }>;
 };
 
 export type TextBlock = {
@@ -39,7 +62,7 @@ export type TextBlock = {
       _key: string;
     }>;
     style?: "normal" | "h2" | "h3";
-    listItem?: never;
+    listItem?: "bullet" | "number";
     markDefs?: Array<{
       href?: string;
       _type: "link";
@@ -60,6 +83,7 @@ export type TextBlock = {
   imageAlign?: "left" | "right";
   textAlign?: "left" | "center" | "justify";
   leadInText?: boolean;
+  sectionId?: string;
   cta?: string;
   linkToPage?: PageReference;
 };
@@ -68,7 +92,9 @@ export type PageBuilder = Array<{
   _key: string;
 } & HeroBlock | {
   _key: string;
-} & TextBlock>;
+} & TextBlock | {
+  _key: string;
+} & FeatureCardsBlock>;
 
 export type HeroBlock = {
   _type: "heroBlock";
@@ -109,16 +135,6 @@ export type Homepage = {
   _rev: string;
   title?: string;
   pageBuilder?: PageBuilder;
-  features?: {
-    heading?: string;
-    cards?: Array<{
-      title?: string;
-      description?: string;
-      linkToPage?: PageReference;
-      _type: "card";
-      _key: string;
-    }>;
-  };
 };
 
 export type Page = {
@@ -251,7 +267,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | PageReference | TextBlock | PageBuilder | HeroBlock | SiteSettings | Homepage | Page | Slug | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | PageReference | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | SiteSettings | Homepage | Page | Slug | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
@@ -267,13 +283,40 @@ export type SITE_SETTINGS_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: HOMEPAGE_QUERY
-// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": "/" + linkToPage->slug.current,    textAlign,    leadInText,    featureImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign  }  },  features,}
+// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": "/" + linkToPage->slug.current,    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "href": "/" + linkToPage->slug.current    },  }  },  features,}
 export type HOMEPAGE_QUERY_RESULT = {
   pageBuilder: null;
   features: null;
 } | {
   pageBuilder: Array<{
     _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        alt: string | null;
+        dominantColor: string | null;
+      } | null;
+      href: string | null;
+    }> | null;
+  } | {
+    _key: string;
     _type: "heroBlock";
     heading: string | null;
     subtitle: string | null;
@@ -281,6 +324,7 @@ export type HOMEPAGE_QUERY_RESULT = {
     backgroundImage: {
       asset: {
         _id: string;
+        _type: "sanity.imageAsset";
         url: string | null;
         metadata: {
           lqip: string | null;
@@ -290,6 +334,8 @@ export type HOMEPAGE_QUERY_RESULT = {
           } | null;
         } | null;
       } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
       alt: string | null;
       dominantColor: string | null;
     } | null;
@@ -304,7 +350,7 @@ export type HOMEPAGE_QUERY_RESULT = {
         _key: string;
       }>;
       style?: "h2" | "h3" | "normal";
-      listItem?: never;
+      listItem?: "bullet" | "number";
       markDefs?: Array<{
         href?: string;
         _type: "link";
@@ -321,6 +367,7 @@ export type HOMEPAGE_QUERY_RESULT = {
     featureImage: {
       asset: {
         _id: string;
+        _type: "sanity.imageAsset";
         url: string | null;
         metadata: {
           lqip: string | null;
@@ -330,96 +377,52 @@ export type HOMEPAGE_QUERY_RESULT = {
           } | null;
         } | null;
       } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
       alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;
+    sectionId: string | null;
   }> | null;
   features: null;
-} | {
-  pageBuilder: Array<{
-    _key: string;
-    _type: "heroBlock";
-    heading: string | null;
-    subtitle: string | null;
-    size: "large" | "small" | null;
-    backgroundImage: {
-      asset: {
-        _id: string;
-        url: string | null;
-        metadata: {
-          lqip: string | null;
-          dimensions: {
-            width: number | null;
-            height: number | null;
-          } | null;
-        } | null;
-      } | null;
-      alt: string | null;
-      dominantColor: string | null;
-    } | null;
-  } | {
-    _key: string;
-    _type: "textBlock";
-    content: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "h2" | "h3" | "normal";
-      listItem?: never;
-      markDefs?: Array<{
-        href?: string;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }> | null;
-    cta: string | null;
-    ctaPath: string | null;
-    textAlign: "center" | "justify" | "left" | null;
-    leadInText: boolean | null;
-    featureImage: {
-      asset: {
-        _id: string;
-        url: string | null;
-        metadata: {
-          lqip: string | null;
-          dimensions: {
-            width: number | null;
-            height: number | null;
-          } | null;
-        } | null;
-      } | null;
-      alt: string | null;
-      dominantColor: string | null;
-    } | null;
-    imageAlign: "left" | "right" | null;
-  }> | null;
-  features: {
-    heading?: string;
-    cards?: Array<{
-      title?: string;
-      description?: string;
-      linkToPage?: PageReference;
-      _type: "card";
-      _key: string;
-    }>;
-  } | null;
 } | null;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && defined(slug.current)] {  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": "/" + linkToPage->slug.current,    textAlign,    leadInText,    featureImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign  }  },}
+// Query: *[_type == "page" && defined(slug.current)] {  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": "/" + linkToPage->slug.current,    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "href": "/" + linkToPage->slug.current    },  }  },}
 export type PAGE_QUERY_RESULT = Array<{
   title: string | null;
   slug: string | null;
   pageBuilder: Array<{
     _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        alt: string | null;
+        dominantColor: string | null;
+      } | null;
+      href: string | null;
+    }> | null;
+  } | {
+    _key: string;
     _type: "heroBlock";
     heading: string | null;
     subtitle: string | null;
@@ -427,6 +430,7 @@ export type PAGE_QUERY_RESULT = Array<{
     backgroundImage: {
       asset: {
         _id: string;
+        _type: "sanity.imageAsset";
         url: string | null;
         metadata: {
           lqip: string | null;
@@ -436,6 +440,8 @@ export type PAGE_QUERY_RESULT = Array<{
           } | null;
         } | null;
       } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
       alt: string | null;
       dominantColor: string | null;
     } | null;
@@ -450,7 +456,7 @@ export type PAGE_QUERY_RESULT = Array<{
         _key: string;
       }>;
       style?: "h2" | "h3" | "normal";
-      listItem?: never;
+      listItem?: "bullet" | "number";
       markDefs?: Array<{
         href?: string;
         _type: "link";
@@ -467,6 +473,7 @@ export type PAGE_QUERY_RESULT = Array<{
     featureImage: {
       asset: {
         _id: string;
+        _type: "sanity.imageAsset";
         url: string | null;
         metadata: {
           lqip: string | null;
@@ -476,10 +483,13 @@ export type PAGE_QUERY_RESULT = Array<{
           } | null;
         } | null;
       } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
       alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;
+    sectionId: string | null;
   }> | null;
 }>;
 

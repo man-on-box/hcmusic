@@ -1,8 +1,8 @@
 import {defineType, defineField, defineArrayMember} from 'sanity'
 import {BlockContentIcon} from '@sanity/icons'
 
-const CONTENT_GROUP = 'content'
-const LAYOUT_GROUP = 'layout'
+const CONTENT_GROUP = 'options'
+const OPTIONS_GROUP = 'layout'
 const CTA_LAYOUT_GROUP = 'cta'
 const FEATURE_IMAGE_GROUP = 'featureImage'
 
@@ -13,7 +13,7 @@ export const textBlockType = defineType({
   icon: BlockContentIcon,
   groups: [
     {name: CONTENT_GROUP, title: 'Content', default: true},
-    {name: LAYOUT_GROUP, title: 'Layout'},
+    {name: OPTIONS_GROUP, title: 'Options'},
     {name: FEATURE_IMAGE_GROUP, title: 'Feature Image'},
     {name: CTA_LAYOUT_GROUP, title: 'CTA'},
   ],
@@ -39,7 +39,10 @@ export const textBlockType = defineType({
             {title: 'Heading 2', value: 'h2'},
             {title: 'Heading 3', value: 'h3'},
           ],
-          lists: [],
+          lists: [
+            {title: 'Bullet', value: 'bullet'},
+            {title: 'Numbered', value: 'number'},
+          ],
         }),
       ],
     }),
@@ -78,7 +81,7 @@ export const textBlockType = defineType({
       name: 'textAlign',
       title: 'Align Text',
       type: 'string',
-      group: LAYOUT_GROUP,
+      group: OPTIONS_GROUP,
       initialValue: 'left',
       options: {
         list: [
@@ -93,9 +96,16 @@ export const textBlockType = defineType({
       name: 'leadInText',
       title: 'Lead-in Text',
       type: 'boolean',
-      group: LAYOUT_GROUP,
+      group: OPTIONS_GROUP,
       initialValue: false,
       description: 'Styles first line of text with lead-in styles.',
+    }),
+    defineField({
+      name: 'sectionId',
+      title: 'Section id',
+      type: 'string',
+      group: OPTIONS_GROUP,
+      description: 'Set a section ID to be able to target this section from another page.',
     }),
     defineField({
       name: 'cta',

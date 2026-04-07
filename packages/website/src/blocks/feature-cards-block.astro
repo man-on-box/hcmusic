@@ -1,0 +1,62 @@
+---
+import { Image } from "astro:assets";
+
+import { urlFor } from "../sanity/image";
+import Prose from "../components/prose.astro";
+import type { FeatureCardsBlockData } from "../types/sanity";
+
+interface Props {
+  blockData: FeatureCardsBlockData;
+}
+
+const { blockData } = Astro.props;
+const { heading, cards } = blockData;
+
+const imageSize = 500;
+---
+
+<section class="bg-gray-800 py-18 md:py-22">
+  <div class="mx-auto max-w-7xl">
+    <Prose class="prose-invert mx-auto text-center">
+      <h2>{heading}</h2>
+    </Prose>
+    <div
+      class="mx-auto mt-16 grid max-w-6xl gap-8 px-4 md:auto-cols-auto md:grid-flow-col lg:gap-10 xl:px-0"
+    >
+      {
+        cards?.map((card) => {
+          return (
+            <a
+              href={card.href}
+              class="group flex flex-col rounded border-4 border-white bg-white transition-colors hover:border-slate-700"
+            >
+              {card.cardImage && (
+                <Image
+                  src={urlFor(card.cardImage)
+                    .width(imageSize * 1.5)
+                    .height((imageSize / 2) * 1.5)
+                    .format("webp")
+                    .url()}
+                  width={imageSize}
+                  height={imageSize / 2}
+                  alt={card.cardImage.alt || ""}
+                  layout="full-width"
+                  class="h-48 w-full shrink-0 rounded-t object-cover"
+                />
+              )}
+              <div class="flex h-full flex-col justify-between gap-5 p-5">
+                <Prose>
+                  <h3>{card.title}</h3>
+                  <p class="text-slate-500">{card.description}</p>
+                </Prose>
+                <span class="font-serif text-lg tracking-wide text-slate-800 group-hover:underline">
+                  Learn more
+                </span>
+              </div>
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

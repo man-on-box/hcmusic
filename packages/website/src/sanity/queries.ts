@@ -36,7 +36,20 @@ const textBlockFragment = /* groq */ `
     textAlign,
     leadInText,
     featureImage { ${imageFragment} },
-    imageAlign
+    imageAlign,
+    sectionId
+  }
+`;
+
+const featureCardsBlockFragment = /* groq */ `
+  _type == "featureCardsBlock" => {
+    heading,
+    cards[] {
+      title,
+      description,
+      cardImage { ${imageFragment} },
+      "href": "/" + linkToPage->slug.current
+    },
   }
 `;
 
@@ -44,7 +57,8 @@ const pageBuilderFragment = /* groq */ `
   pageBuilder[] {
     _key, _type,
     ${heroBlockFragment},
-    ${textBlockFragment}
+    ${textBlockFragment},
+    ${featureCardsBlockFragment}
   }
 `;
 
@@ -70,7 +84,6 @@ export const siteSettingsQuery = async () => {
 
 const HOMEPAGE_QUERY = defineQuery(`*[_id == "home"][0]{
   ${pageBuilderFragment},
-  features,
 }`);
 
 export const homepageQuery = async () => {
@@ -80,6 +93,7 @@ export const homepageQuery = async () => {
     throw new Error("Could not fetch homepage data");
   }
 
+  console.log(result.pageBuilder?.[2]);
   return result;
 };
 

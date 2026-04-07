@@ -11,7 +11,7 @@ const { href, class: className } = Astro.props;
 
 <a
   class={cn(
-    "font-semibold rounded bg-slate-700 hover:bg-slate-800 transition-colors px-5 py-2 text-white",
+    "font-semibold rounded border border-slate-700 text-slate-700 hover:bg-slate-800 transition-colors px-5 py-2 hover:text-white",
     className,
   )}
   href={href}><slot /></a

@@ -1,6 +1,7 @@
 ---
 import HeroBlock from "./hero-block.astro";
 import TextBlock from "./text-block.astro";
+import FeatureCardsBlock from "./feature-cards-block.astro";
 
 import type { PageData } from "../types/sanity";
 type Blocks = NonNullable<PageData["pageBuilder"]>;
@@ -13,6 +14,7 @@ interface Props {
 const componentMap: Record<BlockTypeNames, any> = {
   heroBlock: HeroBlock,
   textBlock: TextBlock,
+  featureCardsBlock: FeatureCardsBlock,
 };
 
 const { blocks } = Astro.props;
