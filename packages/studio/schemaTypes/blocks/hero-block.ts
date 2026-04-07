@@ -41,7 +41,7 @@ export const heroBlockType = defineType({
           name: 'alt',
           title: 'Alt text',
           type: 'string',
-          description: 'Visual description of the image',
+          description: 'Visual description of the image.',
         }),
       ],
     }),

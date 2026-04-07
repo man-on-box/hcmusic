@@ -1,16 +1,27 @@
 ---
+import { Image } from "astro:assets";
 import { PortableText } from "astro-portabletext";
 import { cn } from "../utils";
 
 import LinkButton from "../components/link-button.astro";
 import Prose from "../components/prose.astro";
 import type { TextBlockData } from "../types/sanity";
+import { urlFor } from "../sanity/image";
 
 interface Props {
   blockData: TextBlockData;
 }
 
 const { blockData } = Astro.props;
+const {
+  content,
+  cta,
+  ctaPath,
+  leadInText,
+  textAlign,
+  featureImage,
+  imageAlign,
+} = blockData;
 
 const textAlignClassMap: Record<
   NonNullable<TextBlockData["textAlign"]>,
@@ -21,17 +32,47 @@ const textAlignClassMap: Record<
   justify: "prose-p:text-justify prose-h2:text-center prose-h3:text-center",
 };
 
-const textAlign = textAlignClassMap[blockData.textAlign || "left"];
+const leadInStyles =
+  "first-letter:text-8xl first-letter:float-left first-letter:mr-2 first-line:font-serif first-line:tracking-wider first-line:text-2xl first-line:text-slate-800";
+
+const textAlignStyles = textAlignClassMap[textAlign || "left"];
+
+const imageSize = 500;
 ---
 
-<section class="flex flex-col items-center py-25">
-  <Prose class={cn("w-full", textAlign)}>
-    {blockData.content && <PortableText value={blockData.content} />}
-  </Prose>
+<section
+  class="mx-auto flex max-w-6xl flex-col items-center px-6 py-18 md:px-12 md:py-22"
+>
+  <div
+    class={cn(
+      "flex flex-col gap-8 md:flex-row md:gap-12 items-start",
+      imageAlign === "right" && "md:flex-row-reverse",
+    )}
+  >
+    {
+      featureImage && (
+        <Image
+          src={urlFor(featureImage)
+            .width(imageSize * 1.5)
+            .height(imageSize * 1.5)
+            .format("webp")
+            .url()}
+          width={imageSize}
+          height={imageSize}
+          alt={featureImage.alt || ""}
+          layout="constrained"
+          class="h-full w-full rounded object-contain"
+        />
+      )
+    }
+    <Prose class={cn("w-full", textAlignStyles, leadInText && leadInStyles)}>
+      {content && <PortableText value={content} />}
+    </Prose>
+  </div>
   {
-    blockData.cta && blockData.ctaPath && (
-      <LinkButton class="mt-12" href={blockData.ctaPath}>
-        {blockData.cta}
+    cta && ctaPath && (
+      <LinkButton class="mt-12" href={ctaPath}>
+        {cta}
       </LinkButton>
     )
   }

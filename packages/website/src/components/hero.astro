@@ -15,13 +15,13 @@ const { heading, subheading, imgSrc, imgAlt, variant = "small" } = Astro.props;
 const variants = {
   small: {
     imgHeight: 500,
-    container: "h-[40vh] min-h-[300px]",
+    container: "h-[30vh] min-h-[300px]",
     textBox: "px-8 py-6 md:px-12 md:py-6",
     heading: "text-3xl md:text-4xl lg:text-5xl",
   },
   large: {
     imgHeight: 900,
-    container: "h-[70vh] min-h-[500px]",
+    container: "h-[50vh] min-h-[500px]",
     textBox: "px-10 py-8 md:px-16 md:py-12",
     heading: "text-5xl md:text-6xl lg:text-7xl",
   },
@@ -30,7 +30,7 @@ const variants = {
 const style = variants[variant];
 ---
 
-<section class={cn("relative w-full bg-gray-900", style.container)}>
+<section class={cn("relative w-full bg-slate-900", style.container)}>
   {
     imgSrc && (
       <Image
@@ -45,11 +45,11 @@ const style = variants[variant];
     )
   }
   <div
-    class="absolute inset-0 flex items-center justify-start px-6 md:px-12 lg:px-24"
+    class="absolute inset-0 mx-auto flex max-w-7xl items-center justify-start"
   >
     <div
       class={cn(
-        "ml-[5%] rounded-xs bg-gray-900/80 text-left backdrop-blur-xs md:ml-[10%]",
+        "rounded-xs bg-slate-900/80 text-left backdrop-blur-xs mr-10",
         style.textBox,
       )}
     >
@@ -63,7 +63,7 @@ const style = variants[variant];
       </h1>
       {
         subheading && (
-          <p class="mt-3 text-base font-light tracking-widest text-white/80 uppercase md:text-lg lg:text-xl">
+          <p class="mt-3 text-sm font-light tracking-widest text-balance text-white/80 uppercase md:text-lg">
             {subheading}
           </p>
         )

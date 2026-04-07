@@ -15,6 +15,13 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
 export type PageReference = {
   _ref: string;
   _type: "reference";
@@ -42,7 +49,17 @@ export type TextBlock = {
     _type: "block";
     _key: string;
   }>;
+  featureImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  imageAlign?: "left" | "right";
   textAlign?: "left" | "center" | "justify";
+  leadInText?: boolean;
   cta?: string;
   linkToPage?: PageReference;
 };
@@ -52,13 +69,6 @@ export type PageBuilder = Array<{
 } & HeroBlock | {
   _key: string;
 } & TextBlock>;
-
-export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-};
 
 export type HeroBlock = {
   _type: "heroBlock";
@@ -241,7 +251,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = PageReference | TextBlock | PageBuilder | SanityImageAssetReference | HeroBlock | SiteSettings | Homepage | Page | Slug | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | PageReference | TextBlock | PageBuilder | HeroBlock | SiteSettings | Homepage | Page | Slug | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
@@ -257,7 +267,7 @@ export type SITE_SETTINGS_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: HOMEPAGE_QUERY
-// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": "/" + linkToPage->slug.current,    textAlign  }  },  features,}
+// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": "/" + linkToPage->slug.current,    textAlign,    leadInText,    featureImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign  }  },  features,}
 export type HOMEPAGE_QUERY_RESULT = {
   pageBuilder: null;
   features: null;
@@ -307,6 +317,23 @@ export type HOMEPAGE_QUERY_RESULT = {
     cta: string | null;
     ctaPath: string | null;
     textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
   }> | null;
   features: null;
 } | {
@@ -355,6 +382,23 @@ export type HOMEPAGE_QUERY_RESULT = {
     cta: string | null;
     ctaPath: string | null;
     textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
   }> | null;
   features: {
     heading?: string;
@@ -370,7 +414,7 @@ export type HOMEPAGE_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && defined(slug.current)] {  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": "/" + linkToPage->slug.current,    textAlign  }  },}
+// Query: *[_type == "page" && defined(slug.current)] {  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": "/" + linkToPage->slug.current,    textAlign,    leadInText,    featureImage {   asset->{    _id,    url,    metadata { lqip, dimensions { width, height } }  },  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign  }  },}
 export type PAGE_QUERY_RESULT = Array<{
   title: string | null;
   slug: string | null;
@@ -419,6 +463,23 @@ export type PAGE_QUERY_RESULT = Array<{
     cta: string | null;
     ctaPath: string | null;
     textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
   }> | null;
 }>;
 

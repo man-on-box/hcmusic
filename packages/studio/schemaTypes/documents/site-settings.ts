@@ -1,5 +1,5 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
-import {CogIcon} from '@sanity/icons'
+import {CogIcon, LinkIcon} from '@sanity/icons'
 
 const BRANDING_GROUP = 'branding'
 const NAV_GROUP = 'navigation'
@@ -38,6 +38,7 @@ export const siteSettingsType = defineType({
           type: 'object',
           name: 'navLink',
           title: 'Link',
+          icon: LinkIcon,
           fields: [
             defineField({
               name: 'label',

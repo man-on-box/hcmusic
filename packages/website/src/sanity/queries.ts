@@ -9,9 +9,12 @@ import { defineQuery } from "groq";
 const imageFragment = /* groq */ `
   asset->{
     _id,
+    _type,
     url,
     metadata { lqip, dimensions { width, height } }
   },
+  crop,
+  hotspot,
   alt,
   "dominantColor": asset->metadata.palette.dominant.background
 `;
@@ -30,7 +33,10 @@ const textBlockFragment = /* groq */ `
     content,
     cta,
     "ctaPath": "/" + linkToPage->slug.current,
-    textAlign
+    textAlign,
+    leadInText,
+    featureImage { ${imageFragment} },
+    imageAlign
   }
 `;
 

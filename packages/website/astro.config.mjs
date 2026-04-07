@@ -7,6 +7,10 @@ import sanity from "@sanity/astro";
 
 // https://astro.build/config
 export default defineConfig({
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: "viewport",
+  },
   vite: {
     plugins: [tailwindcss()],
   },

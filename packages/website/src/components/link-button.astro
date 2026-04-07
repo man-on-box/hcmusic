@@ -9,4 +9,10 @@ interface Props {
 const { href, class: className } = Astro.props;
 ---
 
-<a class={cn("font-semibold text-sky-600", className)} href={href}><slot /></a>
+<a
+  class={cn(
+    "font-semibold rounded bg-slate-700 hover:bg-slate-800 transition-colors px-5 py-2 text-white",
+    className,
+  )}
+  href={href}><slot /></a
+>
