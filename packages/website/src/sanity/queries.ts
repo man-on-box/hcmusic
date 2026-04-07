@@ -93,7 +93,6 @@ export const homepageQuery = async () => {
     throw new Error("Could not fetch homepage data");
   }
 
-  console.log(result.pageBuilder?.[2]);
   return result;
 };
 
