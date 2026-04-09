@@ -51,6 +51,7 @@ const textBlockFragment = /* groq */ `
 const featureCardsBlockFragment = /* groq */ `
   _type == "featureCardsBlock" => {
     heading,
+    background, 
     cards[] {
       title,
       description,

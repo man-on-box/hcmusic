@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 
+import { cn } from "../utils";
 import { urlFor } from "../sanity/image";
 import Prose from "../components/prose.astro";
 import type { FeatureCardsBlockData } from "../types/sanity";
@@ -10,18 +11,31 @@ interface Props {
 }
 
 const { blockData } = Astro.props;
-const { heading, cards } = blockData;
+const { heading, cards, background } = blockData;
 
 const imageSize = 500;
+
+const variants = {
+  dark: {
+    container: "bg-slate-800",
+    heading: "prose-invert",
+  },
+  light: {
+    container: "bg-white",
+    heading: "",
+  },
+};
+
+const styles = variants[background || "light"];
 ---
 
-<section class="bg-slate-800 py-18 md:py-22">
+<section class={cn("py-18 md:py-22", styles.container)}>
   <div class="mx-auto max-w-7xl">
-    <Prose class="prose-invert mx-auto text-center">
+    <Prose class={cn("mx-auto text-center", styles.heading)}>
       <h2>{heading}</h2>
     </Prose>
     <div
-      class="mx-auto mt-16 grid max-w-6xl gap-8 px-4 md:grid-flow-col md:gap-4 lg:gap-10 xl:px-0"
+      class="mx-auto mt-16 grid max-w-6xl gap-8 px-4 md:grid-cols-3 md:gap-4 lg:gap-10 xl:px-0"
     >
       {
         cards?.map((card) => {

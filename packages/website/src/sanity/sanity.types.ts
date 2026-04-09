@@ -56,6 +56,7 @@ export type FeatureCardsBlock = {
     _type: "card";
     _key: string;
   }>;
+  background?: "light" | "dark";
 };
 
 export type TextBlock = {
@@ -289,7 +290,7 @@ export type SITE_SETTINGS_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: HOMEPAGE_QUERY
-// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": (ctaLink {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path,    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "href": (href {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path    },  }  },}
+// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": (ctaLink {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path,    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "href": (href {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path    },  }  },}
 export type HOMEPAGE_QUERY_RESULT = {
   pageBuilder: null;
 } | {
@@ -297,6 +298,7 @@ export type HOMEPAGE_QUERY_RESULT = {
     _key: string;
     _type: "featureCardsBlock";
     heading: string | null;
+    background: "dark" | "light" | null;
     cards: Array<{
       title: string | null;
       description: string | null;
@@ -394,7 +396,7 @@ export type HOMEPAGE_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && defined(slug.current)] {  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": (ctaLink {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path,    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "href": (href {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path    },  }  },}
+// Query: *[_type == "page" && defined(slug.current)] {  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": (ctaLink {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path,    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "href": (href {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path    },  }  },}
 export type PAGE_QUERY_RESULT = Array<{
   title: string | null;
   slug: string | null;
@@ -402,6 +404,7 @@ export type PAGE_QUERY_RESULT = Array<{
     _key: string;
     _type: "featureCardsBlock";
     heading: string | null;
+    background: "dark" | "light" | null;
     cards: Array<{
       title: string | null;
       description: string | null;
