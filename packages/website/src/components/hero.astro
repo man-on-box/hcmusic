@@ -30,7 +30,9 @@ const variants = {
 const style = variants[variant];
 ---
 
-<section class={cn("relative w-full bg-slate-900", style.container)}>
+<section
+  class={cn("relative w-full bg-slate-900 max-h-[800px]", style.container)}
+>
   {
     imgSrc && (
       <Image

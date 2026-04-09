@@ -112,14 +112,13 @@ export const textBlockType = defineType({
       title: 'CTA',
       type: 'string',
       group: CTA_LAYOUT_GROUP,
-      description: 'Optional call to action, a button to show under the text',
+      description: 'Optional call to action adds a button under the text to link to another page.',
     }),
     defineField({
-      name: 'linkToPage',
-      title: 'Link to page',
-      type: 'reference',
+      name: 'ctaLink',
+      title: 'CTA Link',
+      type: 'internalLink',
       group: CTA_LAYOUT_GROUP,
-      to: [{type: 'page'}],
     }),
   ],
   preview: {

@@ -19,6 +19,13 @@ const imageFragment = /* groq */ `
   "dominantColor": asset->metadata.palette.dominant.background
 `;
 
+const internalLinkFragment = /* groq */ `
+  "path": "/" + page->slug.current + select(
+    defined(target) && target.current != "" => "#" + target.current,
+    ""
+  )
+`;
+
 const heroBlockFragment = /* groq */ `
   _type == "heroBlock" => {
     heading,
@@ -32,7 +39,7 @@ const textBlockFragment = /* groq */ `
   _type == "textBlock" => {
     content,
     cta,
-    "ctaPath": "/" + linkToPage->slug.current,
+    "ctaPath": (ctaLink { ${internalLinkFragment} }).path,
     textAlign,
     leadInText,
     featureImage { ${imageFragment} },
@@ -48,7 +55,7 @@ const featureCardsBlockFragment = /* groq */ `
       title,
       description,
       cardImage { ${imageFragment} },
-      "href": "/" + linkToPage->slug.current
+      "href": (href { ${internalLinkFragment} }).path
     },
   }
 `;

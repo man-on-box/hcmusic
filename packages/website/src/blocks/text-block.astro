@@ -47,8 +47,8 @@ const imageSize = 500;
 >
   <div
     class={cn(
-      "flex flex-col gap-8 md:flex-row md:gap-12 items-start",
-      imageAlign === "right" && "md:flex-row-reverse",
+      "flex flex-col gap-8 sm:flex-row md:gap-12 items-start",
+      imageAlign === "right" && "sm:flex-row-reverse",
     )}
   >
     {
@@ -63,7 +63,7 @@ const imageSize = 500;
           height={imageSize}
           alt={featureImage.alt || ""}
           layout="constrained"
-          class="h-full w-full rounded object-contain"
+          class="h-full w-full rounded object-contain sm:h-70 md:h-full"
         />
       )
     }
