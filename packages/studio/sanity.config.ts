@@ -28,9 +28,11 @@ export default defineConfig({
         schemaType: 'page',
         parameters: [{name: 'parentId', type: 'string'}],
         value: (params: any) => ({
-          parent: {
-            _type: 'reference',
-            _ref: params.parentId,
+          pageSlug: {
+            parent: {
+              _type: 'reference',
+              _ref: params.parentId,
+            },
           },
         }),
       },

@@ -31,7 +31,7 @@ export const structure: StructureResolver = (S) =>
           S.documentList()
             .title('Top Level Pages')
             .schemaType('page')
-            .filter('_type == "page" && !defined(parent)')
+            .filter('_type == "page" && !defined(pageSlug.parent)')
             .initialValueTemplates([S.initialValueTemplateItem('page')])
             .child((documentId) =>
               S.list()
@@ -47,7 +47,7 @@ export const structure: StructureResolver = (S) =>
                       S.documentList()
                         .title('Child Pages')
                         .schemaType('page')
-                        .filter('_type == "page" && parent._ref == $parentId')
+                        .filter('_type == "page" && pageSlug.parent._ref == $parentId')
                         .params({parentId: documentId})
                         .initialValueTemplates([
                           S.initialValueTemplateItem('page-with-parent').parameters({
