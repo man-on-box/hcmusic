@@ -1,0 +1,20 @@
+---
+import { pageQuery } from "../sanity/queries";
+import MainLayout from "../layouts/main.astro";
+import BlockRenderer from "../blocks/block-renderer.astro";
+
+export async function getStaticPaths() {
+  const pages = await pageQuery();
+
+  return pages.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+---
+
+<MainLayout>
+  {page.pageBuilder && <BlockRenderer blocks={page.pageBuilder} />}
+</MainLayout>
