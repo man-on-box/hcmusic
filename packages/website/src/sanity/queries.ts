@@ -19,12 +19,19 @@ const imageFragment = /* groq */ `
   "dominantColor": asset->metadata.palette.dominant.background
 `;
 
+const pageSlugFragment = /* groq */ `
+    "slug": select(
+      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,
+      pageSlug.slug.current
+    )
+  `;
+
 const internalLinkFragment = /* groq */ `
-  "path": "/" + page->slug.current + select(
-    defined(target) && target.current != "" => "#" + target.current,
-    ""
-  )
-`;
+    "path": "/" + (page-> { ${pageSlugFragment} }).slug + select(
+      defined(target) && target.current != "" => "#" + target.current,
+      ""
+    )
+  `;
 
 const heroBlockFragment = /* groq */ `
   _type == "heroBlock" => {
@@ -74,9 +81,9 @@ const SITE_SETTINGS_QUERY =
   defineQuery(`*[_id == "siteSettings" && defined(siteName)][0]{
   siteName,
   siteTagline,
-  "mainNav": coalesce(mainNav[defined(label) && defined(href->slug.current)] {
+  "mainNav": coalesce(mainNav[defined(label) && defined(href->pageSlug.slug.current)] {
     "label": coalesce(label, ""),
-    "href": coalesce(("/" + href->slug.current), "")
+    "href": coalesce("/" + (href-> { ${pageSlugFragment} }).slug, "")
   }, [])
 }`);
 
@@ -104,9 +111,10 @@ export const homepageQuery = async () => {
   return result;
 };
 
-const PAGE_QUERY = defineQuery(`*[_type == "page" && defined(slug.current)] {
+const PAGE_QUERY =
+  defineQuery(`*[_type == "page" && defined(pageSlug.slug.current)] {
   title,
-  "slug": slug.current,
+  ${pageSlugFragment},
   ${pageBuilderFragment},
 }`);
 

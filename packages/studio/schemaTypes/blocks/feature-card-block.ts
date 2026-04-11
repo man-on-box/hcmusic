@@ -94,5 +94,12 @@ export const featureCardsBlockType = defineType({
     select: {
       title: 'heading',
     },
+    prepare(selection) {
+      const {title} = selection
+      return {
+        title: title ?? 'Feature cards block',
+        subtitle: 'Feature cards',
+      }
+    },
   },
 })

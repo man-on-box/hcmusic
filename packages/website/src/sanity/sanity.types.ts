@@ -39,6 +39,12 @@ export type PageReference = {
   [internalGroqTypeReferenceTo]?: "page";
 };
 
+export type PageSlug = {
+  _type: "pageSlug";
+  slug?: Slug;
+  parent?: PageReference;
+};
+
 export type InternalLink = {
   _type: "internalLink";
   page?: PageReference;
@@ -141,7 +147,7 @@ export type Page = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  slug?: Slug;
+  pageSlug?: PageSlug;
   pageBuilder?: PageBuilder;
 };
 
@@ -274,11 +280,11 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | PageReference | InternalLink | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | SiteSettings | Page | Slug | Homepage | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | PageReference | PageSlug | InternalLink | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | SiteSettings | Page | Slug | Homepage | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_id == "siteSettings" && defined(siteName)][0]{  siteName,  siteTagline,  "mainNav": coalesce(mainNav[defined(label) && defined(href->slug.current)] {    "label": coalesce(label, ""),    "href": coalesce(("/" + href->slug.current), "")  }, [])}
+// Query: *[_id == "siteSettings" && defined(siteName)][0]{  siteName,  siteTagline,  "mainNav": coalesce(mainNav[defined(label) && defined(href->pageSlug.slug.current)] {    "label": coalesce(label, ""),    "href": coalesce("/" + (href-> {     "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )   }).slug, "")  }, [])}
 export type SITE_SETTINGS_QUERY_RESULT = {
   siteName: string;
   siteTagline: string | null;
@@ -290,7 +296,7 @@ export type SITE_SETTINGS_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: HOMEPAGE_QUERY
-// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": (ctaLink {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path,    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "href": (href {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path    },  }  },}
+// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": (ctaLink {     "path": "/" + (page-> {     "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )   }).slug + select(      defined(target) && target.current != "" => "#" + target.current,      ""    )   }).path,    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "href": (href {     "path": "/" + (page-> {     "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )   }).slug + select(      defined(target) && target.current != "" => "#" + target.current,      ""    )   }).path    },  }  },}
 export type HOMEPAGE_QUERY_RESULT = {
   pageBuilder: null;
 } | {
@@ -396,7 +402,7 @@ export type HOMEPAGE_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && defined(slug.current)] {  title,  "slug": slug.current,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": (ctaLink {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path,    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "href": (href {   "path": "/" + page->slug.current + select(    defined(target) && target.current != "" => "#" + target.current,    ""  ) }).path    },  }  },}
+// Query: *[_type == "page" && defined(pageSlug.slug.current)] {  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaPath": (ctaLink {     "path": "/" + (page-> {     "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )   }).slug + select(      defined(target) && target.current != "" => "#" + target.current,      ""    )   }).path,    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "href": (href {     "path": "/" + (page-> {     "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )   }).slug + select(      defined(target) && target.current != "" => "#" + target.current,      ""    )   }).path    },  }  },}
 export type PAGE_QUERY_RESULT = Array<{
   title: string | null;
   slug: string | null;

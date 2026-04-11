@@ -13,15 +13,8 @@ export const pageType = defineType({
       type: 'string',
     }),
     defineField({
-      title: 'Slug',
-      name: 'slug',
-      type: 'slug',
-      description: 'Slug of the page (the path where the page exists)',
-      options: {
-        source: 'title',
-        slugify: (input) => input.toLowerCase().replace(/\s+/g, '-').slice(0, 100),
-      },
-      validation: (rule) => rule.required(),
+      name: 'pageSlug',
+      type: 'pageSlug',
     }),
     defineField({
       name: 'pageBuilder',

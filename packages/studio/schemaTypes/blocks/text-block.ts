@@ -124,6 +124,15 @@ export const textBlockType = defineType({
   preview: {
     select: {
       title: 'content',
+      media: 'featureImage',
+    },
+    prepare(selection) {
+      const {title, media} = selection
+      return {
+        title: title?.[0]?.children?.[0]?.text ?? 'Text block',
+        subtitle: 'Text block',
+        media: media ?? BlockContentIcon,
+      }
     },
   },
 })

@@ -1,7 +1,7 @@
 import type {StructureResolver} from 'sanity/structure'
 import {CogIcon, HomeIcon} from '@sanity/icons'
 
-const SINGLETONS = ['siteSettings', 'homepage']
+const HIDDEN_TYPES = ['siteSettings', 'homepage', 'page']
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -9,7 +9,7 @@ export const structure: StructureResolver = (S) =>
     .items([
       // Singletons
       S.listItem()
-        .title('Site Settings')
+        .title('Site settings')
         .id('siteSettings')
         .icon(CogIcon)
         .child(
@@ -24,7 +24,43 @@ export const structure: StructureResolver = (S) =>
 
       S.divider(),
 
-      ...S.documentTypeListItems().filter(
-        (listItem) => !SINGLETONS.includes(listItem.getId() as string),
-      ),
+      S.listItem()
+        .title('Pages')
+        .id('pages')
+        .child(
+          S.documentList()
+            .title('Top Level Pages')
+            .schemaType('page')
+            .filter('_type == "page" && !defined(parent)')
+            .initialValueTemplates([S.initialValueTemplateItem('page')])
+            .child((documentId) =>
+              S.list()
+                .title(`Manage Page`)
+                .items([
+                  S.listItem()
+                    .title('Edit Content')
+                    .child(S.document().documentId(documentId).schemaType('page')),
+                  S.divider(),
+                  S.listItem()
+                    .title('Child Pages')
+                    .child(
+                      S.documentList()
+                        .title('Child Pages')
+                        .schemaType('page')
+                        .filter('_type == "page" && parent._ref == $parentId')
+                        .params({parentId: documentId})
+                        .initialValueTemplates([
+                          S.initialValueTemplateItem('page-with-parent').parameters({
+                            parentId: documentId,
+                          }),
+                        ]),
+                    ),
+                ]),
+            ),
+        ),
+
+      // catch all for all remaining documents
+      ...S.documentTypeListItems().filter((listItem) => {
+        return !HIDDEN_TYPES.includes(listItem.getId() as string)
+      }),
     ])

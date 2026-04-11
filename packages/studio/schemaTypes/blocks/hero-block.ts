@@ -66,5 +66,13 @@ export const heroBlockType = defineType({
       title: 'heading',
       media: 'backgroundImage',
     },
+    prepare(selection) {
+      const {title, media} = selection
+      return {
+        title: title ?? 'Hero block',
+        subtitle: 'Hero',
+        media: media ?? RocketIcon,
+      }
+    },
   },
 })
