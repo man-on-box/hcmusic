@@ -1,0 +1,30 @@
+---
+interface Props {
+  videoId?: string;
+  label?: string;
+  node?: {
+    label: string;
+    id: string;
+  };
+}
+
+const { node, videoId, label } = Astro.props;
+const id = node?.id ?? videoId;
+
+const videoTitle = node?.label ?? label ?? "Youtube video";
+
+if (!id) return null;
+---
+
+<div class="my-8 aspect-video w-full">
+  <iframe
+    class="h-full w-full rounded-xl"
+    title={videoTitle}
+    width="560"
+    height="315"
+    src={`https://www.youtube.com/embed/${id}`}
+    title="YouTube video player"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen></iframe>
+</div>

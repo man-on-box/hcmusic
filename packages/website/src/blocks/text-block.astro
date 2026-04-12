@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import { PortableText } from "astro-portabletext";
 import { cn } from "../utils";
 
+import YoutubeEmbed from "../components/youtube-embed.astro";
 import LinkButton from "../components/link-button.astro";
 import Prose from "../components/prose.astro";
 import type { TextBlockData } from "../types/sanity";
@@ -39,6 +40,12 @@ const leadInStyles =
 const textAlignStyles = textAlignClassMap[textAlign || "left"];
 
 const imageSize = 500;
+
+const components = {
+  type: {
+    youtube: YoutubeEmbed,
+  },
+};
 ---
 
 <section
@@ -47,35 +54,39 @@ const imageSize = 500;
 >
   <div
     class={cn(
-      "flex flex-col gap-8 sm:flex-row md:gap-12 items-start",
+      "flex flex-col gap-8 sm:flex-row md:gap-12 items-center sm:items-start",
       imageAlign === "right" && "sm:flex-row-reverse",
     )}
   >
     {
       featureImage && (
-        <Image
-          src={urlFor(featureImage)
-            .width(imageSize * 1.5)
-            .height(imageSize * 1.5)
-            .format("webp")
-            .url()}
-          width={imageSize}
-          height={imageSize}
-          alt={featureImage.alt || ""}
-          layout="constrained"
-          class="h-full w-full rounded object-contain sm:h-70 md:h-full"
-        />
+        <div class="grow-1">
+          <Image
+            src={urlFor(featureImage)
+              .width(imageSize * 1.5)
+              .height(imageSize * 1.5)
+              .format("webp")
+              .url()}
+            width={imageSize}
+            height={imageSize}
+            alt={featureImage.alt || ""}
+            layout="constrained"
+            class="rounded object-contain"
+          />
+        </div>
       )
     }
-    <Prose class={cn("w-full", textAlignStyles, leadInText && leadInStyles)}>
-      {content && <PortableText value={content} />}
-    </Prose>
+    <div class="flex grow-1 flex-col">
+      <Prose class={cn("min-w-0", textAlignStyles, leadInText && leadInStyles)}>
+        {content && <PortableText value={content} components={components} />}
+      </Prose>
+      {
+        cta && ctaPath && (
+          <div class="mt-12 flex justify-center">
+            <LinkButton href={ctaPath}>{cta}</LinkButton>
+          </div>
+        )
+      }
+    </div>
   </div>
-  {
-    cta && ctaPath && (
-      <LinkButton class="mt-12" href={ctaPath}>
-        {cta}
-      </LinkButton>
-    )
-  }
 </section>

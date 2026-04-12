@@ -44,6 +44,9 @@ export const textBlockType = defineType({
             {title: 'Numbered', value: 'number'},
           ],
         }),
+        defineArrayMember({
+          type: 'youtube',
+        }),
       ],
     }),
     defineField({

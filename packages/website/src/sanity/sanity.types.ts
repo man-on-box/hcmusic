@@ -32,6 +32,12 @@ export type CardImage = {
   _type: "image";
 };
 
+export type Youtube = {
+  _type: "youtube";
+  label?: string;
+  id?: string;
+};
+
 export type PageReference = {
   _ref: string;
   _type: "reference";
@@ -84,7 +90,9 @@ export type TextBlock = {
     level?: number;
     _type: "block";
     _key: string;
-  }>;
+  } | {
+    _key: string;
+  } & Youtube>;
   featureImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -280,7 +288,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | PageReference | PageSlug | InternalLink | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | SiteSettings | Page | Slug | Homepage | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | PageReference | PageSlug | InternalLink | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | SiteSettings | Page | Slug | Homepage | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
@@ -356,6 +364,8 @@ export type HOMEPAGE_QUERY_RESULT = {
     _key: string;
     _type: "textBlock";
     content: Array<{
+      _key: string;
+    } & Youtube | {
       children?: Array<{
         marks?: Array<string>;
         text?: string;
@@ -462,6 +472,8 @@ export type PAGE_QUERY_RESULT = Array<{
     _key: string;
     _type: "textBlock";
     content: Array<{
+      _key: string;
+    } & Youtube | {
       children?: Array<{
         marks?: Array<string>;
         text?: string;
