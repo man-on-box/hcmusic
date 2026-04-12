@@ -20,6 +20,7 @@
     "astro-portabletext": "^0.13.0",
     "clsx": "^2.1.1",
     "groq": "^5.18.0",
+    "sharp": "^0.34.5",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.2"
   },

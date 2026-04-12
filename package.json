@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:website": "pnpm --filter website build",
     "format": "prettier --write ."
   },
   "keywords": [],
