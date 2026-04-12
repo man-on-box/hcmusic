@@ -177,6 +177,29 @@
     }
   },
   {
+    "name": "mailchimpForm",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "mailchimpForm"
+          }
+        },
+        "note": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
     "name": "internalLink",
     "type": "type",
     "value": {
@@ -493,6 +516,21 @@
                   "rest": {
                     "type": "inline",
                     "name": "youtube"
+                  }
+                },
+                {
+                  "type": "object",
+                  "attributes": {
+                    "_key": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "rest": {
+                    "type": "inline",
+                    "name": "mailchimpForm"
                   }
                 }
               ]

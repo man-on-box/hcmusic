@@ -47,6 +47,9 @@ export const textBlockType = defineType({
         defineArrayMember({
           type: 'youtube',
         }),
+        defineArrayMember({
+          type: 'mailchimpForm',
+        }),
       ],
     }),
     defineField({

@@ -51,6 +51,11 @@ export type PageSlug = {
   parent?: PageReference;
 };
 
+export type MailchimpForm = {
+  _type: "mailchimpForm";
+  note?: string;
+};
+
 export type InternalLink = {
   _type: "internalLink";
   page?: PageReference;
@@ -92,7 +97,9 @@ export type TextBlock = {
     _key: string;
   } | {
     _key: string;
-  } & Youtube>;
+  } & Youtube | {
+    _key: string;
+  } & MailchimpForm>;
   featureImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -288,7 +295,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | PageReference | PageSlug | InternalLink | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | SiteSettings | Page | Slug | Homepage | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | PageReference | PageSlug | MailchimpForm | InternalLink | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | SiteSettings | Page | Slug | Homepage | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
@@ -364,6 +371,8 @@ export type HOMEPAGE_QUERY_RESULT = {
     _key: string;
     _type: "textBlock";
     content: Array<{
+      _key: string;
+    } & MailchimpForm | {
       _key: string;
     } & Youtube | {
       children?: Array<{
@@ -472,6 +481,8 @@ export type PAGE_QUERY_RESULT = Array<{
     _key: string;
     _type: "textBlock";
     content: Array<{
+      _key: string;
+    } & MailchimpForm | {
       _key: string;
     } & Youtube | {
       children?: Array<{
