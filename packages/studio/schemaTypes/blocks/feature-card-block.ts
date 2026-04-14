@@ -66,9 +66,9 @@ export const featureCardsBlockType = defineType({
               ],
             }),
             defineField({
-              name: 'href',
+              name: 'link',
               title: 'Link to page',
-              type: 'internalLink',
+              type: 'link',
               group: CONTENT_GROUP,
             }),
           ],

@@ -5,6 +5,7 @@ import { cn } from "../utils";
 import { urlFor } from "../sanity/image";
 import Prose from "../components/prose.astro";
 import type { FeatureCardsBlockData } from "../types/sanity";
+import { linkResolver } from "../utils/link-resolver";
 
 interface Props {
   blockData: FeatureCardsBlockData;
@@ -41,7 +42,7 @@ const styles = variants[background || "light"];
         cards?.map((card) => {
           return (
             <a
-              href={card.href}
+              href={linkResolver(card.link).href}
               class="group flex flex-col rounded bg-white/95 shadow-xl transition-colors hover:bg-white"
             >
               {card.cardImage && (

@@ -18,12 +18,5 @@ export const pageSlugType = defineType({
       },
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'parent',
-      title: 'Parent page',
-      type: 'reference',
-      to: [{type: 'page'}],
-      description: 'Select a parent page to nest this page under (optional).',
-    }),
   ],
 })

@@ -123,7 +123,7 @@ export const textBlockType = defineType({
     defineField({
       name: 'ctaLink',
       title: 'CTA Link',
-      type: 'internalLink',
+      type: 'link',
       group: CTA_LAYOUT_GROUP,
     }),
   ],

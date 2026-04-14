@@ -1,7 +1,10 @@
 ---
+import type { LinkType } from "../types/sanity";
+import { linkResolver } from "../utils/link-resolver";
+
 interface Props {
   siteName: string;
-  navItems: Array<{ label: string; href: string }>;
+  navItems: { label: string; link: LinkType | null }[];
 }
 
 const { siteName, navItems = [] } = Astro.props;
@@ -20,10 +23,10 @@ const { siteName, navItems = [] } = Astro.props;
     >
     <div class="hidden md:flex md:gap-x-8">
       {
-        navItems.map(({ href, label }) => (
+        navItems.map(({ link, label }) => (
           <a
             class="text-sm tracking-wide text-gray-500 transition-colors hover:text-black"
-            href={href}
+            href={linkResolver(link).href}
           >
             {label}
           </a>
@@ -74,8 +77,11 @@ const { siteName, navItems = [] } = Astro.props;
   >
     <div class="flex flex-col gap-4 px-8 py-8">
       {
-        navItems.map(({ href, label }) => (
-          <a class="py-4 text-lg tracking-wide text-gray-700" href={href}>
+        navItems.map(({ link, label }) => (
+          <a
+            class="py-4 text-lg tracking-wide text-gray-700"
+            href={linkResolver(link).href}
+          >
             {label}
           </a>
         ))

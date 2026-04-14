@@ -3,6 +3,7 @@ import {CogIcon, LinkIcon} from '@sanity/icons'
 
 const BRANDING_GROUP = 'branding'
 const NAV_GROUP = 'navigation'
+
 export const siteSettingsType = defineType({
   name: 'siteSettings',
   title: 'Site settings',
@@ -27,7 +28,6 @@ export const siteSettingsType = defineType({
       group: BRANDING_GROUP,
       validation: (rule) => rule.required(),
     }),
-
     defineField({
       name: 'mainNav',
       title: 'Main navigation',
@@ -47,11 +47,9 @@ export const siteSettingsType = defineType({
               validation: (rule) => rule.required(),
             }),
             defineField({
-              name: 'href',
+              name: 'link',
               title: 'Link',
-              type: 'reference',
-              validation: (rule) => rule.required(),
-              to: [{type: 'page'}],
+              type: 'link',
             }),
           ],
         }),

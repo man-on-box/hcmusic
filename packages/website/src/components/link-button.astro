@@ -1,12 +1,16 @@
 ---
+import type { LinkType } from "../types/sanity";
+import { linkResolver } from "../utils/link-resolver";
 import { cn } from "../utils";
 
 interface Props {
-  href: string;
+  link: LinkType | null;
   class?: string;
 }
 
-const { href, class: className } = Astro.props;
+const { class: className, link } = Astro.props;
+
+const { href } = linkResolver(link);
 ---
 
 <a

@@ -1,7 +1,7 @@
 import type {StructureResolver} from 'sanity/structure'
-import {CogIcon, HomeIcon} from '@sanity/icons'
+import {DocumentIcon, CogIcon, HomeIcon, ProjectsIcon} from '@sanity/icons'
 
-const HIDDEN_TYPES = ['siteSettings', 'homepage', 'page']
+const HIDDEN_TYPES = ['siteSettings', 'homepage', 'page', 'project']
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -24,40 +24,9 @@ export const structure: StructureResolver = (S) =>
 
       S.divider(),
 
-      S.listItem()
-        .title('Pages')
-        .id('pages')
-        .child(
-          S.documentList()
-            .title('Top Level Pages')
-            .schemaType('page')
-            .filter('_type == "page" && !defined(pageSlug.parent)')
-            .initialValueTemplates([S.initialValueTemplateItem('page')])
-            .child((documentId) =>
-              S.list()
-                .title(`Manage Page`)
-                .items([
-                  S.listItem()
-                    .title('Edit Content')
-                    .child(S.document().documentId(documentId).schemaType('page')),
-                  S.divider(),
-                  S.listItem()
-                    .title('Child Pages')
-                    .child(
-                      S.documentList()
-                        .title('Child Pages')
-                        .schemaType('page')
-                        .filter('_type == "page" && pageSlug.parent._ref == $parentId')
-                        .params({parentId: documentId})
-                        .initialValueTemplates([
-                          S.initialValueTemplateItem('page-with-parent').parameters({
-                            parentId: documentId,
-                          }),
-                        ]),
-                    ),
-                ]),
-            ),
-        ),
+      S.listItem().title('Pages').icon(DocumentIcon).child(S.documentTypeList('page')),
+
+      S.listItem().title('Projects').icon(ProjectsIcon).child(S.documentTypeList('project')),
 
       // catch all for all remaining documents
       ...S.documentTypeListItems().filter((listItem) => {

@@ -1,6 +1,7 @@
 import type {
   HOMEPAGE_QUERY_RESULT,
   PAGE_QUERY_RESULT,
+  PROJECT_QUERY_RESULT,
   SITE_SETTINGS_QUERY_RESULT,
 } from "./sanity.types.ts";
 import { sanityClient } from "sanity:client";
@@ -26,12 +27,22 @@ const pageSlugFragment = /* groq */ `
     )
   `;
 
-const internalLinkFragment = /* groq */ `
-    "path": "/" + (page-> { ${pageSlugFragment} }).slug + select(
-      defined(target) && target.current != "" => "#" + target.current,
-      ""
-    )
-  `;
+const linkFragment = /* groq */ `
+  linkType,
+  linkType == 'internal' => {
+    "page": page-> {
+      _type,
+      "slug": pageSlug.slug.current,
+    },
+    "anchor": anchor.current,
+    "url": null,
+  },
+  linkType == 'external' => {
+    "page": null,
+    "anchor": null,
+    "url": external,
+  }
+`;
 
 const heroBlockFragment = /* groq */ `
   _type == "heroBlock" => {
@@ -46,7 +57,7 @@ const textBlockFragment = /* groq */ `
   _type == "textBlock" => {
     content,
     cta,
-    "ctaPath": (ctaLink { ${internalLinkFragment} }).path,
+    "ctaLink": ctaLink { ${linkFragment} },
     textAlign,
     leadInText,
     featureImage { ${imageFragment} },
@@ -63,8 +74,8 @@ const featureCardsBlockFragment = /* groq */ `
       title,
       description,
       cardImage { ${imageFragment} },
-      "href": (href { ${internalLinkFragment} }).path
-    },
+      "link": link { ${linkFragment} }
+    }
   }
 `;
 
@@ -81,9 +92,9 @@ const SITE_SETTINGS_QUERY =
   defineQuery(`*[_id == "siteSettings" && defined(siteName)][0]{
   siteName,
   siteTagline,
-  "mainNav": coalesce(mainNav[defined(label) && defined(href->pageSlug.slug.current)] {
+  "mainNav": coalesce(mainNav[defined(label)] {
     "label": coalesce(label, ""),
-    "href": coalesce("/" + (href-> { ${pageSlugFragment} }).slug, "")
+    "link": link { ${linkFragment} }
   }, [])
 }`);
 
@@ -113,15 +124,33 @@ export const homepageQuery = async () => {
 
 const PAGE_QUERY =
   defineQuery(`*[_type == "page" && defined(pageSlug.slug.current)] {
+  _type,
   title,
   ${pageSlugFragment},
-  ${pageBuilderFragment},
+  ${pageBuilderFragment}
 }`);
 
 export const pageQuery = async () => {
   const result = await sanityClient.fetch<PAGE_QUERY_RESULT>(PAGE_QUERY);
   if (!result) {
     throw new Error("Could not fetch page data");
+  }
+
+  return result;
+};
+
+const PROJECT_QUERY =
+  defineQuery(`*[_type == "project" && defined(pageSlug.slug.current)] {
+  _type,
+  title,
+  ${pageSlugFragment},
+  ${pageBuilderFragment}
+}`);
+
+export const projectQuery = async () => {
+  const result = await sanityClient.fetch<PROJECT_QUERY_RESULT>(PROJECT_QUERY);
+  if (!result) {
+    throw new Error("Could not fetch project data");
   }
 
   return result;

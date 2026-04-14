@@ -12,8 +12,6 @@ const { node, videoId, label } = Astro.props;
 const id = node?.id ?? videoId;
 
 const videoTitle = node?.label ?? label ?? "Youtube video";
-
-if (!id) return null;
 ---
 
 <div class="my-12 aspect-video w-full">
