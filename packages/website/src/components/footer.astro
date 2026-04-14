@@ -1,8 +1,11 @@
 ---
+import type { LinkType } from "../types/sanity";
+import { linkResolver } from "../utils/link-resolver";
+
 interface Props {
   siteName: string;
   siteTagline: string;
-  navItems: Array<{ label: string; href: string }>;
+  navItems: { label: string; link: LinkType | null }[];
 }
 
 const { siteName, siteTagline, navItems = [] } = Astro.props;
@@ -31,10 +34,10 @@ const currentYear = new Date().getFullYear();
         </p>
       </div><nav class="flex flex-wrap justify-center gap-6">
         {
-          navItems.map(({ label, href }) => (
+          navItems.map(({ label, link }) => (
             <a
               class="text-xs tracking-wide text-gray-500 transition-colors hover:text-black"
-              href={href}
+              href={linkResolver(link).href}
             >
               {label}
             </a>
