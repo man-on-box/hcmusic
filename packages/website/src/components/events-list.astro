@@ -2,7 +2,7 @@
 import { PortableText } from "astro-portabletext";
 import type { PortableTextBlock } from "@portabletext/types";
 
-import { formatTime } from "../utils";
+import { formatTime, formatDate } from "../utils";
 import Prose from "../components/prose.astro";
 
 type Event = {
@@ -21,21 +21,6 @@ const { heading, events } = Astro.props;
 
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
-
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
 ---
 
 <div class="mx-auto my-20 flex max-w-6xl flex-col px-6 md:my-26 md:px-12">
@@ -45,12 +30,9 @@ const months = [
   <ol class="mt-20">
     {
       events.map((event) => {
-        const date = new Date(event.date || "");
-        const day = date.getDate();
-        const month = months[date.getMonth()];
-        const hour = date.getHours();
-        const minute = date.getMinutes();
-        const year = date.getFullYear();
+        const date = new Date(event.date || Date.now());
+
+        const { day, month, hour, minute, year } = formatDate(date);
 
         const isFuture = date >= currentDate;
 
@@ -62,11 +44,11 @@ const months = [
             </div>
             <div>
               <p class="font-bold text-gray-800">
-                {year !== currentYear && `${year} · `}
+                {year !== String(currentYear) && `${year} · `}
                 {event.title}
               </p>
               <p class="text-sm text-gray-600">
-                {isFuture && `${formatTime(hour)}:${formatTime(minute)} · `}
+                {isFuture && `${hour}:${minute} · `}
                 {event.location}
               </p>
               {event.description && (
