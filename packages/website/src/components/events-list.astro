@@ -2,6 +2,7 @@
 import { PortableText } from "astro-portabletext";
 import type { PortableTextBlock } from "@portabletext/types";
 
+import { formatTime } from "../utils";
 import Prose from "../components/prose.astro";
 
 type Event = {
@@ -18,7 +19,8 @@ interface Props {
 
 const { heading, events } = Astro.props;
 
-const currentYear = new Date().getFullYear();
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
 
 const months = [
   "Jan",
@@ -34,8 +36,6 @@ const months = [
   "Nov",
   "Dec",
 ];
-
-const formatTime = (value: number) => (value < 10 ? `0${value}` : `${value}`);
 ---
 
 <div class="mx-auto my-20 flex max-w-6xl flex-col px-6 md:my-26 md:px-12">
@@ -52,6 +52,8 @@ const formatTime = (value: number) => (value < 10 ? `0${value}` : `${value}`);
         const minute = date.getMinutes();
         const year = date.getFullYear();
 
+        const isFuture = date >= currentDate;
+
         return (
           <li class="flex gap-4 border-t-1 border-slate-200 py-4 last:border-b-1 md:gap-8">
             <div class="flex size-16 shrink-0 flex-col items-center justify-center rounded bg-slate-100 p-4 font-serif sm:size-21">
@@ -64,10 +66,11 @@ const formatTime = (value: number) => (value < 10 ? `0${value}` : `${value}`);
                 {event.title}
               </p>
               <p class="text-sm text-gray-600">
-                {formatTime(hour)}:{formatTime(minute)} · {event.location}
+                {isFuture && `${formatTime(hour)}:${formatTime(minute)} · `}
+                {event.location}
               </p>
               {event.description && (
-                <Prose class="prose-p:text-gray-600 mt-2">
+                <Prose class="mt-2 text-gray-600">
                   <PortableText value={event.description} />
                 </Prose>
               )}
