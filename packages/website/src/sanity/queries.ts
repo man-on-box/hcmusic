@@ -2,7 +2,9 @@ import type {
   HOMEPAGE_QUERY_RESULT,
   PAGE_QUERY_RESULT,
   PROJECT_QUERY_RESULT,
+  EVENTS_PAGE_QUERY_RESULT,
   SITE_SETTINGS_QUERY_RESULT,
+  EVENT_ITEMS_QUERY_RESULT,
 } from "./sanity.types.ts";
 import { sanityClient } from "sanity:client";
 import { defineQuery } from "groq";
@@ -151,6 +153,41 @@ export const projectQuery = async () => {
   const result = await sanityClient.fetch<PROJECT_QUERY_RESULT>(PROJECT_QUERY);
   if (!result) {
     throw new Error("Could not fetch project data");
+  }
+
+  return result;
+};
+
+const EVENTS_PAGE_QUERY = defineQuery(`*[_id == "eventsPage"][0]{
+  _type,
+  title,
+  ${pageBuilderFragment},
+}`);
+
+export const eventsPageQuery = async () => {
+  const result =
+    await sanityClient.fetch<EVENTS_PAGE_QUERY_RESULT>(EVENTS_PAGE_QUERY);
+  if (!result) {
+    throw new Error("Could not fetch events page data");
+  }
+
+  return result;
+};
+
+const EVENT_ITEMS_QUERY =
+  defineQuery(`*[_type == "eventItem"] | order(eventDatetime desc) {
+  _type,
+  title,
+  eventDatetime,
+  location,
+  description
+}`);
+
+export const eventsItemsQuery = async () => {
+  const result =
+    await sanityClient.fetch<EVENT_ITEMS_QUERY_RESULT>(EVENT_ITEMS_QUERY);
+  if (!result) {
+    throw new Error("Could not fetch events items data");
   }
 
   return result;

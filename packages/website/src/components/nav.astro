@@ -79,7 +79,7 @@ const { siteName, navItems = [] } = Astro.props;
       {
         navItems.map(({ link, label }) => (
           <a
-            class="py-4 text-lg tracking-wide text-gray-700"
+            class="py-4 tracking-wide text-gray-700"
             href={linkResolver(link).href}
           >
             {label}

@@ -25,6 +25,7 @@
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
+    "@portabletext/types": "^4.0.2",
     "@tailwindcss/typography": "^0.5.19"
   }
 }

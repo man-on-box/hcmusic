@@ -1,0 +1,38 @@
+---
+import type { PortableTextBlock } from "@portabletext/types";
+
+import { eventsPageQuery, eventsItemsQuery } from "../sanity/queries";
+import MainLayout from "../layouts/main.astro";
+import BlockRenderer from "../blocks/block-renderer.astro";
+
+import EventsList from "../components/events-list.astro";
+
+const [pageData, events] = await Promise.all([
+  eventsPageQuery(),
+  eventsItemsQuery(),
+]);
+
+const { pageBuilder } = pageData;
+
+const mappedEvents = events.map((event) => ({
+  title: event.title || "no title",
+  date: event.eventDatetime || "",
+  location: event.location || "no location",
+  description: event.description as PortableTextBlock[],
+}));
+
+const now = new Date();
+const upcomingEvents = mappedEvents
+  .filter((event) => event.date && new Date(event.date) >= now)
+  .reverse();
+
+const pastEvents = mappedEvents.filter(
+  (event) => event.date && new Date(event.date) < now,
+);
+---
+
+<MainLayout>
+  {pageBuilder && <BlockRenderer blocks={pageBuilder} />}
+  <EventsList heading="Upcoming events" events={upcomingEvents} />
+  <EventsList heading="Past events" events={pastEvents} />
+</MainLayout>

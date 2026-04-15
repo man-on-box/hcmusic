@@ -62,10 +62,17 @@ export type ProjectReference = {
   [internalGroqTypeReferenceTo]?: "project";
 };
 
+export type EventsPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "eventsPage";
+};
+
 export type Link = {
   _type: "link";
   linkType?: "internal" | "external";
-  page?: PageReference | ProjectReference;
+  page?: PageReference | ProjectReference | EventsPageReference;
   external?: string;
   anchor?: Slug;
 };
@@ -145,6 +152,46 @@ export type HeroBlock = {
     _type: "image";
   };
   size?: "small" | "large";
+};
+
+export type EventItem = {
+  _id: string;
+  _type: "eventItem";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  eventDatetime?: string;
+  location?: string;
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal";
+    listItem?: never;
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+};
+
+export type EventsPage = {
+  _id: string;
+  _type: "eventsPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  pageSlug?: PageSlug;
+  pageBuilder?: PageBuilder;
 };
 
 export type Project = {
@@ -314,7 +361,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | PageSlug | MailchimpForm | PageReference | ProjectReference | Link | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | Project | Page | Slug | SiteSettings | Homepage | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | PageSlug | MailchimpForm | PageReference | ProjectReference | EventsPageReference | Link | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | EventItem | EventsPage | Project | Page | Slug | SiteSettings | Homepage | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
@@ -332,6 +379,9 @@ export type SITE_SETTINGS_QUERY_RESULT = {
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
         _type: "page";
         slug: string | null;
       } | {
@@ -386,6 +436,9 @@ export type HOMEPAGE_QUERY_RESULT = {
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
           _type: "page";
           slug: string | null;
         } | {
@@ -456,6 +509,9 @@ export type HOMEPAGE_QUERY_RESULT = {
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
         _type: "page";
         slug: string | null;
       } | {
@@ -533,6 +589,9 @@ export type PAGE_QUERY_RESULT = Array<{
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
           _type: "page";
           slug: string | null;
         } | {
@@ -603,6 +662,9 @@ export type PAGE_QUERY_RESULT = Array<{
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
         _type: "page";
         slug: string | null;
       } | {
@@ -680,6 +742,9 @@ export type PROJECT_QUERY_RESULT = Array<{
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
           _type: "page";
           slug: string | null;
         } | {
@@ -750,6 +815,9 @@ export type PROJECT_QUERY_RESULT = Array<{
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
         _type: "page";
         slug: string | null;
       } | {
@@ -783,6 +851,643 @@ export type PROJECT_QUERY_RESULT = Array<{
     } | null;
     imageAlign: "left" | "right" | null;
     sectionId: string | null;
+  }> | null;
+}>;
+
+// Source: ../website/src/sanity/queries.ts
+// Variable: EVENTS_PAGE_QUERY
+// Query: *[_id == "eventsPage"][0]{  _type,  title,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
+export type EVENTS_PAGE_QUERY_RESULT = {
+  _type: "eventItem";
+  title: string | null;
+  pageBuilder: null;
+} | {
+  _type: "eventsPage";
+  title: string | null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    background: "dark" | "light" | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        alt: string | null;
+        dominantColor: string | null;
+      } | null;
+      link: {
+        linkType: "external" | "internal" | null;
+        page: null;
+        anchor: null;
+        url: string | null;
+      } | {
+        linkType: "external" | "internal" | null;
+        page: {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
+          _type: "page";
+          slug: string | null;
+        } | {
+          _type: "project";
+          slug: string | null;
+        } | null;
+        anchor: string | null;
+        url: null;
+      } | {
+        linkType: "external" | "internal" | null;
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    size: "large" | "small" | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "textBlock";
+    content: Array<{
+      _key: string;
+    } & MailchimpForm | {
+      _key: string;
+    } & Youtube | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  }> | null;
+} | {
+  _type: "homepage";
+  title: string | null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    background: "dark" | "light" | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        alt: string | null;
+        dominantColor: string | null;
+      } | null;
+      link: {
+        linkType: "external" | "internal" | null;
+        page: null;
+        anchor: null;
+        url: string | null;
+      } | {
+        linkType: "external" | "internal" | null;
+        page: {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
+          _type: "page";
+          slug: string | null;
+        } | {
+          _type: "project";
+          slug: string | null;
+        } | null;
+        anchor: string | null;
+        url: null;
+      } | {
+        linkType: "external" | "internal" | null;
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    size: "large" | "small" | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "textBlock";
+    content: Array<{
+      _key: string;
+    } & MailchimpForm | {
+      _key: string;
+    } & Youtube | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  }> | null;
+} | {
+  _type: "page";
+  title: string | null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    background: "dark" | "light" | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        alt: string | null;
+        dominantColor: string | null;
+      } | null;
+      link: {
+        linkType: "external" | "internal" | null;
+        page: null;
+        anchor: null;
+        url: string | null;
+      } | {
+        linkType: "external" | "internal" | null;
+        page: {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
+          _type: "page";
+          slug: string | null;
+        } | {
+          _type: "project";
+          slug: string | null;
+        } | null;
+        anchor: string | null;
+        url: null;
+      } | {
+        linkType: "external" | "internal" | null;
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    size: "large" | "small" | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "textBlock";
+    content: Array<{
+      _key: string;
+    } & MailchimpForm | {
+      _key: string;
+    } & Youtube | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  }> | null;
+} | {
+  _type: "project";
+  title: string | null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    background: "dark" | "light" | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        alt: string | null;
+        dominantColor: string | null;
+      } | null;
+      link: {
+        linkType: "external" | "internal" | null;
+        page: null;
+        anchor: null;
+        url: string | null;
+      } | {
+        linkType: "external" | "internal" | null;
+        page: {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
+          _type: "page";
+          slug: string | null;
+        } | {
+          _type: "project";
+          slug: string | null;
+        } | null;
+        anchor: string | null;
+        url: null;
+      } | {
+        linkType: "external" | "internal" | null;
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    size: "large" | "small" | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "textBlock";
+    content: Array<{
+      _key: string;
+    } & MailchimpForm | {
+      _key: string;
+    } & Youtube | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      alt: string | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  }> | null;
+} | {
+  _type: "sanity.fileAsset";
+  title: string | null;
+  pageBuilder: null;
+} | {
+  _type: "sanity.imageAsset";
+  title: string | null;
+  pageBuilder: null;
+} | {
+  _type: "siteSettings";
+  title: null;
+  pageBuilder: null;
+} | null;
+
+// Source: ../website/src/sanity/queries.ts
+// Variable: EVENT_ITEMS_QUERY
+// Query: *[_type == "eventItem"] | order(eventDatetime desc) {  _type,  title,  eventDatetime,  location,  description}
+export type EVENT_ITEMS_QUERY_RESULT = Array<{
+  _type: "eventItem";
+  title: string | null;
+  eventDatetime: string | null;
+  location: string | null;
+  description: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal";
+    listItem?: never;
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
   }> | null;
 }>;
 

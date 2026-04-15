@@ -22,7 +22,7 @@ export const link = defineType({
       name: 'page',
       title: 'Internal Page',
       type: 'reference',
-      to: [{type: 'page'}, {type: 'project'}],
+      to: [{type: 'page'}, {type: 'project'}, {type: 'eventsPage'}],
       hidden: ({parent}) => parent?.linkType !== 'internal',
     }),
     defineField({
