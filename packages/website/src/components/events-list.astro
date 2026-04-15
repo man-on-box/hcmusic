@@ -54,9 +54,9 @@ const formatTime = (value: number) => (value < 10 ? `0${value}` : `${value}`);
 
         return (
           <li class="flex gap-4 border-t-1 border-slate-200 py-4 last:border-b-1 md:gap-8">
-            <div class="flex size-21 flex-col items-center justify-center rounded bg-slate-100 p-4 font-serif">
-              <p class="text-3xl font-bold">{day}</p>
-              <p class="text-xl">{month}</p>
+            <div class="flex size-16 shrink-0 flex-col items-center justify-center rounded bg-slate-100 p-4 font-serif sm:size-21">
+              <p class="text-xl font-bold sm:text-3xl">{day}</p>
+              <p class="sm:text-xl">{month}</p>
             </div>
             <div>
               <p class="font-bold text-gray-800">
