@@ -1,7 +1,9 @@
 import type {
   HOMEPAGE_QUERY_RESULT,
   PAGE_QUERY_RESULT,
+  PAGES_QUERY_RESULT,
   PROJECT_QUERY_RESULT,
+  PROJECTS_QUERY_RESULT,
   EVENTS_PAGE_QUERY_RESULT,
   SITE_SETTINGS_QUERY_RESULT,
   EVENT_ITEMS_QUERY_RESULT,
@@ -124,7 +126,7 @@ export const homepageQuery = async () => {
   return result;
 };
 
-const PAGE_QUERY =
+const PAGES_QUERY =
   defineQuery(`*[_type == "page" && defined(pageSlug.slug.current)] {
   _type,
   title,
@@ -132,16 +134,35 @@ const PAGE_QUERY =
   ${pageBuilderFragment}
 }`);
 
-export const pageQuery = async () => {
-  const result = await sanityClient.fetch<PAGE_QUERY_RESULT>(PAGE_QUERY);
+export const pagesQuery = async () => {
+  const result = await sanityClient.fetch<PAGES_QUERY_RESULT>(PAGES_QUERY);
   if (!result) {
-    throw new Error("Could not fetch page data");
+    throw new Error("Could not fetch pages data");
   }
 
   return result;
 };
 
-const PROJECT_QUERY =
+const PAGE_QUERY =
+  defineQuery(`*[_type == "page" && pageSlug.slug.current == $slug][0] {
+  _type,
+  title,
+  ${pageSlugFragment},
+  ${pageBuilderFragment}
+}`);
+
+export const pageQuery = async (slug: string) => {
+  const result = await sanityClient.fetch<PAGE_QUERY_RESULT>(PAGE_QUERY, {
+    slug,
+  });
+  if (!result) {
+    throw new Error(`Could not fetch page data for slug: ${slug}`);
+  }
+
+  return result;
+};
+
+const PROJECTS_QUERY =
   defineQuery(`*[_type == "project" && defined(pageSlug.slug.current)] {
   _type,
   title,
@@ -149,10 +170,30 @@ const PROJECT_QUERY =
   ${pageBuilderFragment}
 }`);
 
-export const projectQuery = async () => {
-  const result = await sanityClient.fetch<PROJECT_QUERY_RESULT>(PROJECT_QUERY);
+export const projectsQuery = async () => {
+  const result =
+    await sanityClient.fetch<PROJECTS_QUERY_RESULT>(PROJECTS_QUERY);
   if (!result) {
     throw new Error("Could not fetch project data");
+  }
+
+  return result;
+};
+
+const PROJECT_QUERY =
+  defineQuery(`*[_type == "project" && pageSlug.slug.current == $slug][0] {
+  _type,
+  title,
+  ${pageSlugFragment},
+  ${pageBuilderFragment}
+}`);
+
+export const projectQuery = async (slug: string) => {
+  const result = await sanityClient.fetch<PROJECT_QUERY_RESULT>(PROJECT_QUERY, {
+    slug,
+  });
+  if (!result) {
+    throw new Error(`Could not fetch project data for slug: ${slug}`);
   }
 
   return result;
