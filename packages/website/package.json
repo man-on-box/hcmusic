@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "build:preview": "DEPLOY_TARGET=workers-preview astro build",
+    "deploy:preview": "pnpm wrangler deploy",
     "preview": "pnpm run build && wrangler dev",
     "astro": "astro",
     "generate-types": "wrangler types",

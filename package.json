@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build:website": "pnpm --filter website build",
+    "build:website:preview": "pnpm --filter website build:preview",
+    "deploy:website:preview": "pnpm --filter website deploy:preview",
     "format": "prettier --write ."
   },
   "keywords": [],
