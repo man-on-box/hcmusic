@@ -3,6 +3,8 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sanity from "@sanity/astro";
 import cloudflare from "@astrojs/cloudflare";
+import react from "@astrojs/react";
+import node from "@astrojs/node";
 
 const isWorkerPreview = process.env.DEPLOY_TARGET === "workers-preview";
 
@@ -15,6 +17,16 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: [
+        "react/compiler-runtime",
+        "lodash/isObject.js",
+        "lodash/groupBy.js",
+        "lodash/keyBy.js",
+        "lodash/partition.js",
+        "lodash/sortedIndex.js",
+      ],
+    },
   },
   image: {
     domains: ["cdn.sanity.io"],
@@ -24,7 +36,12 @@ export default defineConfig({
       projectId: "x6ftvyem",
       dataset: "production",
       useCdn: false,
+      stega: {
+        studioUrl: "http://localhost:3333",
+      },
     }),
+    react(),
   ],
+  // adapter: node({ mode: "standalone" }),
   adapter: isWorkerPreview ? cloudflare() : undefined,
 });

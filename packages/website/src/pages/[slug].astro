@@ -1,32 +1,22 @@
 ---
-import { pageQuery, pagesQuery } from "../sanity/queries";
 import MainLayout from "../layouts/main.astro";
 import BlockRenderer from "../blocks/block-renderer.astro";
+import { resolvePagesData, resolvePageData } from "../sanity/resolvers";
 
 export async function getStaticPaths() {
-  const pages = await pagesQuery();
-
-  return pages.map((page) => ({
+  const data = await resolvePagesData();
+  return data.map((page) => ({
     params: { slug: page.slug },
     props: { page },
   }));
 }
+const { slug } = Astro.params;
+const { page: initialData } = Astro.props;
 
-let { page } = Astro.props;
-
-if (!page) {
-  const { slug } = Astro.params;
-  if (slug) {
-    page = await pageQuery(slug);
-  }
-}
-
-if (!page) {
-  Astro.response.status = 404;
-  Astro.response.statusText = "Not found";
-}
+const page = initialData ?? (await resolvePageData(Astro.cookies, slug));
+const { pageBuilder } = page;
 ---
 
 <MainLayout>
-  {page && page.pageBuilder && <BlockRenderer blocks={page.pageBuilder} />}
+  {pageBuilder && <BlockRenderer blocks={pageBuilder} />}
 </MainLayout>

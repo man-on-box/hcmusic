@@ -1,10 +1,10 @@
 import type {
-  PAGE_QUERY_RESULT,
+  PAGES_QUERY_RESULT,
   SITE_SETTINGS_QUERY_RESULT,
 } from "../sanity/sanity.types";
 
 // ---------- Pages ----------
-export type PageData = NonNullable<PAGE_QUERY_RESULT>[number];
+export type PageData = NonNullable<PAGES_QUERY_RESULT>[number];
 export type SiteSettings = NonNullable<SITE_SETTINGS_QUERY_RESULT>;
 
 // ---------- Shared Types ----------
