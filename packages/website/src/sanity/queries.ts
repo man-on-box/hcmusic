@@ -49,6 +49,20 @@ const heroBlockFragment = /* groq */ `
 const textBlockFragment = /* groq */ `
   _type == "textBlock" => {
     content,
+    "content": content[]{
+      ...,
+      markDefs[]{
+        ...,
+        _type == "textLink" => {
+          linkType,
+          "href": select(
+            linkType == "internal" => "/" + page->pageSlug.slug.current,
+            linkType == "external" => external,
+            ""
+          )
+        }
+      }
+    },
     cta,
     "ctaLink": ctaLink { ${linkFragment} },
     textAlign,

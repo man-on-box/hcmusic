@@ -7,6 +7,7 @@ import YoutubeEmbed from "../components/youtube-embed.astro";
 import MailchimpForm from "../components/mailchimp-form.astro";
 import LinkButton from "../components/link-button.astro";
 import Prose from "../components/prose.astro";
+import TextLink from "../components/text-link.astro";
 
 import type { TextBlockData } from "../types/sanity";
 import { urlFor } from "../sanity/image";
@@ -45,6 +46,9 @@ const textAlignStyles = textAlignClassMap[stegaClean(textAlign) || "left"];
 const imageSize = 500;
 
 const components = {
+  mark: {
+    textLink: TextLink,
+  },
   type: {
     youtube: YoutubeEmbed,
     mailchimpForm: MailchimpForm,
