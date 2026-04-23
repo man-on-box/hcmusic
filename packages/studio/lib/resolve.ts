@@ -3,7 +3,6 @@ import type {PresentationPluginOptions} from 'sanity/presentation'
 
 export const resolve: PresentationPluginOptions['resolve'] = {
   locations: {
-    // The key is the document type name from your schema
     homepage: defineLocations({
       select: {
         title: 'title',

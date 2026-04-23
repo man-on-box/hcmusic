@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.1.10",
-    "@astrojs/node": "^10.0.5",
     "@astrojs/react": "^5.0.3",
     "@sanity/astro": "^3.3.1",
     "@sanity/client": "^7.20.0",

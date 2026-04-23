@@ -4,7 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 import sanity from "@sanity/astro";
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
-import node from "@astrojs/node";
 
 const isWorkerPreview = process.env.DEPLOY_TARGET === "workers-preview";
 
@@ -42,6 +41,5 @@ export default defineConfig({
     }),
     react(),
   ],
-  // adapter: node({ mode: "standalone" }),
   adapter: isWorkerPreview ? cloudflare() : undefined,
 });
