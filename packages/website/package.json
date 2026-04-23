@@ -12,6 +12,7 @@
     "deploy:preview": "pnpm wrangler deploy",
     "preview": "pnpm run build && wrangler dev",
     "astro": "astro",
+    "typecheck": "tsc --noEmit",
     "generate-types": "wrangler types",
     "deploy": "pnpm run build && wrangler deploy"
   },

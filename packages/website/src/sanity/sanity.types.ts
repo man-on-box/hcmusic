@@ -28,7 +28,6 @@ export type CardImage = {
 ;
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
-  alt?: string;
   _type: "image";
 };
 
@@ -120,7 +119,6 @@ export type TextBlock = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
     _type: "image";
   };
   imageAlign?: "left" | "right";
@@ -148,7 +146,6 @@ export type HeroBlock = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
     _type: "image";
   };
   size?: "small" | "large";
@@ -264,6 +261,15 @@ export type SanityImageHotspot = {
   width?: number;
 };
 
+export type MediaTag = {
+  _id: string;
+  _type: "media.tag";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: Slug;
+};
+
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -361,7 +367,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | PageSlug | MailchimpForm | PageReference | ProjectReference | EventsPageReference | Link | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | EventItem | EventsPage | Project | Page | Slug | SiteSettings | Homepage | SanityImageCrop | SanityImageHotspot | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | PageSlug | MailchimpForm | PageReference | ProjectReference | EventsPageReference | Link | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | EventItem | EventsPage | Project | Page | Slug | SiteSettings | Homepage | SanityImageCrop | SanityImageHotspot | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
@@ -398,7 +404,7 @@ export type SITE_SETTINGS_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: HOMEPAGE_QUERY
-// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
+// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
 export type HOMEPAGE_QUERY_RESULT = {
   pageBuilder: null;
 } | {
@@ -415,6 +421,7 @@ export type HOMEPAGE_QUERY_RESULT = {
           _id: string;
           _type: "sanity.imageAsset";
           url: string | null;
+          altText: string | null;
           metadata: {
             lqip: string | null;
             dimensions: {
@@ -425,7 +432,6 @@ export type HOMEPAGE_QUERY_RESULT = {
         } | null;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
-        alt: string | null;
         dominantColor: string | null;
       } | null;
       link: {
@@ -462,6 +468,7 @@ export type HOMEPAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -472,7 +479,6 @@ export type HOMEPAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
   } | {
@@ -530,6 +536,7 @@ export type HOMEPAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -540,7 +547,6 @@ export type HOMEPAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;
@@ -550,7 +556,7 @@ export type HOMEPAGE_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PAGES_QUERY
-// Query: *[_type == "page" && defined(pageSlug.slug.current)] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
+// Query: *[_type == "page" && defined(pageSlug.slug.current)] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
 export type PAGES_QUERY_RESULT = Array<{
   _type: "page";
   title: string | null;
@@ -568,6 +574,7 @@ export type PAGES_QUERY_RESULT = Array<{
           _id: string;
           _type: "sanity.imageAsset";
           url: string | null;
+          altText: string | null;
           metadata: {
             lqip: string | null;
             dimensions: {
@@ -578,7 +585,6 @@ export type PAGES_QUERY_RESULT = Array<{
         } | null;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
-        alt: string | null;
         dominantColor: string | null;
       } | null;
       link: {
@@ -615,6 +621,7 @@ export type PAGES_QUERY_RESULT = Array<{
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -625,7 +632,6 @@ export type PAGES_QUERY_RESULT = Array<{
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
   } | {
@@ -683,6 +689,7 @@ export type PAGES_QUERY_RESULT = Array<{
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -693,7 +700,6 @@ export type PAGES_QUERY_RESULT = Array<{
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;
@@ -703,7 +709,7 @@ export type PAGES_QUERY_RESULT = Array<{
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && pageSlug.slug.current == $slug][0] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
+// Query: *[_type == "page" && pageSlug.slug.current == $slug][0] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
 export type PAGE_QUERY_RESULT = {
   _type: "page";
   title: string | null;
@@ -721,6 +727,7 @@ export type PAGE_QUERY_RESULT = {
           _id: string;
           _type: "sanity.imageAsset";
           url: string | null;
+          altText: string | null;
           metadata: {
             lqip: string | null;
             dimensions: {
@@ -731,7 +738,6 @@ export type PAGE_QUERY_RESULT = {
         } | null;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
-        alt: string | null;
         dominantColor: string | null;
       } | null;
       link: {
@@ -768,6 +774,7 @@ export type PAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -778,7 +785,6 @@ export type PAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
   } | {
@@ -836,6 +842,7 @@ export type PAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -846,7 +853,6 @@ export type PAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;
@@ -856,7 +862,7 @@ export type PAGE_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PROJECTS_QUERY
-// Query: *[_type == "project" && defined(pageSlug.slug.current)] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
+// Query: *[_type == "project" && defined(pageSlug.slug.current)] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
 export type PROJECTS_QUERY_RESULT = Array<{
   _type: "project";
   title: string | null;
@@ -874,6 +880,7 @@ export type PROJECTS_QUERY_RESULT = Array<{
           _id: string;
           _type: "sanity.imageAsset";
           url: string | null;
+          altText: string | null;
           metadata: {
             lqip: string | null;
             dimensions: {
@@ -884,7 +891,6 @@ export type PROJECTS_QUERY_RESULT = Array<{
         } | null;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
-        alt: string | null;
         dominantColor: string | null;
       } | null;
       link: {
@@ -921,6 +927,7 @@ export type PROJECTS_QUERY_RESULT = Array<{
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -931,7 +938,6 @@ export type PROJECTS_QUERY_RESULT = Array<{
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
   } | {
@@ -989,6 +995,7 @@ export type PROJECTS_QUERY_RESULT = Array<{
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -999,7 +1006,6 @@ export type PROJECTS_QUERY_RESULT = Array<{
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;
@@ -1009,7 +1015,7 @@ export type PROJECTS_QUERY_RESULT = Array<{
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PROJECT_QUERY
-// Query: *[_type == "project" && pageSlug.slug.current == $slug][0] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
+// Query: *[_type == "project" && pageSlug.slug.current == $slug][0] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
 export type PROJECT_QUERY_RESULT = {
   _type: "project";
   title: string | null;
@@ -1027,6 +1033,7 @@ export type PROJECT_QUERY_RESULT = {
           _id: string;
           _type: "sanity.imageAsset";
           url: string | null;
+          altText: string | null;
           metadata: {
             lqip: string | null;
             dimensions: {
@@ -1037,7 +1044,6 @@ export type PROJECT_QUERY_RESULT = {
         } | null;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
-        alt: string | null;
         dominantColor: string | null;
       } | null;
       link: {
@@ -1074,6 +1080,7 @@ export type PROJECT_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -1084,7 +1091,6 @@ export type PROJECT_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
   } | {
@@ -1142,6 +1148,7 @@ export type PROJECT_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -1152,7 +1159,6 @@ export type PROJECT_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;
@@ -1162,7 +1168,7 @@ export type PROJECT_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: EVENTS_PAGE_QUERY
-// Query: *[_id == "eventsPage"][0]{  _type,  title,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  alt,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
+// Query: *[_id == "eventsPage"][0]{  _type,  title,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
 export type EVENTS_PAGE_QUERY_RESULT = {
   _type: "eventItem";
   title: string | null;
@@ -1183,6 +1189,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
           _id: string;
           _type: "sanity.imageAsset";
           url: string | null;
+          altText: string | null;
           metadata: {
             lqip: string | null;
             dimensions: {
@@ -1193,7 +1200,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         } | null;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
-        alt: string | null;
         dominantColor: string | null;
       } | null;
       link: {
@@ -1230,6 +1236,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -1240,7 +1247,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
   } | {
@@ -1298,6 +1304,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -1308,7 +1315,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;
@@ -1330,6 +1336,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
           _id: string;
           _type: "sanity.imageAsset";
           url: string | null;
+          altText: string | null;
           metadata: {
             lqip: string | null;
             dimensions: {
@@ -1340,7 +1347,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         } | null;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
-        alt: string | null;
         dominantColor: string | null;
       } | null;
       link: {
@@ -1377,6 +1383,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -1387,7 +1394,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
   } | {
@@ -1445,6 +1451,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -1455,12 +1462,15 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;
     sectionId: string | null;
   }> | null;
+} | {
+  _type: "media.tag";
+  title: null;
+  pageBuilder: null;
 } | {
   _type: "page";
   title: string | null;
@@ -1477,6 +1487,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
           _id: string;
           _type: "sanity.imageAsset";
           url: string | null;
+          altText: string | null;
           metadata: {
             lqip: string | null;
             dimensions: {
@@ -1487,7 +1498,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         } | null;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
-        alt: string | null;
         dominantColor: string | null;
       } | null;
       link: {
@@ -1524,6 +1534,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -1534,7 +1545,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
   } | {
@@ -1592,6 +1602,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -1602,7 +1613,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;
@@ -1624,6 +1634,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
           _id: string;
           _type: "sanity.imageAsset";
           url: string | null;
+          altText: string | null;
           metadata: {
             lqip: string | null;
             dimensions: {
@@ -1634,7 +1645,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         } | null;
         crop: SanityImageCrop | null;
         hotspot: SanityImageHotspot | null;
-        alt: string | null;
         dominantColor: string | null;
       } | null;
       link: {
@@ -1671,6 +1681,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -1681,7 +1692,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
   } | {
@@ -1739,6 +1749,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _id: string;
         _type: "sanity.imageAsset";
         url: string | null;
+        altText: string | null;
         metadata: {
           lqip: string | null;
           dimensions: {
@@ -1749,7 +1760,6 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | null;
       crop: SanityImageCrop | null;
       hotspot: SanityImageHotspot | null;
-      alt: string | null;
       dominantColor: string | null;
     } | null;
     imageAlign: "left" | "right" | null;

@@ -21,5 +21,5 @@ const { blockData } = Astro.props;
         .format("webp")
         .url()
     : ""}
-  imgAlt={blockData.backgroundImage?.alt || ""}
+  imgAlt={blockData.backgroundImage?.asset?.altText || ""}
 />
