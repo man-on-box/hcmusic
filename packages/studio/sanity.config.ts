@@ -6,6 +6,7 @@ import {presentationTool} from 'sanity/presentation'
 import {schemaTypes} from './schemaTypes'
 import {structure} from './structure'
 import {resolve} from './lib/resolve'
+import {SINGLETON_ACTIONS, SINGLETON_TYPES} from './schemaTypes/constants'
 
 export default defineConfig({
   name: 'default',
@@ -39,5 +40,15 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
+  },
+
+  document: {
+    actions: (input, context) => {
+      if (SINGLETON_TYPES.has(context.schemaType)) {
+        return input.filter(({action}) => action && SINGLETON_ACTIONS.has(action))
+      }
+      return input
+    },
+    newDocumentOptions: (prev) => prev.filter((item) => !SINGLETON_TYPES.has(item.templateId)),
   },
 })

@@ -1,7 +1,8 @@
 import type {StructureResolver} from 'sanity/structure'
 import {DocumentIcon, CogIcon, HomeIcon, ProjectsIcon, CalendarIcon} from '@sanity/icons'
+import {SINGLETON_TYPES} from '../schemaTypes/constants'
 
-const HIDDEN_TYPES = ['siteSettings', 'homepage', 'page', 'project', 'eventsPage', 'eventItem']
+const HIDDEN_TYPES = [...SINGLETON_TYPES, 'page', 'project', 'eventsPage', 'eventItem']
 
 export const structure: StructureResolver = (S) =>
   S.list()
