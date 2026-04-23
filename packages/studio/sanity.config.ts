@@ -31,22 +31,5 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
-    templates: (prev) => [
-      ...prev,
-      {
-        id: 'page-with-parent',
-        title: 'Page with Parent',
-        schemaType: 'page',
-        parameters: [{name: 'parentId', type: 'string'}],
-        value: (params: any) => ({
-          pageSlug: {
-            parent: {
-              _type: 'reference',
-              _ref: params.parentId,
-            },
-          },
-        }),
-      },
-    ],
   },
 })
