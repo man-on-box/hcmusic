@@ -21,7 +21,7 @@ export default defineConfig({
     presentationTool({
       resolve,
       previewUrl: {
-        initial: 'https://hcmusic-website.theapricoteffect.workers.dev',
+        initial: process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:4321',
         previewMode: {
           enable: '/api/draft-mode/enable',
         },
