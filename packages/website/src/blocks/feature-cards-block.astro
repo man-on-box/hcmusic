@@ -55,7 +55,7 @@ const styles = variants[stegaClean(background) || "light"];
                     .url()}
                   width={imageSize}
                   height={imageSize / 2}
-                  alt={card.cardImage.alt || ""}
+                  alt={card.cardImage.asset?.altText || ""}
                   layout="full-width"
                   class="h-54 w-full shrink-0 rounded-t object-cover"
                 />

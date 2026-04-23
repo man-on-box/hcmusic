@@ -60,14 +60,6 @@ export const textBlockType = defineType({
       options: {
         hotspot: true,
       },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-          description: 'Visual description of the image.',
-        }),
-      ],
     }),
     defineField({
       name: 'imageAlign',

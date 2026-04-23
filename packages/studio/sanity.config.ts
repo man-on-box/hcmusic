@@ -1,6 +1,7 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
+import {media} from 'sanity-plugin-media'
 import {presentationTool} from 'sanity/presentation'
 import {schemaTypes} from './schemaTypes'
 import {structure} from './structure'
@@ -14,6 +15,7 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [
+    media(),
     structureTool({
       structure,
     }),
@@ -28,6 +30,12 @@ export default defineConfig({
       },
     }),
   ],
+
+  form: {
+    image: {
+      assetSources: (sources) => sources.filter((source) => source.name !== 'sanity-default'),
+    },
+  },
 
   schema: {
     types: schemaTypes,

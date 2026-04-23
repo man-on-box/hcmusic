@@ -5,11 +5,11 @@ const imageFragment = /* groq */ `
     _id,
     _type,
     url,
+    altText,
     metadata { lqip, dimensions { width, height } }
   },
   crop,
   hotspot,
-  alt,
   "dominantColor": asset->metadata.palette.dominant.background
 `;
 
