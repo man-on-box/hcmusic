@@ -1,0 +1,22 @@
+---
+interface Props {
+  node: {
+    markDef: {
+      _key: string;
+      _type: "textLink";
+      linkType: "internal" | "external";
+      href: string;
+    };
+  };
+}
+
+const props = Astro.props;
+const { href, linkType } = props.node.markDef;
+const isExternal = linkType === "external";
+---
+
+<a
+  href={href}
+  target={isExternal ? "_blank" : undefined}
+  rel={isExternal ? "noopener noreferrer" : undefined}><slot /></a
+>

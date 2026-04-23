@@ -1,5 +1,5 @@
 import {defineType, defineField, defineArrayMember} from 'sanity'
-import {BlockContentIcon} from '@sanity/icons'
+import {BlockContentIcon, LinkIcon} from '@sanity/icons'
 
 const CONTENT_GROUP = 'options'
 const OPTIONS_GROUP = 'layout'
@@ -32,6 +32,14 @@ export const textBlockType = defineType({
               {title: 'Emphasis', value: 'em'},
               {title: 'Underline', value: 'underline'},
               {title: 'Strike', value: 'strike-through'},
+            ],
+            annotations: [
+              {
+                name: 'textLink',
+                type: 'link',
+                title: 'Link',
+                icon: LinkIcon,
+              },
             ],
           },
           styles: [
