@@ -1,14 +1,19 @@
 ---
+import { ClientRouter } from "astro:transitions";
+import { perspectiveCookieName } from "@sanity/preview-url-secret/constants";
 import "../styles/global.css";
 
-import { siteSettingsQuery } from "../sanity/queries";
+import { resolveSiteSettingsData } from "../sanity/resolvers";
 
-import { ClientRouter } from "astro:transitions";
-
+import SanityVisualEditing from "../components/sanity/sanity-visual-editing";
+import DisableDraftMode from "../components/sanity/disable-draft-mode";
 import Nav from "../components/nav.astro";
 import Footer from "../components/footer.astro";
 
-const { siteName, siteTagline, mainNav } = await siteSettingsQuery();
+const draftMode = Astro.cookies.has(perspectiveCookieName);
+const data = await resolveSiteSettingsData(Astro.cookies);
+
+const { siteName, mainNav, siteTagline } = data;
 ---
 
 <html class="scroll-pt-26" lang="en">
@@ -20,7 +25,7 @@ const { siteName, siteTagline, mainNav } = await siteSettingsQuery();
     <title>{siteName}</title>
     <ClientRouter />
   </head>
-  <body>
+  <body class="bg-white">
     <Nav siteName={siteName} navItems={mainNav} />
     <main class="min-h-screen">
       <slot />
@@ -30,5 +35,13 @@ const { siteName, siteTagline, mainNav } = await siteSettingsQuery();
       siteTagline={siteTagline || ""}
       navItems={mainNav}
     />
+    {
+      draftMode && (
+        <>
+          <SanityVisualEditing client:only="react" />
+          <DisableDraftMode client:only="react" />
+        </>
+      )
+    }
   </body>
 </html>

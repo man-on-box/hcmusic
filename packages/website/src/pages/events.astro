@@ -1,18 +1,15 @@
 ---
 import type { PortableTextBlock } from "@portabletext/types";
 
-import { eventsPageQuery, eventsItemsQuery } from "../sanity/queries";
 import MainLayout from "../layouts/main.astro";
 import BlockRenderer from "../blocks/block-renderer.astro";
 
 import EventsList from "../components/events-list.astro";
 
-const [pageData, events] = await Promise.all([
-  eventsPageQuery(),
-  eventsItemsQuery(),
-]);
+import { resolveEventsPageData } from "../sanity/resolvers";
 
-const { pageBuilder } = pageData;
+const { events, eventsPage } = await resolveEventsPageData(Astro.cookies);
+const { pageBuilder } = eventsPage;
 
 const mappedEvents = events.map((event) => ({
   title: event.title || "no title",

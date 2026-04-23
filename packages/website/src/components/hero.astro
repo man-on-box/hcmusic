@@ -1,5 +1,7 @@
 ---
 import { Image } from "astro:assets";
+import { stegaClean } from "@sanity/client/stega";
+
 import { cn } from "../utils";
 
 interface Props {
@@ -27,7 +29,7 @@ const variants = {
   },
 };
 
-const style = variants[variant];
+const style = variants[stegaClean(variant)];
 ---
 
 <section

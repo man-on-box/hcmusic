@@ -10,6 +10,7 @@ import Prose from "../components/prose.astro";
 
 import type { TextBlockData } from "../types/sanity";
 import { urlFor } from "../sanity/image";
+import { stegaClean } from "@sanity/client/stega";
 
 interface Props {
   blockData: TextBlockData;
@@ -39,7 +40,7 @@ const textAlignClassMap: Record<
 const leadInStyles =
   "first-letter:text-8xl first-letter:float-left first-letter:mr-2 first-line:font-serif first-line:tracking-wider first-line:text-2xl first-line:text-slate-800";
 
-const textAlignStyles = textAlignClassMap[textAlign || "left"];
+const textAlignStyles = textAlignClassMap[stegaClean(textAlign) || "left"];
 
 const imageSize = 500;
 

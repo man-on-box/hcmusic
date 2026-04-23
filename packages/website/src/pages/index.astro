@@ -1,9 +1,9 @@
 ---
-import { homepageQuery } from "../sanity/queries";
 import MainLayout from "../layouts/main.astro";
 import BlockRenderer from "../blocks/block-renderer.astro";
+import { resolveHomepageData } from "../sanity/resolvers";
 
-const { pageBuilder } = await homepageQuery();
+const { pageBuilder } = await resolveHomepageData(Astro.cookies);
 ---
 
 <MainLayout>

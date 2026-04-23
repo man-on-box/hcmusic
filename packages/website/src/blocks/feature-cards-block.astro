@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { stegaClean } from "@sanity/client/stega";
 
 import { cn } from "../utils";
 import { urlFor } from "../sanity/image";
@@ -27,7 +28,7 @@ const variants = {
   },
 };
 
-const styles = variants[background || "light"];
+const styles = variants[stegaClean(background) || "light"];
 ---
 
 <section class={cn("py-18 md:py-22", styles.container)}>
