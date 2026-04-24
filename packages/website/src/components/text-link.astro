@@ -1,17 +1,22 @@
 ---
+import type { LinkType } from "../types/sanity";
+import { linkResolver } from "../utils/link-resolver";
+
+type MarkDef = LinkType & {
+  _key: string;
+  _type: "textLink";
+};
+
 interface Props {
   node: {
-    markDef: {
-      _key: string;
-      _type: "textLink";
-      linkType: "internal" | "external";
-      href: string;
-    };
+    markDef: MarkDef;
   };
 }
 
 const props = Astro.props;
-const { href, linkType } = props.node.markDef;
+const { _key, _type, ...link } = props.node.markDef;
+
+const { href, linkType } = linkResolver(link);
 const isExternal = linkType === "external";
 ---
 

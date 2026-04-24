@@ -37,6 +37,12 @@ export type Youtube = {
   id?: string;
 };
 
+export type Seo = {
+  _type: "seo";
+  metaTitle?: string;
+  metaDescription?: string;
+};
+
 export type PageSlug = {
   _type: "pageSlug";
   slug?: Slug;
@@ -187,6 +193,7 @@ export type EventsPage = {
   title?: string;
   pageSlug?: PageSlug;
   pageBuilder?: PageBuilder;
+  seo?: Seo;
 };
 
 export type Project = {
@@ -198,6 +205,7 @@ export type Project = {
   title?: string;
   pageSlug?: PageSlug;
   pageBuilder?: PageBuilder;
+  seo?: Seo;
 };
 
 export type Page = {
@@ -209,6 +217,7 @@ export type Page = {
   title?: string;
   pageSlug?: PageSlug;
   pageBuilder?: PageBuilder;
+  seo?: Seo;
 };
 
 export type Slug = {
@@ -231,6 +240,7 @@ export type SiteSettings = {
     _type: "navLink";
     _key: string;
   }>;
+  mainSeo?: Seo;
 };
 
 export type Homepage = {
@@ -365,14 +375,18 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | PageSlug | MailchimpForm | PageReference | ProjectReference | EventsPageReference | Link | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | EventItem | EventsPage | Project | Page | Slug | SiteSettings | Homepage | SanityImageCrop | SanityImageHotspot | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | Seo | PageSlug | MailchimpForm | PageReference | ProjectReference | EventsPageReference | Link | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | EventItem | EventsPage | Project | Page | Slug | SiteSettings | Homepage | SanityImageCrop | SanityImageHotspot | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_id == "siteSettings" && defined(siteName)][0]{  siteName,  siteTagline,  "mainNav": coalesce(mainNav[defined(label)] {    "label": coalesce(label, ""),    "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }  }, [])}
+// Query: *[_id == "siteSettings" && defined(siteName)][0]{  siteName,  siteTagline,  "mainSeo": mainSeo {   metaTitle,  metaDescription, },  "mainNav": coalesce(mainNav[defined(label)] {    "label": coalesce(label, ""),    "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }  }, [])}
 export type SITE_SETTINGS_QUERY_RESULT = {
   siteName: string;
   siteTagline: string | null;
+  mainSeo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   mainNav: Array<{
     label: string;
     link: {
@@ -402,7 +416,7 @@ export type SITE_SETTINGS_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: HOMEPAGE_QUERY
-// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        // If this is our custom link, follow the reference to get the slug        _type == "textLink" => {          "slug": page->pageSlug.slug.current        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
+// Query: *[_id == "home"][0]{    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
 export type HOMEPAGE_QUERY_RESULT = {
   pageBuilder: null;
 } | {
@@ -564,10 +578,14 @@ export type HOMEPAGE_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PAGES_QUERY
-// Query: *[_type == "page" && defined(pageSlug.slug.current)] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        // If this is our custom link, follow the reference to get the slug        _type == "textLink" => {          "slug": page->pageSlug.slug.current        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
+// Query: *[_type == "page" && defined(pageSlug.slug.current)] {    _type,  title,  "seo": seo {   metaTitle,  metaDescription, },      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
 export type PAGES_QUERY_RESULT = Array<{
   _type: "page";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   slug: string | null;
   pageBuilder: Array<{
     _key: string;
@@ -727,10 +745,14 @@ export type PAGES_QUERY_RESULT = Array<{
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && pageSlug.slug.current == $slug][0] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        // If this is our custom link, follow the reference to get the slug        _type == "textLink" => {          "slug": page->pageSlug.slug.current        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
+// Query: *[_type == "page" && pageSlug.slug.current == $slug][0] {    _type,  title,  "seo": seo {   metaTitle,  metaDescription, },      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
 export type PAGE_QUERY_RESULT = {
   _type: "page";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   slug: string | null;
   pageBuilder: Array<{
     _key: string;
@@ -890,10 +912,14 @@ export type PAGE_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PROJECTS_QUERY
-// Query: *[_type == "project" && defined(pageSlug.slug.current)] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        // If this is our custom link, follow the reference to get the slug        _type == "textLink" => {          "slug": page->pageSlug.slug.current        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
+// Query: *[_type == "project" && defined(pageSlug.slug.current)] {    _type,  title,  "seo": seo {   metaTitle,  metaDescription, },      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
 export type PROJECTS_QUERY_RESULT = Array<{
   _type: "project";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   slug: string | null;
   pageBuilder: Array<{
     _key: string;
@@ -1053,10 +1079,14 @@ export type PROJECTS_QUERY_RESULT = Array<{
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: PROJECT_QUERY
-// Query: *[_type == "project" && pageSlug.slug.current == $slug][0] {    _type,  title,      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        // If this is our custom link, follow the reference to get the slug        _type == "textLink" => {          "slug": page->pageSlug.slug.current        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
+// Query: *[_type == "project" && pageSlug.slug.current == $slug][0] {    _type,  title,  "seo": seo {   metaTitle,  metaDescription, },      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  }  }
 export type PROJECT_QUERY_RESULT = {
   _type: "project";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   slug: string | null;
   pageBuilder: Array<{
     _key: string;
@@ -1216,14 +1246,19 @@ export type PROJECT_QUERY_RESULT = {
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: EVENTS_PAGE_QUERY
-// Query: *[_id == "eventsPage"][0]{  _type,  title,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        // If this is our custom link, follow the reference to get the slug        _type == "textLink" => {          "slug": page->pageSlug.slug.current        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
+// Query: *[_id == "eventsPage"][0]{  _type,  title,  "seo": seo {   metaTitle,  metaDescription, },    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
 export type EVENTS_PAGE_QUERY_RESULT = {
   _type: "eventItem";
   title: string | null;
+  seo: null;
   pageBuilder: null;
 } | {
   _type: "eventsPage";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   pageBuilder: Array<{
     _key: string;
     _type: "featureCardsBlock";
@@ -1381,6 +1416,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
 } | {
   _type: "homepage";
   title: string | null;
+  seo: null;
   pageBuilder: Array<{
     _key: string;
     _type: "featureCardsBlock";
@@ -1538,10 +1574,15 @@ export type EVENTS_PAGE_QUERY_RESULT = {
 } | {
   _type: "media.tag";
   title: null;
+  seo: null;
   pageBuilder: null;
 } | {
   _type: "page";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   pageBuilder: Array<{
     _key: string;
     _type: "featureCardsBlock";
@@ -1699,6 +1740,10 @@ export type EVENTS_PAGE_QUERY_RESULT = {
 } | {
   _type: "project";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   pageBuilder: Array<{
     _key: string;
     _type: "featureCardsBlock";
@@ -1856,14 +1901,17 @@ export type EVENTS_PAGE_QUERY_RESULT = {
 } | {
   _type: "sanity.fileAsset";
   title: string | null;
+  seo: null;
   pageBuilder: null;
 } | {
   _type: "sanity.imageAsset";
   title: string | null;
+  seo: null;
   pageBuilder: null;
 } | {
   _type: "siteSettings";
   title: null;
+  seo: null;
   pageBuilder: null;
 } | null;
 

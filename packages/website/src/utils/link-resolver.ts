@@ -3,9 +3,9 @@ import type { LinkType } from "../types/sanity";
 export const pathResolver = (documentType: string) => {
   switch (documentType) {
     case "project":
-      return `/projects/`;
+      return "/projects/";
     default:
-      return `/`;
+      return "/";
   }
 };
 
@@ -29,17 +29,19 @@ const isExternalLink = (link: LinkType | null): link is ExternalLink =>
 const isInternalLink = (link: LinkType | null): link is InternalLink =>
   link?.linkType === "internal";
 
-export const linkResolver = (link: LinkType | null): { href: string } => {
+export const linkResolver = (
+  link: LinkType | null,
+): { href: string; linkType: "internal" | "external" } => {
   if (isExternalLink(link)) {
-    return { href: link.url || "" };
+    return { href: link.url || "", linkType: "external" };
   }
 
   if (isInternalLink(link)) {
     const path = pathResolver(link.page?._type ?? "");
     const slug = link.page?.slug ?? "";
     const anchor = link.anchor ? `#${link.anchor.replace("#", "")}` : "";
-    return { href: `${path}${slug}${anchor}` };
+    return { href: `${path}${slug}${anchor}`, linkType: "internal" };
   }
 
-  return { href: "#" };
+  return { href: "#", linkType: "internal" };
 };

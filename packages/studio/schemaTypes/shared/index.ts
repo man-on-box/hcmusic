@@ -1,6 +1,7 @@
 import {link} from './link'
 import {mailchimpFormType} from './mailchimp-form'
 import {pageSlugType} from './page-slug'
+import {seoType} from './seo'
 import {youtubeType} from './youtube-video'
 
-export const sharedTypes = [link, mailchimpFormType, pageSlugType, youtubeType]
+export const sharedTypes = [link, mailchimpFormType, pageSlugType, seoType, youtubeType]

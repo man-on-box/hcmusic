@@ -54,12 +54,7 @@ const textBlockFragment = /* groq */ `
       markDefs[]{
         ...,
         _type == "textLink" => {
-          linkType,
-          "href": select(
-            linkType == "internal" => "/" + page->pageSlug.slug.current,
-            linkType == "external" => external,
-            ""
-          )
+          ${linkFragment}
         }
       }
     },
@@ -86,6 +81,11 @@ const featureCardsBlockFragment = /* groq */ `
   }
 `;
 
+const seoFragment = /* groq */ `
+  metaTitle,
+  metaDescription,
+`;
+
 const pageBuilderFragment = /* groq */ `
   pageBuilder[] {
     _key, _type,
@@ -99,6 +99,7 @@ export const SITE_SETTINGS_QUERY =
   defineQuery(`*[_id == "siteSettings" && defined(siteName)][0]{
   siteName,
   siteTagline,
+  "mainSeo": mainSeo { ${seoFragment} },
   "mainNav": coalesce(mainNav[defined(label)] {
     "label": coalesce(label, ""),
     "link": link { ${linkFragment} }
@@ -112,6 +113,7 @@ export const HOMEPAGE_QUERY = defineQuery(`*[_id == "home"][0]{
 const pageFragment = /* groq */ `
   _type,
   title,
+  "seo": seo { ${seoFragment} },
   ${pageSlugFragment},
   ${pageBuilderFragment}
   `;
@@ -129,6 +131,7 @@ export const PAGE_QUERY =
 const projectFragment = /* groq */ `
   _type,
   title,
+  "seo": seo { ${seoFragment} },
   ${pageSlugFragment},
   ${pageBuilderFragment}
   `;
@@ -146,6 +149,7 @@ export const PROJECT_QUERY =
 export const EVENTS_PAGE_QUERY = defineQuery(`*[_id == "eventsPage"][0]{
   _type,
   title,
+  "seo": seo { ${seoFragment} },
   ${pageBuilderFragment},
 }`);
 

@@ -9,7 +9,7 @@ import EventsList from "../components/events-list.astro";
 import { resolveEventsPageData } from "../sanity/resolvers";
 
 const { events, eventsPage } = await resolveEventsPageData(Astro.cookies);
-const { pageBuilder } = eventsPage;
+const { pageBuilder, title, seo } = eventsPage;
 
 const mappedEvents = events.map((event) => ({
   title: event.title || "no title",
@@ -28,7 +28,7 @@ const pastEvents = mappedEvents.filter(
 );
 ---
 
-<MainLayout>
+<MainLayout title={title} seo={seo}>
   {pageBuilder && <BlockRenderer blocks={pageBuilder} />}
   <EventsList heading="Upcoming events" events={upcomingEvents} />
   <EventsList heading="Past events" events={pastEvents} />

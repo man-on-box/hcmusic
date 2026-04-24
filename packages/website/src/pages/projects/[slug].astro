@@ -18,9 +18,9 @@ const { slug } = Astro.params;
 const { page: initialData } = Astro.props;
 
 const page = initialData ?? (await resolveProjectData(Astro.cookies, slug));
-const { pageBuilder } = page;
+const { pageBuilder, title, seo } = page;
 ---
 
-<MainLayout>
+<MainLayout title={title} seo={seo}>
   {pageBuilder && <BlockRenderer blocks={pageBuilder} />}
 </MainLayout>

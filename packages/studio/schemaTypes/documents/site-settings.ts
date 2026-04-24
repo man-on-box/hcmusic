@@ -3,6 +3,7 @@ import {CogIcon, LinkIcon} from '@sanity/icons'
 
 const BRANDING_GROUP = 'branding'
 const NAV_GROUP = 'navigation'
+const SEO_GROUP = 'seo'
 
 export const siteSettingsType = defineType({
   name: 'siteSettings',
@@ -12,6 +13,7 @@ export const siteSettingsType = defineType({
   groups: [
     {name: BRANDING_GROUP, title: 'Branding', default: true},
     {name: NAV_GROUP, title: 'Navigation'},
+    {name: SEO_GROUP, title: 'Main SEO'},
   ],
   fields: [
     defineField({
@@ -54,6 +56,14 @@ export const siteSettingsType = defineType({
           ],
         }),
       ],
+    }),
+    defineField({
+      name: 'mainSeo',
+      title: 'Main SEO',
+      type: 'seo',
+      group: SEO_GROUP,
+      description:
+        'Default site wide SEO settings - these will be used as the default values on pages that have no SEO values set',
     }),
   ],
 })
