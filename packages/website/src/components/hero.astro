@@ -25,7 +25,7 @@ const variants = {
     imgHeight: 900,
     container: "h-[50vh] min-h-[500px]",
     textBox: "px-10 py-8 md:px-16 md:py-12",
-    heading: "text-5xl md:text-6xl lg:text-7xl",
+    heading: "text-5xl md:text-6xl lg:text-7xl uppercase",
   },
 };
 
@@ -59,7 +59,7 @@ const style = variants[stegaClean(variant)];
     >
       <h1
         class={cn(
-          "font-serif text-4xl tracking-wide text-white uppercase",
+          "font-serif text-4xl tracking-wide text-white",
           style.heading,
         )}
       >

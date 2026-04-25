@@ -97,7 +97,7 @@ export const blogArticleType = defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Description',
+      title: 'Article description',
       type: 'text',
       group: MAIN_GROUP,
       description:
@@ -109,6 +109,7 @@ export const blogArticleType = defineType({
       name: 'pageBuilder',
       title: 'Article Page Builder',
       type: 'pageBuilder',
+      description: 'Page builder, hero is auto generated from blog title, date and feature image.',
       group: CONTENT_GROUP,
     }),
   ],

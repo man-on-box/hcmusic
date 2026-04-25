@@ -18,10 +18,7 @@ const { pageBuilder, articles } = await resolveBlogsPageData(Astro.cookies);
         articles.map((article) => {
           return (
             <li>
-              <a
-                class="flex gap-4 border-t-1 border-slate-200 py-4 last:border-b-1 md:gap-8"
-                href={`${pathResolver(article._type)}${article.slug}`}
-              >
+              <a href={`${pathResolver(article._type)}${article.slug}`}>
                 <BlogArticleCard article={article} />
               </a>
             </li>
