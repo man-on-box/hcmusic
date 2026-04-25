@@ -15,7 +15,7 @@ interface Props {
 const { blockData } = Astro.props;
 const { heading, cards, background } = blockData;
 
-const imageSize = 500;
+const IMAGE_SIZE_PX = 500;
 
 const variants = {
   dark: {
@@ -49,12 +49,12 @@ const styles = variants[stegaClean(background) || "light"];
               {card.cardImage && (
                 <Image
                   src={urlFor(card.cardImage)
-                    .width(imageSize * 1.5)
-                    .height((imageSize / 2) * 1.5)
+                    .width(IMAGE_SIZE_PX * 1.5)
+                    .height((IMAGE_SIZE_PX / 2) * 1.5)
                     .format("webp")
                     .url()}
-                  width={imageSize}
-                  height={imageSize / 2}
+                  width={IMAGE_SIZE_PX}
+                  height={IMAGE_SIZE_PX / 2}
                   alt={card.cardImage.asset?.altText || ""}
                   layout="full-width"
                   class="h-54 w-full shrink-0 rounded-t object-cover"

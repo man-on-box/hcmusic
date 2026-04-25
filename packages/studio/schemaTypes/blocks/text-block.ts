@@ -64,6 +64,7 @@ export const textBlockType = defineType({
       name: 'featureImage',
       title: 'Feature image',
       type: 'image',
+      description: 'Feature image to place to the left or right of the text',
       group: FEATURE_IMAGE_GROUP,
       options: {
         hotspot: true,

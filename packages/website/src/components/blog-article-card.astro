@@ -1,0 +1,56 @@
+---
+import { Image } from "astro:assets";
+import { urlFor } from "../sanity/image";
+import Prose from "../components/prose.astro";
+import { formatDate } from "../utils";
+import type { BlogArticleCardData } from "../types/sanity";
+
+interface Props {
+  article: BlogArticleCardData;
+}
+
+const IMAGE_SIZE_PX = 700;
+
+const { article } = Astro.props;
+const { title, description, articleDate, featureImage } = article;
+const date = new Date(articleDate ?? "");
+const formattedDate = formatDate(date);
+---
+
+<div
+  class="flx-c flex flex-col gap-8 border-t-1 border-slate-200 py-4 first:border-t-0 last:border-b-1 sm:flex-row"
+>
+  {
+    featureImage ? (
+      <Image
+        src={urlFor(featureImage)
+          .width(IMAGE_SIZE_PX * 1.5)
+          .height((IMAGE_SIZE_PX / 2) * 1.5)
+          .format("webp")
+          .url()}
+        width={IMAGE_SIZE_PX}
+        height={IMAGE_SIZE_PX / 2}
+        alt={featureImage.asset?.altText || ""}
+        layout="full-width"
+        class="h-60 w-full shrink-0 rounded object-cover sm:size-60"
+      />
+    ) : (
+      <div class="flex h-60 shrink-0 flex-col items-center justify-center rounded bg-slate-100 p-4 font-serif sm:size-60">
+        <p class="text-center text-xl font-bold wrap-break-word text-ellipsis text-slate-900">
+          {title}
+        </p>
+      </div>
+    )
+  }
+  <div>
+    <h2 class="text-xl font-bold text-gray-800">
+      {title}
+    </h2>
+    <p class="text-sm text-gray-600">
+      {formattedDate.day}
+      {formattedDate.month}
+      {formattedDate.year}
+    </p>
+    {description && <Prose class="mt-4 text-gray-600">{description}</Prose>}
+  </div>
+</div>

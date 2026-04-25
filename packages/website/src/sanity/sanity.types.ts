@@ -74,10 +74,24 @@ export type EventsPageReference = {
   [internalGroqTypeReferenceTo]?: "eventsPage";
 };
 
+export type BlogsPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "blogsPage";
+};
+
+export type BlogArticleReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "blogArticle";
+};
+
 export type Link = {
   _type: "link";
   linkType?: "internal" | "external";
-  page?: PageReference | ProjectReference | EventsPageReference;
+  page?: PageReference | ProjectReference | EventsPageReference | BlogsPageReference | BlogArticleReference;
   external?: string;
   anchor?: Slug;
 };
@@ -153,6 +167,54 @@ export type HeroBlock = {
     _type: "image";
   };
   size?: "small" | "large";
+};
+
+export type BlogArticle = {
+  _id: string;
+  _type: "blogArticle";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  pageSlug?: PageSlug;
+  articleDate?: string;
+  description?: string;
+  featureImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  articleContent?: TextBlock;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type BlogsPage = {
+  _id: string;
+  _type: "blogsPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  pageSlug?: PageSlug;
+  pageBuilder?: PageBuilder;
+  seo?: Seo;
 };
 
 export type EventItem = {
@@ -251,22 +313,6 @@ export type Homepage = {
   _rev: string;
   title?: string;
   pageBuilder?: PageBuilder;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type MediaTag = {
@@ -375,7 +421,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | Seo | PageSlug | MailchimpForm | PageReference | ProjectReference | EventsPageReference | Link | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | EventItem | EventsPage | Project | Page | Slug | SiteSettings | Homepage | SanityImageCrop | SanityImageHotspot | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | Seo | PageSlug | MailchimpForm | PageReference | ProjectReference | EventsPageReference | BlogsPageReference | BlogArticleReference | Link | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | BlogArticle | SanityImageCrop | SanityImageHotspot | BlogsPage | EventItem | EventsPage | Project | Page | Slug | SiteSettings | Homepage | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
@@ -397,6 +443,12 @@ export type SITE_SETTINGS_QUERY_RESULT = {
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
         _type: "eventsPage";
         slug: string | null;
       } | {
@@ -454,6 +506,12 @@ export type HOMEPAGE_QUERY_RESULT = {
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
           _type: "eventsPage";
           slug: string | null;
         } | {
@@ -509,7 +567,7 @@ export type HOMEPAGE_QUERY_RESULT = {
         _key: string;
         _type: "link";
         linkType?: "external" | "internal";
-        page?: EventsPageReference | PageReference | ProjectReference;
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
         external?: string;
         anchor?: Slug;
       }> | null;
@@ -537,6 +595,12 @@ export type HOMEPAGE_QUERY_RESULT = {
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
         _type: "eventsPage";
         slug: string | null;
       } | {
@@ -621,6 +685,12 @@ export type PAGES_QUERY_RESULT = Array<{
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
           _type: "eventsPage";
           slug: string | null;
         } | {
@@ -676,7 +746,7 @@ export type PAGES_QUERY_RESULT = Array<{
         _key: string;
         _type: "link";
         linkType?: "external" | "internal";
-        page?: EventsPageReference | PageReference | ProjectReference;
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
         external?: string;
         anchor?: Slug;
       }> | null;
@@ -704,6 +774,12 @@ export type PAGES_QUERY_RESULT = Array<{
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
         _type: "eventsPage";
         slug: string | null;
       } | {
@@ -788,6 +864,12 @@ export type PAGE_QUERY_RESULT = {
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
           _type: "eventsPage";
           slug: string | null;
         } | {
@@ -843,7 +925,7 @@ export type PAGE_QUERY_RESULT = {
         _key: string;
         _type: "link";
         linkType?: "external" | "internal";
-        page?: EventsPageReference | PageReference | ProjectReference;
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
         external?: string;
         anchor?: Slug;
       }> | null;
@@ -871,6 +953,12 @@ export type PAGE_QUERY_RESULT = {
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
         _type: "eventsPage";
         slug: string | null;
       } | {
@@ -955,6 +1043,12 @@ export type PROJECTS_QUERY_RESULT = Array<{
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
           _type: "eventsPage";
           slug: string | null;
         } | {
@@ -1010,7 +1104,7 @@ export type PROJECTS_QUERY_RESULT = Array<{
         _key: string;
         _type: "link";
         linkType?: "external" | "internal";
-        page?: EventsPageReference | PageReference | ProjectReference;
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
         external?: string;
         anchor?: Slug;
       }> | null;
@@ -1038,6 +1132,12 @@ export type PROJECTS_QUERY_RESULT = Array<{
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
         _type: "eventsPage";
         slug: string | null;
       } | {
@@ -1122,6 +1222,12 @@ export type PROJECT_QUERY_RESULT = {
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
           _type: "eventsPage";
           slug: string | null;
         } | {
@@ -1177,7 +1283,7 @@ export type PROJECT_QUERY_RESULT = {
         _key: string;
         _type: "link";
         linkType?: "external" | "internal";
-        page?: EventsPageReference | PageReference | ProjectReference;
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
         external?: string;
         anchor?: Slug;
       }> | null;
@@ -1205,6 +1311,12 @@ export type PROJECT_QUERY_RESULT = {
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
         _type: "eventsPage";
         slug: string | null;
       } | {
@@ -1248,6 +1360,184 @@ export type PROJECT_QUERY_RESULT = {
 // Variable: EVENTS_PAGE_QUERY
 // Query: *[_id == "eventsPage"][0]{  _type,  title,  "seo": seo {   metaTitle,  metaDescription, },    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
 export type EVENTS_PAGE_QUERY_RESULT = {
+  _type: "blogArticle";
+  title: string | null;
+  seo: null;
+  pageBuilder: null;
+} | {
+  _type: "blogsPage";
+  title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    background: "dark" | "light" | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          altText: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        dominantColor: string | null;
+      } | null;
+      link: {
+        linkType: "external" | "internal" | null;
+        page: null;
+        anchor: null;
+        url: string | null;
+      } | {
+        linkType: "external" | "internal" | null;
+        page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
+          _type: "page";
+          slug: string | null;
+        } | {
+          _type: "project";
+          slug: string | null;
+        } | null;
+        anchor: string | null;
+        url: null;
+      } | {
+        linkType: "external" | "internal" | null;
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    size: "large" | "small" | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "textBlock";
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "external" | "internal";
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
+        external?: string;
+        anchor?: Slug;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "mailchimpForm";
+      note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "youtube";
+      label?: string;
+      id?: string;
+      markDefs: null;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  }> | null;
+} | {
   _type: "eventItem";
   title: string | null;
   seo: null;
@@ -1293,6 +1583,12 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
           _type: "eventsPage";
           slug: string | null;
         } | {
@@ -1348,7 +1644,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _key: string;
         _type: "link";
         linkType?: "external" | "internal";
-        page?: EventsPageReference | PageReference | ProjectReference;
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
         external?: string;
         anchor?: Slug;
       }> | null;
@@ -1376,6 +1672,12 @@ export type EVENTS_PAGE_QUERY_RESULT = {
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
         _type: "eventsPage";
         slug: string | null;
       } | {
@@ -1451,6 +1753,12 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
           _type: "eventsPage";
           slug: string | null;
         } | {
@@ -1506,7 +1814,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _key: string;
         _type: "link";
         linkType?: "external" | "internal";
-        page?: EventsPageReference | PageReference | ProjectReference;
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
         external?: string;
         anchor?: Slug;
       }> | null;
@@ -1534,6 +1842,12 @@ export type EVENTS_PAGE_QUERY_RESULT = {
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
         _type: "eventsPage";
         slug: string | null;
       } | {
@@ -1617,6 +1931,12 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
           _type: "eventsPage";
           slug: string | null;
         } | {
@@ -1672,7 +1992,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _key: string;
         _type: "link";
         linkType?: "external" | "internal";
-        page?: EventsPageReference | PageReference | ProjectReference;
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
         external?: string;
         anchor?: Slug;
       }> | null;
@@ -1700,6 +2020,12 @@ export type EVENTS_PAGE_QUERY_RESULT = {
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
         _type: "eventsPage";
         slug: string | null;
       } | {
@@ -1778,6 +2104,12 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       } | {
         linkType: "external" | "internal" | null;
         page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
           _type: "eventsPage";
           slug: string | null;
         } | {
@@ -1833,7 +2165,7 @@ export type EVENTS_PAGE_QUERY_RESULT = {
         _key: string;
         _type: "link";
         linkType?: "external" | "internal";
-        page?: EventsPageReference | PageReference | ProjectReference;
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
         external?: string;
         anchor?: Slug;
       }> | null;
@@ -1861,6 +2193,12 @@ export type EVENTS_PAGE_QUERY_RESULT = {
     } | {
       linkType: "external" | "internal" | null;
       page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
         _type: "eventsPage";
         slug: string | null;
       } | {
@@ -1942,4 +2280,1396 @@ export type EVENT_ITEMS_QUERY_RESULT = Array<{
     _key: string;
   }> | null;
 }>;
+
+// Source: ../website/src/sanity/queries.ts
+// Variable: BLOGS_PAGE_QUERY
+// Query: *[_id == "blogsPage"][0]{  _type,  title,  "articles": *[_type == "blogArticle"] | order(articleDate desc) {    _type,    title,    articleDate,    description,    "featureImage": featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },        "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,  },      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
+export type BLOGS_PAGE_QUERY_RESULT = {
+  _type: "blogArticle";
+  title: string | null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: string | null;
+  pageBuilder: null;
+} | {
+  _type: "blogsPage";
+  title: string | null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: string | null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    background: "dark" | "light" | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          altText: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        dominantColor: string | null;
+      } | null;
+      link: {
+        linkType: "external" | "internal" | null;
+        page: null;
+        anchor: null;
+        url: string | null;
+      } | {
+        linkType: "external" | "internal" | null;
+        page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
+          _type: "page";
+          slug: string | null;
+        } | {
+          _type: "project";
+          slug: string | null;
+        } | null;
+        anchor: string | null;
+        url: null;
+      } | {
+        linkType: "external" | "internal" | null;
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    size: "large" | "small" | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "textBlock";
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "external" | "internal";
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
+        external?: string;
+        anchor?: Slug;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "mailchimpForm";
+      note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "youtube";
+      label?: string;
+      id?: string;
+      markDefs: null;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  }> | null;
+} | {
+  _type: "eventItem";
+  title: string | null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: null;
+  pageBuilder: null;
+} | {
+  _type: "eventsPage";
+  title: string | null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: string | null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    background: "dark" | "light" | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          altText: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        dominantColor: string | null;
+      } | null;
+      link: {
+        linkType: "external" | "internal" | null;
+        page: null;
+        anchor: null;
+        url: string | null;
+      } | {
+        linkType: "external" | "internal" | null;
+        page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
+          _type: "page";
+          slug: string | null;
+        } | {
+          _type: "project";
+          slug: string | null;
+        } | null;
+        anchor: string | null;
+        url: null;
+      } | {
+        linkType: "external" | "internal" | null;
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    size: "large" | "small" | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "textBlock";
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "external" | "internal";
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
+        external?: string;
+        anchor?: Slug;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "mailchimpForm";
+      note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "youtube";
+      label?: string;
+      id?: string;
+      markDefs: null;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  }> | null;
+} | {
+  _type: "homepage";
+  title: string | null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    background: "dark" | "light" | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          altText: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        dominantColor: string | null;
+      } | null;
+      link: {
+        linkType: "external" | "internal" | null;
+        page: null;
+        anchor: null;
+        url: string | null;
+      } | {
+        linkType: "external" | "internal" | null;
+        page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
+          _type: "page";
+          slug: string | null;
+        } | {
+          _type: "project";
+          slug: string | null;
+        } | null;
+        anchor: string | null;
+        url: null;
+      } | {
+        linkType: "external" | "internal" | null;
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    size: "large" | "small" | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "textBlock";
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "external" | "internal";
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
+        external?: string;
+        anchor?: Slug;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "mailchimpForm";
+      note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "youtube";
+      label?: string;
+      id?: string;
+      markDefs: null;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  }> | null;
+} | {
+  _type: "media.tag";
+  title: null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: null;
+  pageBuilder: null;
+} | {
+  _type: "page";
+  title: string | null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: string | null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    background: "dark" | "light" | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          altText: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        dominantColor: string | null;
+      } | null;
+      link: {
+        linkType: "external" | "internal" | null;
+        page: null;
+        anchor: null;
+        url: string | null;
+      } | {
+        linkType: "external" | "internal" | null;
+        page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
+          _type: "page";
+          slug: string | null;
+        } | {
+          _type: "project";
+          slug: string | null;
+        } | null;
+        anchor: string | null;
+        url: null;
+      } | {
+        linkType: "external" | "internal" | null;
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    size: "large" | "small" | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "textBlock";
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "external" | "internal";
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
+        external?: string;
+        anchor?: Slug;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "mailchimpForm";
+      note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "youtube";
+      label?: string;
+      id?: string;
+      markDefs: null;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  }> | null;
+} | {
+  _type: "project";
+  title: string | null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: string | null;
+  pageBuilder: Array<{
+    _key: string;
+    _type: "featureCardsBlock";
+    heading: string | null;
+    background: "dark" | "light" | null;
+    cards: Array<{
+      title: string | null;
+      description: string | null;
+      cardImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          url: string | null;
+          altText: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number | null;
+              height: number | null;
+            } | null;
+          } | null;
+        } | null;
+        crop: SanityImageCrop | null;
+        hotspot: SanityImageHotspot | null;
+        dominantColor: string | null;
+      } | null;
+      link: {
+        linkType: "external" | "internal" | null;
+        page: null;
+        anchor: null;
+        url: string | null;
+      } | {
+        linkType: "external" | "internal" | null;
+        page: {
+          _type: "blogArticle";
+          slug: string | null;
+        } | {
+          _type: "blogsPage";
+          slug: string | null;
+        } | {
+          _type: "eventsPage";
+          slug: string | null;
+        } | {
+          _type: "page";
+          slug: string | null;
+        } | {
+          _type: "project";
+          slug: string | null;
+        } | null;
+        anchor: string | null;
+        url: null;
+      } | {
+        linkType: "external" | "internal" | null;
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "heroBlock";
+    heading: string | null;
+    subtitle: string | null;
+    size: "large" | "small" | null;
+    backgroundImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+  } | {
+    _key: string;
+    _type: "textBlock";
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "external" | "internal";
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
+        external?: string;
+        anchor?: Slug;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "mailchimpForm";
+      note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "youtube";
+      label?: string;
+      id?: string;
+      markDefs: null;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  }> | null;
+} | {
+  _type: "sanity.fileAsset";
+  title: string | null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: null;
+  pageBuilder: null;
+} | {
+  _type: "sanity.imageAsset";
+  title: string | null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: null;
+  pageBuilder: null;
+} | {
+  _type: "siteSettings";
+  title: null;
+  articles: Array<{
+    _type: "blogArticle";
+    title: string | null;
+    articleDate: string | null;
+    description: string | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    slug: string | null;
+  }>;
+  slug: null;
+  pageBuilder: null;
+} | null;
+
+// Source: ../website/src/sanity/queries.ts
+// Variable: BLOG_ARTICLES_QUERY
+// Query: *[_type == "blogArticle" && defined(pageSlug.slug.current)] {      _type,  title,  articleDate,  description,  "featureImage": featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,  "articleContent": articleContent {    "_key": "",    _type,      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  }  },}
+export type BLOG_ARTICLES_QUERY_RESULT = Array<{
+  _type: "blogArticle";
+  title: string | null;
+  articleDate: string | null;
+  description: string | null;
+  featureImage: {
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      url: string | null;
+      altText: string | null;
+      metadata: {
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      } | null;
+    } | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    dominantColor: string | null;
+  } | null;
+  slug: string | null;
+  articleContent: {
+    _key: "";
+    _type: "textBlock";
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "external" | "internal";
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
+        external?: string;
+        anchor?: Slug;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "mailchimpForm";
+      note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "youtube";
+      label?: string;
+      id?: string;
+      markDefs: null;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  } | null;
+}>;
+
+// Source: ../website/src/sanity/queries.ts
+// Variable: BLOG_ARTICLE_QUERY
+// Query: *[_type == "blogArticle" && pageSlug.slug.current == $slug][0] {      _type,  title,  articleDate,  description,  "featureImage": featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,  "articleContent": articleContent {    "_key": "",    _type,      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  }  },}
+export type BLOG_ARTICLE_QUERY_RESULT = {
+  _type: "blogArticle";
+  title: string | null;
+  articleDate: string | null;
+  description: string | null;
+  featureImage: {
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      url: string | null;
+      altText: string | null;
+      metadata: {
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      } | null;
+    } | null;
+    crop: SanityImageCrop | null;
+    hotspot: SanityImageHotspot | null;
+    dominantColor: string | null;
+  } | null;
+  slug: string | null;
+  articleContent: {
+    _key: "";
+    _type: "textBlock";
+    content: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "h2" | "h3" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        _key: string;
+        _type: "link";
+        linkType?: "external" | "internal";
+        page?: BlogArticleReference | BlogsPageReference | EventsPageReference | PageReference | ProjectReference;
+        external?: string;
+        anchor?: Slug;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "mailchimpForm";
+      note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "youtube";
+      label?: string;
+      id?: string;
+      markDefs: null;
+    }> | null;
+    cta: string | null;
+    ctaLink: {
+      linkType: "external" | "internal" | null;
+      page: null;
+      anchor: null;
+      url: string | null;
+    } | {
+      linkType: "external" | "internal" | null;
+      page: {
+        _type: "blogArticle";
+        slug: string | null;
+      } | {
+        _type: "blogsPage";
+        slug: string | null;
+      } | {
+        _type: "eventsPage";
+        slug: string | null;
+      } | {
+        _type: "page";
+        slug: string | null;
+      } | {
+        _type: "project";
+        slug: string | null;
+      } | null;
+      anchor: string | null;
+      url: null;
+    } | {
+      linkType: "external" | "internal" | null;
+    } | null;
+    textAlign: "center" | "justify" | "left" | null;
+    leadInText: boolean | null;
+    featureImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        url: string | null;
+        altText: string | null;
+        metadata: {
+          lqip: string | null;
+          dimensions: {
+            width: number | null;
+            height: number | null;
+          } | null;
+        } | null;
+      } | null;
+      crop: SanityImageCrop | null;
+      hotspot: SanityImageHotspot | null;
+      dominantColor: string | null;
+    } | null;
+    imageAlign: "left" | "right" | null;
+    sectionId: string | null;
+  } | null;
+} | null;
 
