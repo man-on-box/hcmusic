@@ -112,4 +112,15 @@ export const blogArticleType = defineType({
       group: CONTENT_GROUP,
     }),
   ],
+  preview: {
+    select: {title: 'title', date: 'articleDate', media: 'featureImage'},
+    prepare({title, date, media}) {
+      const dateString = date ? new Date(date).toLocaleDateString() : 'No date'
+      return {
+        title,
+        subtitle: dateString,
+        media,
+      }
+    },
+  },
 })
