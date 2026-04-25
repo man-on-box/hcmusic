@@ -176,3 +176,27 @@ export const BLOGS_PAGE_QUERY = defineQuery(`*[_id == "blogsPage"][0]{
   ${pageSlugFragment},
   ${pageBuilderFragment},
 }`);
+
+const blogFragment = /* groq */ `
+  _type,
+  title,
+  articleDate,
+  description,
+  "featureImage": featureImage { ${imageFragment} },
+  ${pageSlugFragment},
+  "articleContent": articleContent {
+    "_key": "",
+    _type,
+    ${textBlockFragment}
+  },
+`;
+
+export const BLOG_ARTICLES_QUERY =
+  defineQuery(`*[_type == "blogArticle" && defined(pageSlug.slug.current)] {
+    ${blogFragment}
+}`);
+
+export const BLOG_ARTICLE_QUERY =
+  defineQuery(`*[_type == "blogArticle" && pageSlug.slug.current == $slug][0] {
+    ${blogFragment}
+}`);

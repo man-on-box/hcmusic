@@ -9,7 +9,7 @@ interface Props {
   article: BlogArticleCardData;
 }
 
-const IMAGE_SIZE_PX = 500;
+const IMAGE_SIZE_PX = 700;
 
 const { article } = Astro.props;
 const { title, description, articleDate, featureImage } = article;
@@ -18,7 +18,7 @@ const formattedDate = formatDate(date);
 ---
 
 <div
-  class="flex flex-col gap-8 border-t-1 border-slate-200 py-4 first:border-t-0 last:border-b-1 sm:flex-row"
+  class="flx-c flex flex-col gap-8 border-t-1 border-slate-200 py-4 first:border-t-0 last:border-b-1 sm:flex-row"
 >
   {
     featureImage ? (
@@ -43,7 +43,7 @@ const formattedDate = formatDate(date);
     )
   }
   <div>
-    <h2 class="font-bold text-gray-800">
+    <h2 class="text-xl font-bold text-gray-800">
       {title}
     </h2>
     <p class="text-sm text-gray-600">

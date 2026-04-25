@@ -275,6 +275,66 @@
     }
   },
   {
+    "type": "type",
+    "name": "blogsPage.reference",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_ref": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          }
+        },
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "reference"
+          }
+        },
+        "_weak": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        }
+      },
+      "dereferencesTo": "blogsPage"
+    }
+  },
+  {
+    "type": "type",
+    "name": "blogArticle.reference",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_ref": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          }
+        },
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "reference"
+          }
+        },
+        "_weak": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        }
+      },
+      "dereferencesTo": "blogArticle"
+    }
+  },
+  {
     "name": "link",
     "type": "type",
     "value": {
@@ -320,6 +380,14 @@
               {
                 "type": "inline",
                 "name": "eventsPage.reference"
+              },
+              {
+                "type": "inline",
+                "name": "blogsPage.reference"
+              },
+              {
+                "type": "inline",
+                "name": "blogArticle.reference"
               }
             ]
           },
@@ -960,6 +1028,13 @@
         },
         "optional": true
       },
+      "description": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "featureImage": {
         "type": "objectAttribute",
         "value": {
@@ -1007,18 +1082,11 @@
         },
         "optional": true
       },
-      "description": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "pageBuilder": {
+      "articleContent": {
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "pageBuilder"
+          "name": "textBlock"
         },
         "optional": true
       }

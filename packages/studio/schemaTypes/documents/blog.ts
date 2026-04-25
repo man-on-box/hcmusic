@@ -68,7 +68,7 @@ export const blogArticleType = defineType({
   fields: [
     defineField({
       name: 'title',
-      title: 'Blog title',
+      title: 'Article title',
       type: 'string',
       group: MAIN_GROUP,
     }),
@@ -87,15 +87,6 @@ export const blogArticleType = defineType({
       },
     }),
     defineField({
-      name: 'featureImage',
-      title: 'Feature image',
-      type: 'image',
-      group: MAIN_GROUP,
-      options: {
-        hotspot: true,
-      },
-    }),
-    defineField({
       name: 'description',
       title: 'Article description',
       type: 'text',
@@ -106,10 +97,18 @@ export const blogArticleType = defineType({
         rule.max(BLOG_DESC_MAX).warning(`Should be under ${BLOG_DESC_MAX} characters`),
     }),
     defineField({
-      name: 'pageBuilder',
-      title: 'Article Page Builder',
-      type: 'pageBuilder',
-      description: 'Page builder, hero is auto generated from blog title, date and feature image.',
+      name: 'featureImage',
+      title: 'Feature image',
+      type: 'image',
+      group: MAIN_GROUP,
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
+      name: 'articleContent',
+      title: 'Article content',
+      type: 'textBlock',
       group: CONTENT_GROUP,
     }),
   ],

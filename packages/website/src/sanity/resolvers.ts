@@ -109,3 +109,28 @@ export const resolveBlogsPageData = async (cookies: AstroCookies) => {
   }
   return data;
 };
+
+export const resolveBlogArticlesData = async () => {
+  const { data } = await loadQuery<R.BLOG_ARTICLES_QUERY_RESULT>({
+    query: Q.BLOG_ARTICLES_QUERY,
+  });
+  if (!data) {
+    throw new Error("Could not get blog articles data");
+  }
+  return data;
+};
+
+export const resolveBlogArticleData = async (
+  cookies: AstroCookies,
+  slug: string | null,
+) => {
+  const { data } = await loadQuery<R.BLOG_ARTICLE_QUERY_RESULT>({
+    query: Q.BLOG_ARTICLE_QUERY,
+    params: { slug },
+    ...getDraftModeProps(cookies),
+  });
+  if (!data) {
+    throw new Error("Could not get blog article data");
+  }
+  return data;
+};
