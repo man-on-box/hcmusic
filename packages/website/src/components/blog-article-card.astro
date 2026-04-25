@@ -1,0 +1,35 @@
+---
+import Prose from "../components/prose.astro";
+import { formatDate } from "../utils";
+import type { BlogArticleCardData } from "../types/sanity";
+
+interface Props {
+  article: BlogArticleCardData;
+}
+
+const { article } = Astro.props;
+const { title, description, articleDate } = article;
+const date = new Date(articleDate ?? "");
+const formattedDate = formatDate(date);
+---
+
+<div
+  class="flex size-16 shrink-0 flex-col items-center justify-center rounded bg-slate-100 p-4 font-serif sm:size-50"
+>
+  <p
+    class="text-center text-xl font-bold wrap-break-word text-ellipsis text-slate-900 sm:text-3xl"
+  >
+    {title}
+  </p>
+</div>
+<div>
+  <h2 class="font-bold text-gray-800">
+    {title}
+  </h2>
+  <p class="text-sm text-gray-600">
+    {formattedDate.day}
+    {formattedDate.month}
+    {formattedDate.year}
+  </p>
+  {description && <Prose class="mt-4 text-gray-600">{description}</Prose>}
+</div>

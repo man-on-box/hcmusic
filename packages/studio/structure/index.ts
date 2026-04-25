@@ -1,8 +1,22 @@
 import type {StructureResolver} from 'sanity/structure'
-import {DocumentIcon, CogIcon, HomeIcon, ProjectsIcon, CalendarIcon} from '@sanity/icons'
+import {
+  DocumentIcon,
+  CogIcon,
+  HomeIcon,
+  ProjectsIcon,
+  CalendarIcon,
+  ComposeSparklesIcon,
+} from '@sanity/icons'
 import {SINGLETON_TYPES} from '../schemaTypes/constants'
 
-const HIDDEN_TYPES = [...SINGLETON_TYPES, 'page', 'project', 'eventsPage', 'eventItem']
+const HIDDEN_TYPES = [
+  ...SINGLETON_TYPES,
+  'page',
+  'project',
+  'eventsPage',
+  'eventItem',
+  'blogArticle',
+]
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -41,6 +55,21 @@ export const structure: StructureResolver = (S) =>
               ),
               S.divider(),
               S.documentTypeListItem('eventItem').title('Events'),
+            ]),
+        ),
+
+      S.listItem()
+        .title('Blogs')
+        .icon(ComposeSparklesIcon)
+        .child(
+          S.list()
+            .title('Blogs')
+            .items([
+              S.listItem().title('Blogs Page').icon(DocumentIcon).child(
+                S.document().schemaType('blogsPage').documentId('blogsPage'), // fixed ID = singleton
+              ),
+              S.divider(),
+              S.documentTypeListItem('blogArticle').title('Articles'),
             ]),
         ),
 

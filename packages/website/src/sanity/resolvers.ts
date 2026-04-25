@@ -98,3 +98,14 @@ export const resolveProjectData = async (
   }
   return data;
 };
+
+export const resolveBlogsPageData = async (cookies: AstroCookies) => {
+  const { data } = await loadQuery<R.BLOGS_PAGE_QUERY_RESULT>({
+    query: Q.BLOGS_PAGE_QUERY,
+    ...getDraftModeProps(cookies),
+  });
+  if (!data) {
+    throw new Error("Could not get blogs page data");
+  }
+  return data;
+};

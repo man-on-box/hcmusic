@@ -2,7 +2,7 @@
 import { PortableText } from "astro-portabletext";
 import type { PortableTextBlock } from "@portabletext/types";
 
-import { formatTime, formatDate } from "../utils";
+import { formatDate } from "../utils";
 import Prose from "../components/prose.astro";
 
 type Event = {
@@ -38,7 +38,7 @@ const currentYear = currentDate.getFullYear();
 
         return (
           <li class="flex gap-4 border-t-1 border-slate-200 py-4 last:border-b-1 md:gap-8">
-            <div class="flex size-16 shrink-0 flex-col items-center justify-center rounded bg-slate-100 p-4 font-serif sm:size-21">
+            <div class="flex size-16 shrink-0 flex-col items-center justify-center rounded bg-slate-100 p-4 font-serif text-slate-900 sm:size-21">
               <p class="text-xl font-bold sm:text-3xl">{day}</p>
               <p class="sm:text-xl">{month}</p>
             </div>

@@ -161,3 +161,18 @@ export const EVENT_ITEMS_QUERY =
   location,
   description
 }`);
+
+export const BLOGS_PAGE_QUERY = defineQuery(`*[_id == "blogsPage"][0]{
+  _type,
+  title,
+  "articles": *[_type == "blogArticle"] | order(articleDate desc) {
+    _type,
+    title,
+    articleDate,
+    description,
+    "featureImage": featureImage { ${imageFragment} },
+    ${pageSlugFragment},
+  },
+  ${pageSlugFragment},
+  ${pageBuilderFragment},
+}`);

@@ -3,6 +3,7 @@ import {siteSettingsType} from './site-settings'
 import {pageType} from './page'
 import {projectType} from './project'
 import {eventPageType, eventItemType} from './event'
+import {blogsPageType, blogArticleType} from './blog'
 
 export const documentTypes = [
   homepageType,
@@ -11,4 +12,6 @@ export const documentTypes = [
   projectType,
   eventPageType,
   eventItemType,
+  blogsPageType,
+  blogArticleType,
 ]
