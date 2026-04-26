@@ -63,7 +63,7 @@ const components = {
   <div
     class={cn(
       "flex flex-col-reverse gap-12 sm:flex-row items-center sm:items-start",
-      imageAlign === "right" && "sm:flex-row-reverse",
+      stegaClean(imageAlign) === "right" && "sm:flex-row-reverse",
     )}
   >
     {
