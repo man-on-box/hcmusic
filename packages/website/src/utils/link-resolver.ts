@@ -3,7 +3,7 @@ import type { LinkType } from "../types/sanity";
 export const pathResolver = (documentType: string) => {
   switch (documentType) {
     case "blogArticle":
-      return "/blogs/";
+      return "/blog/";
     case "project":
       return "/projects/";
     default:
