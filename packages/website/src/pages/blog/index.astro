@@ -1,0 +1,30 @@
+---
+import MainLayout from "../../layouts/main.astro";
+import BlockRenderer from "../../blocks/block-renderer.astro";
+import BlogArticleCard from "../../components/blog-article-card.astro";
+
+import { resolveBlogsPageData } from "../../sanity/resolvers";
+import { pathResolver } from "../../utils/link-resolver";
+
+const { pageBuilder, articles } = await resolveBlogsPageData(Astro.cookies);
+---
+
+<MainLayout title={null} seo={null}>
+  {pageBuilder && <BlockRenderer blocks={pageBuilder} />}
+
+  <div class="mx-auto my-20 flex max-w-6xl flex-col px-6 md:my-26 md:px-12">
+    <ol>
+      {
+        articles.map((article) => {
+          return (
+            <li>
+              <a href={`${pathResolver(article._type)}${article.slug}`}>
+                <BlogArticleCard article={article} />
+              </a>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+</MainLayout>
