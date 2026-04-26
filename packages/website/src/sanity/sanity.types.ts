@@ -2283,10 +2283,11 @@ export type EVENT_ITEMS_QUERY_RESULT = Array<{
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: BLOGS_PAGE_QUERY
-// Query: *[_id == "blogsPage"][0]{  _type,  title,  "articles": *[_type == "blogArticle"] | order(articleDate desc) {    _type,    title,    articleDate,    description,    "featureImage": featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },        "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,  },      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
+// Query: *[_id == "blogsPage"][0]{  _type,  title,  "seo": seo {   metaTitle,  metaDescription, },  "articles": *[_type == "blogArticle"] | order(articleDate desc) {    _type,    title,    articleDate,    description,    "featureImage": featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },        "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,  },      "slug": select(      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,      pageSlug.slug.current    )  ,    pageBuilder[] {    _key, _type,      _type == "heroBlock" => {    heading,    subtitle,    size,    backgroundImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },  },      _type == "textBlock" => {    content,    "content": content[]{      ...,      markDefs[]{        ...,        _type == "textLink" => {            linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  }        }      }    },    cta,    "ctaLink": ctaLink {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } },    textAlign,    leadInText,    featureImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },    imageAlign,    sectionId  },      _type == "featureCardsBlock" => {    heading,    background,     cards[] {      title,      description,      cardImage {   asset->{    _id,    _type,    url,    altText,    metadata { lqip, dimensions { width, height } }  },  crop,  hotspot,  "dominantColor": asset->metadata.palette.dominant.background },      "link": link {   linkType,  linkType == 'internal' => {    "page": page-> {      _type,      "slug": pageSlug.slug.current,    },    "anchor": anchor.current,    "url": null,  },  linkType == 'external' => {    "page": null,    "anchor": null,    "url": external,  } }    }  }  },}
 export type BLOGS_PAGE_QUERY_RESULT = {
   _type: "blogArticle";
   title: string | null;
+  seo: null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;
@@ -2317,6 +2318,10 @@ export type BLOGS_PAGE_QUERY_RESULT = {
 } | {
   _type: "blogsPage";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;
@@ -2512,6 +2517,7 @@ export type BLOGS_PAGE_QUERY_RESULT = {
 } | {
   _type: "eventItem";
   title: string | null;
+  seo: null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;
@@ -2542,6 +2548,10 @@ export type BLOGS_PAGE_QUERY_RESULT = {
 } | {
   _type: "eventsPage";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;
@@ -2737,6 +2747,7 @@ export type BLOGS_PAGE_QUERY_RESULT = {
 } | {
   _type: "homepage";
   title: string | null;
+  seo: null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;
@@ -2932,6 +2943,7 @@ export type BLOGS_PAGE_QUERY_RESULT = {
 } | {
   _type: "media.tag";
   title: null;
+  seo: null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;
@@ -2962,6 +2974,10 @@ export type BLOGS_PAGE_QUERY_RESULT = {
 } | {
   _type: "page";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;
@@ -3157,6 +3173,10 @@ export type BLOGS_PAGE_QUERY_RESULT = {
 } | {
   _type: "project";
   title: string | null;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;
@@ -3352,6 +3372,7 @@ export type BLOGS_PAGE_QUERY_RESULT = {
 } | {
   _type: "sanity.fileAsset";
   title: string | null;
+  seo: null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;
@@ -3382,6 +3403,7 @@ export type BLOGS_PAGE_QUERY_RESULT = {
 } | {
   _type: "sanity.imageAsset";
   title: string | null;
+  seo: null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;
@@ -3412,6 +3434,7 @@ export type BLOGS_PAGE_QUERY_RESULT = {
 } | {
   _type: "siteSettings";
   title: null;
+  seo: null;
   articles: Array<{
     _type: "blogArticle";
     title: string | null;

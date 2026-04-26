@@ -165,6 +165,7 @@ export const EVENT_ITEMS_QUERY =
 export const BLOGS_PAGE_QUERY = defineQuery(`*[_id == "blogsPage"][0]{
   _type,
   title,
+  "seo": seo { ${seoFragment} },
   "articles": *[_type == "blogArticle"] | order(articleDate desc) {
     _type,
     title,
