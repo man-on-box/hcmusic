@@ -1,25 +1,26 @@
 ---
 import MainLayout from "../../layouts/main.astro";
+import Section from "../../components/section.astro";
 import BlockRenderer from "../../blocks/block-renderer.astro";
 import BlogArticleCard from "../../components/blog-article-card.astro";
 
 import { resolveBlogsPageData } from "../../sanity/resolvers";
 import { pathResolver } from "../../utils/link-resolver";
 
-const { pageBuilder, articles, title, seo } = await resolveBlogsPageData(
-  Astro.cookies,
-);
+const { siteSettings, pageBuilder, articles, title, seo } =
+  await resolveBlogsPageData(Astro.cookies);
 ---
 
-<MainLayout title={title} seo={seo}>
+<MainLayout siteSettings={siteSettings} title={title} seo={seo}>
+  <div class="max-w-360">hi there</div>
   {pageBuilder && <BlockRenderer blocks={pageBuilder} />}
 
-  <div class="mx-auto my-20 flex max-w-6xl flex-col px-6 md:my-26 md:px-12">
+  <Section>
     <ol>
       {
         articles.map((article) => {
           return (
-            <li>
+            <li class="border-t-2 border-slate-200 py-6 first:border-t-0 first:pt-0">
               <a href={`${pathResolver(article._type)}${article.slug}`}>
                 <BlogArticleCard article={article} />
               </a>
@@ -28,5 +29,5 @@ const { pageBuilder, articles, title, seo } = await resolveBlogsPageData(
         })
       }
     </ol>
-  </div>
+  </Section>
 </MainLayout>

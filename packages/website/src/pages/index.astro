@@ -3,9 +3,9 @@ import MainLayout from "../layouts/main.astro";
 import BlockRenderer from "../blocks/block-renderer.astro";
 import { resolveHomepageData } from "../sanity/resolvers";
 
-const { pageBuilder } = await resolveHomepageData(Astro.cookies);
+const { pageBuilder, siteSettings } = await resolveHomepageData(Astro.cookies);
 ---
 
-<MainLayout>
+<MainLayout siteSettings={siteSettings}>
   {pageBuilder && <BlockRenderer blocks={pageBuilder} />}
 </MainLayout>

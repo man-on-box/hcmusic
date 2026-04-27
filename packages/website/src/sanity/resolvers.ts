@@ -15,38 +15,16 @@ export const resolveHomepageData = async (cookies: AstroCookies) => {
   return data;
 };
 
-export const resolveSiteSettingsData = async (cookies: AstroCookies) => {
-  const { data } = await loadQuery<R.SITE_SETTINGS_QUERY_RESULT>({
-    query: Q.SITE_SETTINGS_QUERY,
-    ...getDraftModeProps(cookies),
-  });
-  if (!data) {
-    throw new Error("Could not get site settings data");
-  }
-  return data;
-};
-
 export const resolveEventsPageData = async (cookies: AstroCookies) => {
   const draftModeProps = getDraftModeProps(cookies);
-  const eventsPageQuery = loadQuery<R.EVENTS_PAGE_QUERY_RESULT>({
+  const { data } = await loadQuery<R.EVENTS_PAGE_QUERY_RESULT>({
     query: Q.EVENTS_PAGE_QUERY,
     ...draftModeProps,
   });
-  const eventItemsQuery = loadQuery<R.EVENT_ITEMS_QUERY_RESULT>({
-    query: Q.EVENT_ITEMS_QUERY,
-    ...draftModeProps,
-  });
-  const [eventsPage, events] = await Promise.all([
-    eventsPageQuery,
-    eventItemsQuery,
-  ]);
-  if (!eventsPage.data || !events.data) {
+  if (!data) {
     throw new Error("Could not get events page data");
   }
-  return {
-    eventsPage: eventsPage.data,
-    events: events.data,
-  };
+  return data;
 };
 
 export const resolvePagesData = async () => {

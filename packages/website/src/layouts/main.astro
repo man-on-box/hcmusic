@@ -3,23 +3,22 @@ import { ClientRouter } from "astro:transitions";
 import { perspectiveCookieName } from "@sanity/preview-url-secret/constants";
 import "../styles/global.css";
 
-import { resolveSiteSettingsData } from "../sanity/resolvers";
-
 import SanityVisualEditing from "../components/sanity/sanity-visual-editing";
 import DisableDraftMode from "../components/sanity/disable-draft-mode";
 import Nav from "../components/nav.astro";
 import Footer from "../components/footer.astro";
+import type { SiteSettings } from "../types/sanity";
 
 interface Props {
   title?: string | null;
   seo?: { metaTitle: string | null; metaDescription: string | null } | null;
+  siteSettings: SiteSettings;
 }
 
 const draftMode = Astro.cookies.has(perspectiveCookieName);
-const data = await resolveSiteSettingsData(Astro.cookies);
 
-const { siteName, mainNav, siteTagline, mainSeo } = data;
-const { seo, title } = Astro.props;
+const { seo, title, siteSettings } = Astro.props;
+const { siteName, mainNav, siteTagline, mainSeo } = siteSettings;
 
 const metaTitle =
   seo?.metaTitle ||
