@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import { PortableText } from "astro-portabletext";
 import { cn } from "../utils";
 
+import Section from "../components/section.astro";
 import YoutubeEmbed from "../components/youtube-embed.astro";
 import MailchimpForm from "../components/mailchimp-form.astro";
 import LinkButton from "../components/link-button.astro";
@@ -56,13 +57,10 @@ const components = {
 };
 ---
 
-<section
-  id={sectionId ?? undefined}
-  class="mx-auto my-20 flex max-w-6xl flex-col items-center px-6 md:my-26 md:px-12"
->
+<Section id={sectionId ?? undefined}>
   <div
     class={cn(
-      "flex flex-col-reverse gap-12 sm:flex-row items-center sm:items-start",
+      "mx-auto flex flex-col-reverse gap-12 sm:flex-row items-center sm:items-start",
       stegaClean(imageAlign) === "right" && "sm:flex-row-reverse",
     )}
   >
@@ -97,4 +95,4 @@ const components = {
       }
     </div>
   </div>
-</section>
+</Section>

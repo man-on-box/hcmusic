@@ -86,6 +86,29 @@ const seoFragment = /* groq */ `
   metaDescription,
 `;
 
+const siteSettingsFragment = /* groq */ `
+  "siteSettings": coalesce(
+    *[_id == "siteSettings" && defined(siteName)][0]{
+      siteName,
+      siteTagline,
+      "mainSeo": mainSeo { ${seoFragment} },
+      "mainNav": coalesce(mainNav[defined(label)] {
+        "label": coalesce(label, ""),
+        "link": link { ${linkFragment} }
+      }, [])
+    },
+    {
+      "siteName": "Default Site Name",
+      "siteTagline": "",
+      "mainSeo": {
+        "metaTitle": "Default title",
+        "metaDescription": "Default description",
+      },
+      "mainNav": []
+    }
+  )
+`;
+
 const pageBuilderFragment = /* groq */ `
   pageBuilder[] {
     _key, _type,
@@ -95,25 +118,16 @@ const pageBuilderFragment = /* groq */ `
   }
 `;
 
-export const SITE_SETTINGS_QUERY =
-  defineQuery(`*[_id == "siteSettings" && defined(siteName)][0]{
-  siteName,
-  siteTagline,
-  "mainSeo": mainSeo { ${seoFragment} },
-  "mainNav": coalesce(mainNav[defined(label)] {
-    "label": coalesce(label, ""),
-    "link": link { ${linkFragment} }
-  }, [])
-}`);
-
 export const HOMEPAGE_QUERY = defineQuery(`*[_id == "home"][0]{
-  ${pageBuilderFragment},
+  ${siteSettingsFragment},
+  ${pageBuilderFragment}
 }`);
 
 const pageFragment = /* groq */ `
   _type,
   title,
   "seo": seo { ${seoFragment} },
+  ${siteSettingsFragment},
   ${pageSlugFragment},
   ${pageBuilderFragment}
   `;
@@ -132,6 +146,7 @@ const projectFragment = /* groq */ `
   _type,
   title,
   "seo": seo { ${seoFragment} },
+  ${siteSettingsFragment},
   ${pageSlugFragment},
   ${pageBuilderFragment}
   `;
@@ -150,21 +165,21 @@ export const EVENTS_PAGE_QUERY = defineQuery(`*[_id == "eventsPage"][0]{
   _type,
   title,
   "seo": seo { ${seoFragment} },
+  ${siteSettingsFragment},
   ${pageBuilderFragment},
-}`);
-
-export const EVENT_ITEMS_QUERY =
-  defineQuery(`*[_type == "eventItem"] | order(eventDatetime desc) {
-  _type,
-  title,
-  eventDatetime,
-  location,
-  description
+  "events": *[_type == "eventItem"] | order(eventDatetime desc) {
+    _type,
+    title,
+    eventDatetime,
+    location,
+    description
+  }
 }`);
 
 export const BLOGS_PAGE_QUERY = defineQuery(`*[_id == "blogsPage"][0]{
   _type,
   title,
+  ${siteSettingsFragment},
   "seo": seo { ${seoFragment} },
   "articles": *[_type == "blogArticle"] | order(articleDate desc) {
     _type,
@@ -181,6 +196,7 @@ export const BLOGS_PAGE_QUERY = defineQuery(`*[_id == "blogsPage"][0]{
 const blogFragment = /* groq */ `
   _type,
   title,
+  ${siteSettingsFragment},
   articleDate,
   description,
   "featureImage": featureImage { ${imageFragment} },
