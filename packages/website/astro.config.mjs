@@ -9,6 +9,7 @@ const isWorkerPreview = process.env.DEPLOY_TARGET === "workers-preview";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://helencurtismusic.co.uk",
   output: isWorkerPreview ? "server" : "static",
   prefetch: {
     prefetchAll: true,
