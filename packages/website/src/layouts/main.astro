@@ -20,6 +20,8 @@ const draftMode = Astro.cookies.has(perspectiveCookieName);
 const { seo, title, siteSettings } = Astro.props;
 const { siteName, mainNav, siteTagline, mainSeo } = siteSettings;
 
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
 const metaTitle =
   seo?.metaTitle ||
   (title ? `${title} | ${siteName}` : null) ||
@@ -35,6 +37,7 @@ const metaTitle =
       name="description"
       content={seo?.metaDescription || mainSeo?.metaDescription}
     />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
