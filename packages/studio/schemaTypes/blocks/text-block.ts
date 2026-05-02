@@ -56,6 +56,9 @@ export const textBlockType = defineType({
           type: 'youtube',
         }),
         defineArrayMember({
+          type: 'soundcloud',
+        }),
+        defineArrayMember({
           type: 'mailchimpForm',
         }),
       ],

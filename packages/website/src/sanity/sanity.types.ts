@@ -31,6 +31,11 @@ export type CardImage = {
   _type: "image";
 };
 
+export type Soundcloud = {
+  _type: "soundcloud";
+  songUrl?: string;
+};
+
 export type Youtube = {
   _type: "youtube";
   label?: string;
@@ -130,6 +135,8 @@ export type TextBlock = {
   } | {
     _key: string;
   } & Youtube | {
+    _key: string;
+  } & Soundcloud | {
     _key: string;
   } & MailchimpForm>;
   featureImage?: {
@@ -421,7 +428,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Youtube | Seo | PageSlug | MailchimpForm | PageReference | ProjectReference | EventsPageReference | BlogsPageReference | BlogArticleReference | Link | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | BlogArticle | SanityImageCrop | SanityImageHotspot | BlogsPage | EventItem | EventsPage | Project | Page | Slug | SiteSettings | Homepage | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SanityImageAssetReference | CardImage | Soundcloud | Youtube | Seo | PageSlug | MailchimpForm | PageReference | ProjectReference | EventsPageReference | BlogsPageReference | BlogArticleReference | Link | FeatureCardsBlock | TextBlock | PageBuilder | HeroBlock | BlogArticle | SanityImageCrop | SanityImageHotspot | BlogsPage | EventItem | EventsPage | Project | Page | Slug | SiteSettings | Homepage | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 
 // Source: ../website/src/sanity/queries.ts
 // Variable: HOMEPAGE_QUERY
@@ -629,6 +636,11 @@ export type HOMEPAGE_QUERY_RESULT = {
       _key: string;
       _type: "mailchimpForm";
       note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
       markDefs: null;
     } | {
       _key: string;
@@ -858,6 +870,11 @@ export type PAGES_QUERY_RESULT = Array<{
       markDefs: null;
     } | {
       _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
+      markDefs: null;
+    } | {
+      _key: string;
       _type: "youtube";
       label?: string;
       id?: string;
@@ -1081,6 +1098,11 @@ export type PAGE_QUERY_RESULT = {
       _key: string;
       _type: "mailchimpForm";
       note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
       markDefs: null;
     } | {
       _key: string;
@@ -1310,6 +1332,11 @@ export type PROJECTS_QUERY_RESULT = Array<{
       markDefs: null;
     } | {
       _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
+      markDefs: null;
+    } | {
+      _key: string;
       _type: "youtube";
       label?: string;
       id?: string;
@@ -1533,6 +1560,11 @@ export type PROJECT_QUERY_RESULT = {
       _key: string;
       _type: "mailchimpForm";
       note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
       markDefs: null;
     } | {
       _key: string;
@@ -1837,6 +1869,11 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       markDefs: null;
     } | {
       _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
+      markDefs: null;
+    } | {
+      _key: string;
       _type: "youtube";
       label?: string;
       id?: string;
@@ -2157,6 +2194,11 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       markDefs: null;
     } | {
       _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
+      markDefs: null;
+    } | {
+      _key: string;
       _type: "youtube";
       label?: string;
       id?: string;
@@ -2395,6 +2437,11 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       _key: string;
       _type: "mailchimpForm";
       note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
       markDefs: null;
     } | {
       _key: string;
@@ -2718,6 +2765,11 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       markDefs: null;
     } | {
       _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
+      markDefs: null;
+    } | {
+      _key: string;
       _type: "youtube";
       label?: string;
       id?: string;
@@ -2959,6 +3011,11 @@ export type EVENTS_PAGE_QUERY_RESULT = {
       _key: string;
       _type: "mailchimpForm";
       note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
       markDefs: null;
     } | {
       _key: string;
@@ -3543,6 +3600,11 @@ export type BLOGS_PAGE_QUERY_RESULT = {
       markDefs: null;
     } | {
       _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
+      markDefs: null;
+    } | {
+      _key: string;
       _type: "youtube";
       label?: string;
       id?: string;
@@ -3867,6 +3929,11 @@ export type BLOGS_PAGE_QUERY_RESULT = {
       markDefs: null;
     } | {
       _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
+      markDefs: null;
+    } | {
+      _key: string;
       _type: "youtube";
       label?: string;
       id?: string;
@@ -4107,6 +4174,11 @@ export type BLOGS_PAGE_QUERY_RESULT = {
       _key: string;
       _type: "mailchimpForm";
       note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
       markDefs: null;
     } | {
       _key: string;
@@ -4434,6 +4506,11 @@ export type BLOGS_PAGE_QUERY_RESULT = {
       markDefs: null;
     } | {
       _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
+      markDefs: null;
+    } | {
+      _key: string;
       _type: "youtube";
       label?: string;
       id?: string;
@@ -4677,6 +4754,11 @@ export type BLOGS_PAGE_QUERY_RESULT = {
       _key: string;
       _type: "mailchimpForm";
       note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
       markDefs: null;
     } | {
       _key: string;
@@ -5077,6 +5159,11 @@ export type BLOG_ARTICLES_QUERY_RESULT = Array<{
       markDefs: null;
     } | {
       _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
+      markDefs: null;
+    } | {
+      _key: string;
       _type: "youtube";
       label?: string;
       id?: string;
@@ -5237,6 +5324,11 @@ export type BLOG_ARTICLE_QUERY_RESULT = {
       _key: string;
       _type: "mailchimpForm";
       note?: string;
+      markDefs: null;
+    } | {
+      _key: string;
+      _type: "soundcloud";
+      songUrl?: string;
       markDefs: null;
     } | {
       _key: string;
