@@ -14,7 +14,7 @@ export const pageSlugType = defineType({
       description: 'Slug of the page (the path where the page exists)',
       options: {
         source: 'title',
-        slugify: (input) => input.toLowerCase().replace(/\s+/g, '-').slice(0, 100),
+        slugify: (input) => input.trim().toLowerCase().replace(/\s+/g, '-').slice(0, 100),
       },
       validation: (rule) => rule.required(),
     }),
