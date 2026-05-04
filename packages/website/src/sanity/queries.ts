@@ -14,11 +14,9 @@ const imageFragment = /* groq */ `
 `;
 
 const pageSlugFragment = /* groq */ `
-    "slug": select(
-      defined(pageSlug.parent) => pageSlug.parent->pageSlug.slug.current + "/" + pageSlug.slug.current,
-      pageSlug.slug.current
-    )
-  `;
+    _type,
+    "slug": pageSlug.slug.current
+`;
 
 const linkFragment = /* groq */ `
   linkType,
@@ -201,6 +199,9 @@ const blogFragment = /* groq */ `
   description,
   "featureImage": featureImage { ${imageFragment} },
   ${pageSlugFragment},
+  "blogsPage": *[_id == "blogsPage"][0] {
+    ${pageSlugFragment}
+  },
   "articleContent": articleContent {
     "_key": "",
     _type,

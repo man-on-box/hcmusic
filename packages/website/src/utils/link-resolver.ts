@@ -31,6 +31,14 @@ const isExternalLink = (link: LinkType | null): link is ExternalLink =>
 const isInternalLink = (link: LinkType | null): link is InternalLink =>
   link?.linkType === "internal";
 
+export const hrefResolver = (
+  documentType: string | null,
+  slug: string | null,
+) => {
+  const path = pathResolver(documentType ?? "");
+  return `${path}${slug}`;
+};
+
 export const linkResolver = (
   link: LinkType | null,
 ): { href: string; linkType: "internal" | "external" } => {
@@ -39,10 +47,9 @@ export const linkResolver = (
   }
 
   if (isInternalLink(link)) {
-    const path = pathResolver(link.page?._type ?? "");
-    const slug = link.page?.slug ?? "";
+    const href = hrefResolver(link.page?._type ?? "", link.page?.slug ?? "");
     const anchor = link.anchor ? `#${link.anchor.replace("#", "")}` : "";
-    return { href: `${path}${slug}${anchor}`, linkType: "internal" };
+    return { href: `${href}${anchor}`, linkType: "internal" };
   }
 
   return { href: "#", linkType: "internal" };

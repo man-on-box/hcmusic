@@ -1,5 +1,5 @@
 ---
-import { formatDate } from "../../utils";
+import { formatDate, hrefResolver } from "../../utils";
 import { urlFor } from "../../sanity/image";
 import {
   resolveBlogArticlesData,
@@ -9,6 +9,7 @@ import {
 import MainLayout from "../../layouts/main.astro";
 import TextBlock from "../../blocks/text-block.astro";
 import Hero from "../../components/hero.astro";
+import Prose from "../../components/prose.astro";
 
 export async function getStaticPaths() {
   const data = await resolveBlogArticlesData();
@@ -28,6 +29,7 @@ const {
   description,
   featureImage,
   articleContent,
+  blogsPage,
 } = page;
 
 const date = new Date(articleDate ?? "");
@@ -45,5 +47,13 @@ const seo = { metaTitle: null, metaDescription: description };
       : ""}
     imgAlt={featureImage?.asset?.altText || ""}
   />
+  <div class="mx-auto my-10 max-w-6xl px-6">
+    <a
+      class="group text-lg text-slate-800"
+      href={hrefResolver(blogsPage?._type ?? "", blogsPage?.slug ?? "")}
+    >
+      ← <span class="group-hover:underline">Back to all blogs</span></a
+    >
+  </div>
   {articleContent && <TextBlock blockData={articleContent} />}
 </MainLayout>

@@ -5,7 +5,7 @@ import BlockRenderer from "../../blocks/block-renderer.astro";
 import BlogArticleCard from "../../components/blog-article-card.astro";
 
 import { resolveBlogsPageData } from "../../sanity/resolvers";
-import { pathResolver } from "../../utils/link-resolver";
+import { hrefResolver } from "../../utils/link-resolver";
 
 const { siteSettings, pageBuilder, articles, title, seo } =
   await resolveBlogsPageData(Astro.cookies);
@@ -19,8 +19,8 @@ const { siteSettings, pageBuilder, articles, title, seo } =
       {
         articles.map((article) => {
           return (
-            <li class="border-t-2 border-slate-200 py-6 first:border-t-0 first:pt-0">
-              <a href={`${pathResolver(article._type)}${article.slug}`}>
+            <li class="border-t-2 border-slate-200 py-12 first:border-t-0 first:pt-0 sm:py-8">
+              <a href={hrefResolver(article._type, article.slug)}>
                 <BlogArticleCard article={article} />
               </a>
             </li>
