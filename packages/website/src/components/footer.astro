@@ -27,23 +27,23 @@ const currentYear = new Date().getFullYear();
       <div class="text-center md:text-left">
         <a
           href="/"
-          class="text-foreground font-serif text-lg tracking-wide uppercase"
+          class="text-foreground font-serif text-lg tracking-wide text-slate-900 uppercase"
           >{siteName}</a
-        ><p class="mt-2 text-xs text-gray-500">
+        ><p class="mt-2 text-xs text-slate-500">
           {siteTagline}
         </p>
       </div><nav class="flex flex-wrap justify-center gap-6">
         {
           navItems.map(({ label, link }) => (
             <a
-              class="text-xs tracking-wide text-gray-500 transition-colors hover:text-black"
+              class="text-xs tracking-wide text-slate-500 transition-colors hover:text-slate-900"
               href={linkResolver(link).href}
             >
               {label}
             </a>
           ))
         }
-      </nav><p class="text-xs text-gray-500">© {currentYear}</p>
+      </nav><p class="text-xs text-slate-500">© {currentYear}</p>
     </div>
   </div>
 </footer>

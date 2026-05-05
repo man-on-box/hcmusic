@@ -1,4 +1,5 @@
 ---
+import { cn } from "../utils";
 import type { LinkType } from "../types/sanity";
 import { linkResolver } from "../utils/link-resolver";
 
@@ -6,6 +7,11 @@ interface Props {
   siteName: string;
   navItems: { label: string; link: LinkType | null }[];
 }
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => {
+  return path.startsWith(href);
+};
 
 const { siteName, navItems = [] } = Astro.props;
 ---
@@ -17,20 +23,26 @@ const { siteName, navItems = [] } = Astro.props;
     class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8"
   >
     <a class="flex items-center gap-2" href="/"
-      ><span class="text-foreground font-serif text-lg uppercase"
+      ><span class="text-foreground font-serif text-lg text-slate-900 uppercase"
         >{siteName}</span
       ></a
     >
-    <div class="hidden md:flex md:gap-x-8">
+    <div class="group hidden md:flex md:gap-x-4">
       {
-        navItems.map(({ link, label }) => (
-          <a
-            class="text-sm tracking-wide text-gray-500 transition-colors hover:text-black"
-            href={linkResolver(link).href}
-          >
-            {label}
-          </a>
-        ))
+        navItems.map(({ link, label }) => {
+          const { href } = linkResolver(link);
+          return (
+            <a
+              class={cn(
+                "rounded px-2 py-1 text-sm tracking-wide text-slate-600 transition-colors group-hover:text-slate-500 hover:bg-slate-500/10 hover:text-slate-900",
+                isActive(href) && "bg-slate-400/10 text-slate-900",
+              )}
+              href={href}
+            >
+              {label}
+            </a>
+          );
+        })
       }
     </div>
     <button
@@ -79,7 +91,7 @@ const { siteName, navItems = [] } = Astro.props;
       {
         navItems.map(({ link, label }) => (
           <a
-            class="py-4 tracking-wide text-gray-700"
+            class="py-4 tracking-wide text-slate-600"
             href={linkResolver(link).href}
           >
             {label}
